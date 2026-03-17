@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>For My Little Pink</title>
+    <meta name="theme-color" content="#0d0a12">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="apple-touch-icon" href="icon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Quicksand:wght@300;400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Local font fallback for offline / slow network */
+        @font-face { font-family: 'Quicksand'; font-style: normal; font-weight: 300 700; font-display: swap; src: local('Quicksand'); }
+        @font-face { font-family: 'Playfair Display'; font-style: normal; font-weight: 400 700; font-display: swap; src: local('Playfair Display'); }
+        @font-face { font-family: 'Dancing Script'; font-style: normal; font-weight: 400 700; font-display: swap; src: local('Dancing Script'); }
+    </style>
+</head>
+<body>
+    <noscript>
+        <div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#0d0a12;color:#e0d4da;font-family:sans-serif;text-align:center;padding:24px;">
+            <p>Please enable JavaScript to play Celina's Puzzle Garden.</p>
+        </div>
+    </noscript>
+
+    <!-- Music Player -->
+    <button class="music-toggle" id="music-toggle" aria-label="Music">
+        <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55C7.79 13 6 14.79 6 17s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" fill="currentColor"/></svg>
+    </button>
+    <div class="music-panel" id="music-panel">
+        <div class="music-options">
+            <button class="music-opt" data-mode="playlist">&#x1F3B6; Playlist</button>
+            <button class="music-opt" data-mode="calm">&#x1F3B9; Calm</button>
+        </div>
+        <div class="music-now" id="music-now"></div>
+        <div class="music-embed" id="music-embed"></div>
+    </div>
+
+    <!-- Floating Hearts Background -->
+    <div id="hearts-bg" aria-hidden="true"></div>
+
+    <!-- Ella the Cat (persistent) -->
+    <div id="ella-container" aria-label="Ella the cat">
+        <svg id="ella-svg" viewBox="0 0 120 90" class="ella-sprite">
+            <defs>
+                <linearGradient id="body-grad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#8B6A4E"/>
+                    <stop offset="100%" stop-color="#C4A882"/>
+                </linearGradient>
+                <linearGradient id="head-grad" x1="0" y1="0" x2="1" y2="0.8">
+                    <stop offset="0%" stop-color="#C4A882"/>
+                    <stop offset="60%" stop-color="#8B6A4E"/>
+                </linearGradient>
+            </defs>
+
+            <!-- Shadow -->
+            <ellipse cx="55" cy="86" rx="30" ry="4" fill="rgba(0,0,0,0.08)" class="ella-shadow"/>
+
+            <!-- Tail (long & fluffy) -->
+            <g class="ella-tail-group">
+                <path d="M82,55 Q98,40 96,22 Q95,16 89,20 Q85,28 80,48" fill="#8B6A4E" stroke="#7A5C3E" stroke-width="0.5"/>
+                <!-- Fur tufts on tail -->
+                <path d="M96,22 Q100,18 97,14" fill="none" stroke="#C4A882" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M92,30 Q97,27 95,22" fill="none" stroke="#C4A882" stroke-width="1.8" stroke-linecap="round"/>
+            </g>
+
+            <!-- Body -->
+            <ellipse cx="52" cy="58" rx="30" ry="22" fill="url(#body-grad)"/>
+            <!-- Belly highlight -->
+            <ellipse cx="48" cy="62" rx="18" ry="12" fill="#C4A882" opacity="0.4"/>
+            <!-- Fur tufts on body -->
+            <path d="M22,50 Q16,44 19,38" fill="none" stroke="#C4A882" stroke-width="2" stroke-linecap="round" class="fur-tuft"/>
+            <path d="M78,45 Q84,39 82,33" fill="none" stroke="#8B6A4E" stroke-width="2" stroke-linecap="round" class="fur-tuft"/>
+            <path d="M25,65 Q19,60 21,54" fill="none" stroke="#C4A882" stroke-width="1.5" stroke-linecap="round" class="fur-tuft"/>
+
+            <!-- Back legs -->
+            <ellipse cx="70" cy="77" rx="8" ry="6" fill="#8B6A4E"/>
+            <ellipse cx="58" cy="78" rx="7" ry="5.5" fill="#C4A882"/>
+            <!-- Front legs -->
+            <g class="ella-front-legs">
+                <ellipse cx="35" cy="78" rx="7" ry="5.5" fill="#C4A882" class="ella-leg-l"/>
+                <ellipse cx="44" cy="78" rx="7" ry="5.5" fill="#8B6A4E" class="ella-leg-r"/>
+            </g>
+            <!-- Paw pads -->
+            <ellipse cx="35" cy="80" rx="3" ry="2" fill="#e8b4b8" opacity="0.5"/>
+            <ellipse cx="44" cy="80" rx="3" ry="2" fill="#e8b4b8" opacity="0.5"/>
+
+            <!-- Head -->
+            <circle cx="35" cy="38" r="22" fill="url(#head-grad)"/>
+
+            <!-- Brown patch on head -->
+            <path d="M20,30 Q25,18 40,22 Q35,32 20,30Z" fill="#8B6A4E" opacity="0.7"/>
+
+            <!-- Ears -->
+            <polygon points="18,22 14,2 30,14" fill="#8B6A4E" stroke="#7A5C3E" stroke-width="0.3"/>
+            <polygon points="20,20 17,6 29,15" fill="#e8b4b8" opacity="0.5"/>
+            <polygon points="46,14 56,0 56,18" fill="#C4A882" stroke="#7A5C3E" stroke-width="0.3"/>
+            <polygon points="47,15 54,4 54,17" fill="#e8b4b8" opacity="0.5"/>
+
+            <!-- Fur tufts on head (long hair) -->
+            <path d="M14,28 Q8,22 11,16" fill="none" stroke="#C4A882" stroke-width="2.2" stroke-linecap="round" class="fur-tuft"/>
+            <path d="M55,20 Q60,14 58,8" fill="none" stroke="#8B6A4E" stroke-width="2" stroke-linecap="round" class="fur-tuft"/>
+            <path d="M18,35 Q12,30 14,24" fill="none" stroke="#C4A882" stroke-width="1.5" stroke-linecap="round" class="fur-tuft"/>
+            <!-- Chest floof -->
+            <path d="M28,55 Q22,48 25,42" fill="none" stroke="#C4A882" stroke-width="2.5" stroke-linecap="round" class="fur-tuft"/>
+            <path d="M32,56 Q28,50 30,44" fill="none" stroke="#D4B896" stroke-width="2" stroke-linecap="round" class="fur-tuft"/>
+
+            <!-- Eyes (big, cute, expressive) -->
+            <g class="ella-eyes">
+                <ellipse cx="28" cy="36" rx="5.5" ry="6.5" fill="white"/>
+                <ellipse cx="42" cy="36" rx="5.5" ry="6.5" fill="white"/>
+                <ellipse cx="28" cy="36" rx="4.5" ry="5.5" fill="#4A7A2E"/>
+                <ellipse cx="42" cy="36" rx="4.5" ry="5.5" fill="#4A7A2E"/>
+                <ellipse cx="28" cy="35.5" rx="3" ry="3.8" fill="#1a1a1a"/>
+                <ellipse cx="42" cy="35.5" rx="3" ry="3.8" fill="#1a1a1a"/>
+                <!-- Highlights -->
+                <circle cx="26" cy="34" r="2" fill="white"/>
+                <circle cx="40" cy="34" r="2" fill="white"/>
+                <circle cx="30" cy="37" r="1" fill="white" opacity="0.5"/>
+                <circle cx="44" cy="37" r="1" fill="white" opacity="0.5"/>
+            </g>
+            <!-- Blink overlay (hidden by default) -->
+            <g class="ella-blink" style="display:none">
+                <ellipse cx="28" cy="36" rx="5.5" ry="6.5" fill="url(#head-grad)"/>
+                <path d="M22.5,36 Q28,39 33.5,36" fill="none" stroke="#5a3825" stroke-width="1.2"/>
+                <ellipse cx="42" cy="36" rx="5.5" ry="6.5" fill="url(#head-grad)"/>
+                <path d="M36.5,36 Q42,39 47.5,36" fill="none" stroke="#5a3825" stroke-width="1.2"/>
+            </g>
+
+            <!-- Nose -->
+            <path d="M33,42 L35,44.5 L37,42Z" fill="#FFB6C1"/>
+
+            <!-- Mouth -->
+            <path d="M33,44.5 Q35,47 37,44.5" fill="none" stroke="#5a3825" stroke-width="0.9"/>
+
+            <!-- Whiskers -->
+            <g class="ella-whiskers" opacity="0.45">
+                <line x1="10" y1="38" x2="24" y2="39.5" stroke="#5a3825" stroke-width="0.7"/>
+                <line x1="9" y1="41" x2="24" y2="41.5" stroke="#5a3825" stroke-width="0.7"/>
+                <line x1="11" y1="44" x2="24" y2="43" stroke="#5a3825" stroke-width="0.7"/>
+                <line x1="46" y1="39.5" x2="60" y2="38" stroke="#5a3825" stroke-width="0.7"/>
+                <line x1="46" y1="41.5" x2="61" y2="41" stroke="#5a3825" stroke-width="0.7"/>
+                <line x1="46" y1="43" x2="59" y2="44" stroke="#5a3825" stroke-width="0.7"/>
+            </g>
+
+            <!-- Purr lines (hidden by default) -->
+            <g class="ella-purr-lines" style="display:none">
+                <path d="M62,30 Q66,28 62,26" fill="none" stroke="#FFB6C1" stroke-width="1.2" stroke-linecap="round"/>
+                <path d="M66,33 Q70,31 66,29" fill="none" stroke="#FFB6C1" stroke-width="1" stroke-linecap="round"/>
+                <path d="M64,37 Q68,35 64,33" fill="none" stroke="#FFB6C1" stroke-width="0.8" stroke-linecap="round"/>
+            </g>
+
+            <!-- Heart (shown sometimes) -->
+            <g class="ella-heart" style="display:none">
+                <path d="M68,18 C66,14 60,14 60,18 C60,14 54,14 52,18 C52,22 60,28 60,28 C60,28 68,22 68,18Z" fill="#e91e63" opacity="0.8"/>
+            </g>
+        </svg>
+        <div class="ella-speech-bubble" id="ella-speech"></div>
+    </div>
+
+    <!-- ==================== SPLASH SCREEN ==================== -->
+    <div id="splash" class="view active">
+        <div class="splash-content">
+            <div class="splash-sparkles" aria-hidden="true">
+                <span class="sparkle s1">&#10022;</span>
+                <span class="sparkle s2">&#10022;</span>
+                <span class="sparkle s3">&#10022;</span>
+                <span class="sparkle s4">&#10022;</span>
+                <span class="sparkle s5">&#10022;</span>
+            </div>
+            <h1 class="splash-title">For My Little Pink</h1>
+            <p class="splash-sub">A game made with love, just for you</p>
+            <div class="splash-divider">
+                <span class="line"></span>
+                <svg class="heart-icon" viewBox="0 0 24 24" width="26" height="26"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#e91e63"/></svg>
+                <span class="line"></span>
+            </div>
+            <p class="splash-from">From Maxime</p>
+            <p class="splash-to">To my princess, my baby, love of my life,<br>my wife, l'amour de ma vie</p>
+            <button class="btn-primary" id="btn-enter">
+                Open
+                <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="currentColor"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== HUB SCREEN ==================== -->
+    <div id="hub" class="view">
+        <div class="hub-scroll">
+            <div class="hub-header">
+                <h2 class="hub-title" id="hub-title">Celina's Puzzle Garden</h2>
+                <p class="hub-desc">A new challenge blooms every Monday</p>
+            </div>
+
+            <div class="puzzle-cards" id="puzzle-cards">
+                <div class="puzzle-card" data-week="0">
+                    <div class="card-badge">Week 1</div>
+                    <div class="card-icon-wrap">
+                        <svg viewBox="0 0 40 40" width="36" height="36"><rect x="4" y="4" width="32" height="32" rx="3" fill="none" stroke="#f06292" stroke-width="1.8" stroke-dasharray="3,2.5"/><line x1="10" y1="20" x2="30" y2="20" stroke="#ce93d8" stroke-width="3" stroke-linecap="round" opacity=".7"/><circle cx="10" cy="20" r="4" fill="#ce93d8" opacity=".6"/></svg>
+                    </div>
+                    <div class="card-name">Rose Garden</div>
+                    <div class="card-type">Killer + Thermo + Palindrome</div>
+                    <div class="card-status" id="status-0"></div>
+                </div>
+                <div class="puzzle-card" data-week="1">
+                    <div class="card-badge">Week 2</div>
+                    <div class="card-icon-wrap">
+                        <svg viewBox="0 0 40 40" width="36" height="36"><polyline points="6,30 14,10 22,30 30,10" fill="none" stroke="#81c784" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><text x="35" y="12" text-anchor="middle" fill="#64b5f6" font-size="8" font-weight="800">&#9822;</text></svg>
+                    </div>
+                    <div class="card-name">Pink Sunrise</div>
+                    <div class="card-type">Whisper + Anti-Knight/King</div>
+                    <div class="card-status" id="status-1"></div>
+                </div>
+                <div class="puzzle-card" data-week="2">
+                    <div class="card-badge">Week 3</div>
+                    <div class="card-icon-wrap">
+                        <svg viewBox="0 0 40 40" width="36" height="36"><circle cx="14" cy="20" r="5" fill="white" stroke="rgba(255,255,255,.5)" stroke-width="2"/><circle cx="28" cy="20" r="5" fill="rgba(255,255,255,.5)" stroke="rgba(255,255,255,.5)" stroke-width="2"/></svg>
+                    </div>
+                    <div class="card-name">Starlight</div>
+                    <div class="card-type">Kropki + Palindrome + Thermo</div>
+                    <div class="card-status" id="status-2"></div>
+                </div>
+                <div class="puzzle-card" data-week="3">
+                    <div class="card-badge">Week 4</div>
+                    <div class="card-icon-wrap">
+                        <svg viewBox="0 0 40 40" width="36" height="36"><rect x="3" y="3" width="14" height="14" rx="2" fill="none" stroke="#f06292" stroke-width="1.2" stroke-dasharray="2,1.5"/><line x1="21" y1="7" x2="36" y2="7" stroke="#81c784" stroke-width="2" stroke-linecap="round"/><line x1="21" y1="13" x2="36" y2="13" stroke="#ffb74d" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="30" r="4" fill="none" stroke="#64b5f6" stroke-width="1.5"/><line x1="14" y1="30" x2="36" y2="24" stroke="#64b5f6" stroke-width="1.5" stroke-linecap="round"/><line x1="21" y1="34" x2="36" y2="34" stroke="#ce93d8" stroke-width="2.5" stroke-linecap="round" opacity=".6"/><circle cx="21" cy="34" r="3" fill="#ce93d8" opacity=".5"/></svg>
+                    </div>
+                    <div class="card-name">Eternal Love</div>
+                    <div class="card-type">Grand Artisanal Mix</div>
+                    <div class="card-status" id="status-3"></div>
+                </div>
+            </div>
+
+            <!-- Gift Rewards Path -->
+            <div class="gift-tiers" id="gift-tiers"></div>
+
+            <div class="hub-actions">
+                <button class="btn-outline" id="btn-stats">
+                    <svg viewBox="0 0 24 24" width="16" height="16"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.89 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" fill="currentColor"/></svg>
+                    Your Stats
+                </button>
+                <button class="btn-outline" id="btn-achievements">
+                    <svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 2L9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2z" fill="currentColor"/></svg>
+                    Achievements
+                </button>
+                <button class="btn-outline" id="btn-poem">
+                    <svg viewBox="0 0 24 24" width="16" height="16"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="currentColor"/></svg>
+                    Maxime's Poem
+                </button>
+                <button class="btn-outline gold" id="btn-gifts" style="display:none">
+                    <svg viewBox="0 0 24 24" width="16" height="16"><path d="M20 6h-2.18c.11-.31.18-.65.18-1a2.996 2.996 0 00-5.5-1.65l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2z" fill="currentColor"/></svg>
+                    Choose Your Gifts!
+                </button>
+            </div>
+
+            <p class="hub-footer">Each puzzle unlocks on Monday &mdash; 4 weeks of love</p>
+        </div>
+    </div>
+
+    <!-- ==================== RULES MODAL ==================== -->
+    <div id="rules-modal" class="modal-overlay" style="display:none">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="rules-title">How to Play</h3>
+            </div>
+            <div class="modal-body" id="rules-body"></div>
+            <button class="btn-primary" id="btn-rules-ok">Got it!</button>
+        </div>
+    </div>
+
+    <!-- ==================== STATS MODAL ==================== -->
+    <div id="stats-modal" class="modal-overlay" style="display:none">
+        <div class="modal-card">
+            <div class="modal-header"><h3>Your Stats</h3></div>
+            <div class="modal-body" id="stats-body"></div>
+            <button class="btn-primary" id="btn-stats-ok">Close</button>
+        </div>
+    </div>
+
+    <!-- ==================== ACHIEVEMENTS MODAL ==================== -->
+    <div id="achieve-modal" class="modal-overlay" style="display:none">
+        <div class="modal-card">
+            <div class="modal-header"><h3>Achievements</h3></div>
+            <div class="modal-body" id="achieve-body"></div>
+            <button class="btn-primary" id="btn-achieve-ok">Close</button>
+        </div>
+    </div>
+
+    <!-- ==================== GAME OVER OVERLAY ==================== -->
+    <div id="game-over-overlay" class="modal-overlay" style="display:none">
+        <div class="modal-card game-over-card">
+            <div class="go-icon">
+                <svg viewBox="0 0 24 24" width="48" height="48"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#ddd"/></svg>
+            </div>
+            <h3 class="go-title">Out of Hearts</h3>
+            <p class="go-msg">Don't worry, princess! Every great puzzler needs practice.</p>
+            <p class="go-progress" id="go-progress"></p>
+            <div class="go-actions">
+                <button class="btn-primary" id="btn-retry">Try Again</button>
+                <button class="btn-outline" id="btn-go-hub">Back to Hub</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== TOAST ==================== -->
+    <div id="game-toast" class="game-toast" aria-live="polite"></div>
+
+    <!-- ==================== GAME SCREEN ==================== -->
+    <div id="game" class="view">
+        <!-- Compact header -->
+        <div class="g-header">
+            <button class="g-back" id="btn-back-game" aria-label="Back">
+                <svg viewBox="0 0 24 24" width="20" height="20"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" fill="currentColor"/></svg>
+            </button>
+            <div class="g-center">
+                <span class="g-title" id="game-title">Week 1</span>
+                <div class="g-meta">
+                    <span class="g-timer" id="game-timer">00:00</span>
+                    <span class="g-divider">|</span>
+                    <div class="mistake-hearts" id="mistake-hearts"></div>
+                </div>
+            </div>
+            <button class="g-back" id="btn-pause" aria-label="Pause">
+                <svg viewBox="0 0 24 24" width="20" height="20"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" fill="currentColor"/></svg>
+            </button>
+            <button class="g-back" id="btn-rules-open" aria-label="Rules">
+                <svg viewBox="0 0 24 24" width="20" height="20"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z" fill="currentColor"/></svg>
+            </button>
+        </div>
+
+        <!-- Progress thin line -->
+        <div class="g-progress"><div class="g-progress-fill" id="progress-fill"></div></div>
+
+        <!-- Streak (overlay, not layout element) -->
+        <div class="streak-counter" id="streak-counter" aria-live="polite"></div>
+
+        <!-- Board -->
+        <div class="board-wrap">
+            <div class="crosshair-h" id="crosshair-h"></div>
+            <div class="crosshair-v" id="crosshair-v"></div>
+            <div class="board" id="game-board" role="grid" aria-label="Sudoku board"></div>
+            <svg class="board-overlay" id="board-overlay" viewBox="0 0 450 450" preserveAspectRatio="xMidYMid meet"></svg>
+            <div class="pause-overlay" id="pause-overlay" style="display:none">
+                <svg viewBox="0 0 24 24" width="48" height="48"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+                <span>Paused</span>
+            </div>
+        </div>
+
+        <!-- Constraint legend strip -->
+        <div class="constraint-legend" id="constraint-legend"></div>
+
+        <!-- Constraint tooltip -->
+        <div class="constraint-tip" id="constraint-tip"></div>
+
+        <!-- Bottom controls -->
+        <div class="g-controls">
+            <!-- Numpad FIRST — it's the most important -->
+            <div class="numpad" id="numpad">
+                <button class="num-btn" data-num="1">1</button>
+                <button class="num-btn" data-num="2">2</button>
+                <button class="num-btn" data-num="3">3</button>
+                <button class="num-btn" data-num="4">4</button>
+                <button class="num-btn" data-num="5">5</button>
+                <button class="num-btn" data-num="6">6</button>
+                <button class="num-btn" data-num="7">7</button>
+                <button class="num-btn" data-num="8">8</button>
+                <button class="num-btn" data-num="9">9</button>
+            </div>
+            <!-- Tool row — labeled icons under numpad -->
+            <div class="tools-row">
+                <button class="t-btn" id="btn-undo" aria-label="Undo">
+                    <svg viewBox="0 0 24 24"><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z" fill="currentColor"/></svg>
+                    <span>Undo</span>
+                </button>
+                <button class="t-btn" id="btn-redo" aria-label="Redo">
+                    <svg viewBox="0 0 24 24"><path d="M18.4 10.6C16.55 8.99 14.15 8 11.5 8c-4.65 0-8.58 3.03-9.96 7.22L3.9 16c1.05-3.19 4.05-5.5 7.6-5.5 1.95 0 3.73.72 5.12 1.88L13 16h9V7l-3.6 3.6z" fill="currentColor"/></svg>
+                    <span>Redo</span>
+                </button>
+                <button class="t-btn" id="btn-erase" aria-label="Erase">
+                    <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" fill="currentColor"/></svg>
+                    <span>Erase</span>
+                </button>
+                <button class="t-btn t-pencil" id="btn-pencil" aria-label="Notes">
+                    <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="currentColor"/></svg>
+                    <span>Notes</span>
+                </button>
+                <button class="t-btn" id="btn-auto-pencil" aria-label="Auto Notes">
+                    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z" fill="currentColor"/></svg>
+                    <span>Auto</span>
+                </button>
+                <button class="t-btn" id="btn-hint" aria-label="Hint">
+                    <svg viewBox="0 0 24 24"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z" fill="currentColor"/></svg>
+                    <span>Hint</span><span class="hint-count" id="hint-count">3</span>
+                </button>
+                <button class="t-btn" id="btn-restart" aria-label="Restart">
+                    <svg viewBox="0 0 24 24"><path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" fill="currentColor"/></svg>
+                    <span>Restart</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== CELEBRATION ==================== -->
+    <div id="celebration" class="view">
+        <div id="confetti-box" aria-hidden="true"></div>
+        <div class="celeb-content">
+            <h2 class="celeb-title" id="celeb-title">Magnifique!</h2>
+            <p class="celeb-msg" id="celeb-msg">You're absolutely brilliant, my princess!</p>
+            <div class="celeb-stats">
+                <div class="celeb-stat"><span class="stat-val" id="celeb-time">--:--</span><span class="stat-lbl">Time</span></div>
+                <div class="celeb-stat"><span class="stat-val" id="celeb-mistakes">0</span><span class="stat-lbl">Mistakes</span></div>
+                <div class="celeb-stat"><span class="stat-val" id="celeb-best">--:--</span><span class="stat-lbl">Best</span></div>
+            </div>
+            <div class="celeb-reward" id="celeb-reward"></div>
+            <div class="celeb-actions">
+                <button class="btn-primary" id="btn-celeb-continue">Continue</button>
+                <button class="btn-outline" id="btn-share-result">
+                    <svg viewBox="0 0 24 24" width="16" height="16"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z" fill="currentColor"/></svg>
+                    Share
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== POEM ==================== -->
+    <div id="poem" class="view">
+        <div class="poem-scroll">
+            <button class="icon-btn poem-back" id="btn-back-poem" aria-label="Back">
+                <svg viewBox="0 0 24 24" width="22" height="22"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" fill="currentColor"/></svg>
+            </button>
+            <div class="poem-inner">
+                <h2 class="poem-heading">Celina</h2>
+                <p class="poem-by">by Maxime</p>
+                <div class="poem-stanzas">
+                    <div class="stanza"><p>Celina</p><p>most beautiful woman on earth</p><p>sweet without trying</p><p>charming without knowing it</p></div>
+                    <div class="stanza"><p>pure heart</p><p>rare kind</p></div>
+                    <div class="stanza"><p>soft in the ways that matter</p><p>strong in the ways that last</p></div>
+                    <div class="stanza"><p>it takes a thousand ways</p><p>to reach you</p><p>and even then</p><p>you decide</p></div>
+                    <div class="stanza"><p>your silence is stubborn</p><p>your voice is trouble</p><p>either way</p><p>you don't go unnoticed</p></div>
+                    <div class="stanza"><p>your smile</p><p>that's what beauty is</p><p>not the idea of it</p><p>not the chase</p><p>your smile</p></div>
+                    <div class="stanza"><p>your eyes</p><p>sharp as polished steel</p><p>wild</p><p>proud</p><p>awake</p></div>
+                    <div class="stanza"><p>I swear to God</p><p>you are beautiful</p><p>the most beautiful girl</p><p>I've ever seen</p></div>
+                    <div class="stanza"><p>more beautiful</p><p>than the details people cling to</p><p>your smile</p><p>the best thing</p><p>my eyes have ever known</p></div>
+                    <div class="stanza"><p>I can't remember</p><p>how life was</p><p>before I met you</p></div>
+                    <div class="stanza"><p>rosy cheeks</p><p>heavy eyes</p><p>like you're half dream</p><p>half reality</p></div>
+                    <div class="stanza"><p>when the world gets loud</p><p>your love</p><p>sounds like peace</p></div>
+                    <div class="stanza"><p>I believe in the invisible string</p><p>because of you</p><p>like we were connected</p><p>before timing made sense</p><p>never pulling</p><p>just always there</p></div>
+                    <div class="stanza"><p>your laugh</p><p>undoes me</p><p>every time</p></div>
+                    <div class="stanza"><p>even if I couldn't see you</p><p>I'd still know</p><p>you're beautiful</p><p>I'd feel it</p><p>in the calm</p></div>
+                    <div class="stanza"><p>I want to hold you close</p><p>shield you</p><p>from anything meant to hurt you</p></div>
+                    <div class="stanza"><p>even your scent</p><p>lingers</p><p>soft</p><p>familiar</p></div>
+                    <div class="stanza last"><p>and if it ever comes down to it</p><p>your happiness</p><p>your safety</p><p>your peace</p><p class="final-line">I'd do it for you</p></div>
+                </div>
+                <div class="poem-end">
+                    <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#e91e63"/></svg>
+                    <p>Forever yours, Maxime</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== GIFTS ==================== -->
+    <div id="gifts" class="view">
+        <div class="gifts-scroll">
+            <button class="icon-btn gifts-back" id="btn-back-gifts" aria-label="Back">
+                <svg viewBox="0 0 24 24" width="22" height="22"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" fill="currentColor"/></svg>
+            </button>
+            <div class="gifts-inner">
+                <h2 class="gifts-heading">Your reward, princess!</h2>
+                <p class="gifts-sub">You conquered all 4 puzzles! Choose one reward below.</p>
+                <p id="gifts-lock-msg" class="gifts-lock-msg" style="display:none"></p>
+                <div class="gift-paths" id="gift-paths">
+                    <p class="gift-paths-note">Pick <strong>one</strong> of these three options:</p>
+                    <label class="gift-path-card" data-path="necklace">
+                        <input type="radio" name="gift-path" value="necklace">
+                        <div class="path-icon">&#x1F48E;</div>
+                        <div class="path-info">
+                            <strong>Diamond Necklace</strong>
+                            <p>Maxime picks a diamond necklace just for you</p>
+                        </div>
+                    </label>
+                    <label class="gift-path-card" data-path="luxury">
+                        <input type="radio" name="gift-path" value="luxury">
+                        <div class="path-icon">&#x2728;</div>
+                        <div class="path-info">
+                            <strong>One Luxury Pick</strong>
+                            <p>Choose one special item from the list</p>
+                        </div>
+                    </label>
+                    <label class="gift-path-card" data-path="treats">
+                        <input type="radio" name="gift-path" value="treats">
+                        <div class="path-icon">&#x1F381;</div>
+                        <div class="path-info">
+                            <strong>3 Little Treats</strong>
+                            <p>Pick 3 cute things you love</p>
+                        </div>
+                    </label>
+                </div>
+                <div class="gifts-list" id="gifts-list"></div>
+                <button class="btn-primary full-w" id="btn-submit-gifts" style="display:none">Send to Maxime</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== GIFT SENT ==================== -->
+    <div id="gift-sent" class="view">
+        <div class="sent-content">
+            <div class="sent-icon">
+                <svg viewBox="0 0 24 24" width="56" height="56"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#e91e63"/></svg>
+            </div>
+            <h2>Sent with love!</h2>
+            <p>Maxime will see your wishlist and make it happen, baby.</p>
+            <p class="sub">You're so precious to him.</p>
+            <button class="btn-primary" id="btn-sent-back">Back Home</button>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
