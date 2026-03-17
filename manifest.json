@@ -1,0 +1,17 @@
+{
+    "name": "Celina's Puzzle Garden",
+    "short_name": "Celina's Puzzles",
+    "description": "A game made with love, just for you",
+    "start_url": "./",
+    "scope": "./",
+    "id": "/",
+    "display": "standalone",
+    "background_color": "#0d0a12",
+    "theme_color": "#0d0a12",
+    "orientation": "any",
+    "categories": ["games", "puzzle"],
+    "icons": [
+        {"src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"},
+        {"src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable"}
+    ]
+}
