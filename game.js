@@ -250,17 +250,17 @@ const RULES_HTML = {
   "Killer + Thermo + Palindrome": `
     <p class="rule-heading">Constraint Types</p>
     <ul><li>Normal sudoku rules apply.</li>
-    <li><strong style="color:#f48fb1">Killer cages</strong> (dashed): digits sum to the clue. No repeats in a cage.</li>
-    <li><strong style="color:#ce93d8">Thermometers</strong> (purple): digits strictly increase from bulb to tip.</li>
-    <li><strong style="color:#90a4ae">Palindrome lines</strong> (grey): digits read the same forwards and backwards.</li>
-    <li><strong style="color:#f48fb1">Renban lines</strong> (pink): cells contain a set of consecutive digits in any order.</li></ul>
+    <li><strong style="color:#ff7043">Killer cages</strong> (dashed): digits sum to the clue. No repeats in a cage.</li>
+    <li><strong style="color:#ba68c8">Thermometers</strong> (purple): digits strictly increase from bulb to tip.</li>
+    <li><strong style="color:#78909c">Palindrome lines</strong> (grey): digits read the same forwards and backwards.</li>
+    <li><strong style="color:#f06292">Renban lines</strong> (pink): cells contain a set of consecutive digits in any order.</li></ul>
     <div class="rule-note">Tip: On a renban line of length 5, the digits form a run like {3,4,5,6,7} but can appear in any order along the line.</div>`,
   "Whisper + Anti-Knight/King": `
     <p class="rule-heading">Constraint Types</p>
     <ul><li>Normal sudoku rules apply.</li>
-    <li><strong style="color:#81c784">German Whisper lines</strong> (green): adjacent digits on the line must differ by at least 5.</li>
-    <li>Digits in <strong style="color:#f48fb1">cages</strong> must sum to the clue. No repeats in a cage.</li>
-    <li><strong style="color:#f48fb1">Renban lines</strong> (pink): cells contain consecutive digits in any order.</li>
+    <li><strong style="color:#66bb6a">German Whisper lines</strong> (green): adjacent digits on the line must differ by at least 5.</li>
+    <li>Digits in <strong style="color:#ff7043">cages</strong> must sum to the clue. No repeats in a cage.</li>
+    <li><strong style="color:#f06292">Renban lines</strong> (pink): cells contain consecutive digits in any order.</li>
     <li><strong style="color:#64b5f6">Anti-Knight</strong>: cells a chess knight\u2019s move apart cannot contain the same digit.</li>
     <li><strong style="color:#64b5f6">Anti-King</strong>: cells a chess king\u2019s move apart (diagonally adjacent) cannot contain the same digit.</li></ul>
     <div class="rule-note">Tip: Only digits 1\u20134 and 6\u20139 can appear on whisper lines. 5 can never be on a green line. Anti-knight/king constraints are global!</div>`,
@@ -270,17 +270,17 @@ const RULES_HTML = {
     <li><strong>White dot</strong> \u25CB : the two cells differ by exactly 1.</li>
     <li><strong>Black dot</strong> \u25CF : one cell is exactly double the other.</li>
     <li><strong>No dot</strong>: neither condition holds \u2014 <em>negative constraint!</em></li>
-    <li><strong style="color:#90a4ae">Palindrome lines</strong> (grey): digits read the same forwards and backwards.</li>
-    <li><strong style="color:#ce93d8">Thermometers</strong> (purple): digits strictly increase from bulb to tip.</li></ul>
+    <li><strong style="color:#78909c">Palindrome lines</strong> (grey): digits read the same forwards and backwards.</li>
+    <li><strong style="color:#ba68c8">Thermometers</strong> (purple): digits strictly increase from bulb to tip.</li></ul>
     <div class="rule-note">Tip: The pair (1,2) satisfies both a white dot (differ by 1) and a black dot (2=2\u00d71). All dots are shown \u2014 a missing dot is a clue!</div>`,
   "Grand Artisanal Mix": `
     <p class="rule-heading">Constraint Types</p>
     <ul><li>Normal sudoku rules apply.</li>
-    <li><strong style="color:#f48fb1">Killer cages</strong> (dashed): digits sum to the clue. No repeats in a cage.</li>
-    <li><strong style="color:#ce93d8">Thermometers</strong> (purple): digits strictly increase from bulb to tip.</li>
-    <li><strong style="color:#64b5f6">Sum arrows</strong> (blue): the circled digit equals the sum of digits along the arrow.</li>
-    <li><strong style="color:#90a4ae">Palindrome lines</strong> (grey): digits read the same forwards and backwards.</li>
-    <li><strong style="color:#f48fb1">Renban lines</strong> (pink): cells contain consecutive digits in any order.</li>
+    <li><strong style="color:#ff7043">Killer cages</strong> (dashed): digits sum to the clue. No repeats in a cage.</li>
+    <li><strong style="color:#ba68c8">Thermometers</strong> (purple): digits strictly increase from bulb to tip.</li>
+    <li><strong style="color:#b0bec5">Sum arrows</strong> (blue): the circled digit equals the sum of digits along the arrow.</li>
+    <li><strong style="color:#78909c">Palindrome lines</strong> (grey): digits read the same forwards and backwards.</li>
+    <li><strong style="color:#f06292">Renban lines</strong> (pink): cells contain consecutive digits in any order.</li>
     <li><strong style="color:#ffb74d">Dutch Whisper lines</strong> (orange): adjacent digits must differ by at least 4.</li></ul>
     <div class="rule-note">The ultimate artisanal challenge \u2014 six constraint types combined!</div>`
 };
@@ -339,7 +339,7 @@ const Audio = (()=>{
 
 // ============== STATE ==============
 let state = loadState();
-let curPuzzle = null, curWeek = -1, selCell = null;
+let curPuzzle = null, curWeek = -1, selCell = null, selectedCells = new Set();
 let pencilMode = false, history = [], redoStack = [], timer = null, elapsed = 0, gamePaused = false;
 let debugMode = false, debugTaps = 0, debugTimer = null;
 let hubGreeted = false;
@@ -355,13 +355,35 @@ const MAX_HINTS = 3;
 function defaults(){
   return {
     firstVisit: new Date().toISOString(),
-    puzzles:[{done:false,at:null,t:0,g:null},{done:false,at:null,t:0,g:null},
-             {done:false,at:null,t:0,g:null},{done:false,at:null,t:0,g:null}],
+    puzzles:[{done:false,at:null,t:0,g:null,n:null,m:0,h:0,hc:null},{done:false,at:null,t:0,g:null,n:null,m:0,h:0,hc:null},
+             {done:false,at:null,t:0,g:null,n:null,m:0,h:0,hc:null},{done:false,at:null,t:0,g:null,n:null,m:0,h:0,hc:null}],
     giftsSent:false, selectedGifts:[], giftPath:null
   };
 }
-function loadState(){try{const s=localStorage.getItem('celina-state');if(s){const p=JSON.parse(s);if(p.puzzles&&p.puzzles.length>=4)return p;}}catch(e){}return defaults();}
-function save(){localStorage.setItem('celina-state',JSON.stringify(state));}
+function loadState(){
+  try{
+    const s=localStorage.getItem('celina-state');
+    if(s){
+      const p=JSON.parse(s);
+      if(p.puzzles&&p.puzzles.length>=4){
+        const d=defaults();
+        if(p.giftsSent===undefined)p.giftsSent=d.giftsSent;
+        if(!Array.isArray(p.selectedGifts))p.selectedGifts=d.selectedGifts;
+        if(p.giftPath===undefined)p.giftPath=d.giftPath;
+        if(!p.firstVisit)p.firstVisit=d.firstVisit;
+        const dp={done:false,at:null,t:0,g:null,n:null,m:0,h:0,hc:null};
+        for(let i=0;i<p.puzzles.length;i++){
+          for(const k of Object.keys(dp)){
+            if(p.puzzles[i][k]===undefined)p.puzzles[i][k]=dp[k];
+          }
+        }
+        return p;
+      }
+    }
+  }catch(e){}
+  return defaults();
+}
+function save(){try{localStorage.setItem('celina-state',JSON.stringify(state));}catch(e){}}
 
 // ============== VIEWS ==============
 function showView(id){
@@ -522,6 +544,37 @@ function initEllaDrag(el){
     }
     dragging=false;
   },{passive:true});
+
+  // Mouse events for desktop/laptop drag support
+  el.addEventListener('mousedown',e=>{
+    startX=e.clientX;startY=e.clientY;
+    origLeft=parseFloat(el.style.left)||0;
+    origBottom=parseFloat(el.style.bottom)||8;
+    dragging=true;moved=false;
+    el.style.transition='none';
+  });
+  document.addEventListener('mousemove',e=>{
+    if(!dragging)return;
+    const dx=e.clientX-startX,dy=e.clientY-startY;
+    if(!moved&&Math.abs(dx)<THRESHOLD&&Math.abs(dy)<THRESHOLD)return;
+    moved=true;
+    e.preventDefault();
+    const newLeft=Math.max(0,Math.min(window.innerWidth-60,origLeft+dx));
+    const newBottom=Math.max(0,Math.min(window.innerHeight-60,origBottom-dy));
+    el.style.left=newLeft+'px';
+    el.style.bottom=newBottom+'px';
+  });
+  document.addEventListener('mouseup',()=>{
+    if(!dragging)return;
+    if(moved){
+      ellaDragged=true;
+      ellaDragJustEnded=true;
+      el.style.transition='transform .15s ease';
+      el.classList.add('ella-landed');
+      setTimeout(()=>el.classList.remove('ella-landed'),300);
+    }
+    dragging=false;
+  });
 }
 
 function startBlinking(){
@@ -1078,7 +1131,7 @@ function initBoard(){
   document.getElementById('btn-retry').addEventListener('click',retryPuzzle);
   document.getElementById('btn-go-hub').addEventListener('click',()=>{
     document.getElementById('game-over-overlay').style.display='none';
-    state.puzzles[curWeek].g=null;state.puzzles[curWeek].t=0;state.puzzles[curWeek].m=0;save();
+    state.puzzles[curWeek].g=null;state.puzzles[curWeek].t=0;state.puzzles[curWeek].m=0;state.puzzles[curWeek].h=0;state.puzzles[curWeek].hc=null;state.puzzles[curWeek].n=null;save();
     ellaLeaveGame();showView('hub');updateHub();
     ellaSay("You'll get it next time, princess!");
   });
@@ -1138,7 +1191,7 @@ function openGame(wi){
   }else{
     curPuzzle={sol:pz.solution,user:pz.givens.map(r=>[...r]),notes:mk9(()=>new Set())};
   }
-  history=[];redoStack=[];selCell=null;pencilMode=false;gamePaused=false;
+  history=[];redoStack=[];selCell=null;selectedCells.clear();pencilMode=false;gamePaused=false;
   mistakes=state.puzzles[wi].m||0;hintsUsed=state.puzzles[wi].h||0;selectedNum=0;streak=0;lastMilestone=0;digitFirstMode=false;
   completedGroups=new Set();satisfiedConstraints=new Set();
   document.getElementById('btn-pencil').classList.remove('active');
@@ -1191,7 +1244,26 @@ function togglePause(){
 function selectCell(r,c){
   if(gamePaused)return;
   resetIdleTimer();
-  selCell={r,c};
+  if(pencilMode){
+    // Multi-select mode: toggle cell in selectedCells
+    const key=r+','+c;
+    if(selectedCells.has(key)){
+      selectedCells.delete(key);
+      // If we removed the primary selCell, update it to another selected cell or null
+      if(selCell&&selCell.r===r&&selCell.c===c){
+        if(selectedCells.size>0){
+          const first=[...selectedCells][0].split(',');selCell={r:+first[0],c:+first[1]};
+        }else{selCell=null;}
+      }
+    }else{
+      selectedCells.add(key);
+      selCell={r,c};
+    }
+  }else{
+    // Normal single-select mode
+    selectedCells.clear();
+    selCell={r,c};
+  }
   const v=curPuzzle.user[r][c];
   if(v>0)selectedNum=v;
   renderSelectedNum();
@@ -1217,12 +1289,19 @@ function ellaLookAt(r,c){
 
 function inputNum(n){
   if(gamePaused)return;
-  if(!selCell)return;const{r,c}=selCell;if(isGiven(r,c))return;
+  if(!selCell)return;const{r,c}=selCell;if(isGiven(r,c)&&selectedCells.size<=1)return;
   resetIdleTimer();
   selectedNum=n;renderSelectedNum();
   pushHist();
   if(pencilMode){
-    const s=curPuzzle.notes[r][c];s.has(n)?s.delete(n):s.add(n);curPuzzle.user[r][c]=0;
+    // Multi-select: toggle note on ALL selected cells
+    const cells=selectedCells.size>0?[...selectedCells]:[r+','+c];
+    cells.forEach(key=>{
+      const[cr,cc]=key.split(',').map(Number);
+      if(!isGiven(cr,cc)){
+        const s=curPuzzle.notes[cr][cc];s.has(n)?s.delete(n):s.add(n);curPuzzle.user[cr][cc]=0;
+      }
+    });
   }else{
     if(curPuzzle.user[r][c]===n){curPuzzle.user[r][c]=0;streak=0;}
     else{
@@ -1243,6 +1322,7 @@ function inputNum(n){
         ellaReactCorrect();updateStreak();updateEllaTailSpeed();
         checkProgressMilestone();
         showTipOnce('pencil','Tip: Long-press a number for pencil marks!',3000);
+        if(tipsShown['pencil']) showTipOnce('digit-first','Tip: Double-tap a number to lock it, then tap cells to place it!',4000);
         updateBoardGlow();
         updateNearCompletion();
         checkConstraintSatisfaction();
@@ -1362,6 +1442,19 @@ function renderSelectedNum(){
     b.classList.toggle('sel',num===selectedNum&&!pencilMode);
     b.classList.toggle('digit-locked',digitFirstMode&&num===selectedNum&&!pencilMode);
   });
+  // Digit-first mode indicator
+  const np=document.getElementById('numpad');
+  let ind=document.getElementById('digit-first-indicator');
+  if(digitFirstMode&&selectedNum>0){
+    if(!ind){
+      ind=document.createElement('div');ind.id='digit-first-indicator';ind.className='digit-first-ind';
+      np.parentNode.insertBefore(ind,np);
+    }
+    ind.textContent='Placing '+selectedNum+'s \u2014 tap cells \u00b7 tap '+selectedNum+' again to exit';
+    ind.classList.add('show');
+  }else if(ind){
+    ind.classList.remove('show');
+  }
 }
 
 function checkDigitFirstComplete(n){
@@ -1471,7 +1564,7 @@ function gameOver(){
 
 function retryPuzzle(){
   document.getElementById('game-over-overlay').style.display='none';
-  state.puzzles[curWeek].g=null;state.puzzles[curWeek].t=0;state.puzzles[curWeek].m=0;save();
+  state.puzzles[curWeek].g=null;state.puzzles[curWeek].t=0;state.puzzles[curWeek].m=0;state.puzzles[curWeek].h=0;state.puzzles[curWeek].hc=null;state.puzzles[curWeek].n=null;save();
   openGame(curWeek);
 }
 
@@ -1484,11 +1577,15 @@ function restartPuzzle(){
   pushHist();
   const pz=PUZZLES[curWeek];
   curPuzzle.user=pz.givens.map(r=>[...r]);
-  curPuzzle.notes=mk9(()=>new Set());
+  curPuzzle.notes=mk9(()=>new Set());delete curPuzzle.hintCells;
   mistakes=0;streak=0;elapsed=0;selectedNum=0;lastMilestone=0;digitFirstMode=false;
+  selectedCells.clear();selCell=null;pencilMode=false;
+  document.getElementById('btn-pencil').classList.remove('active');
+  document.getElementById('game-board').classList.remove('pencil-mode');
   completedGroups=new Set();satisfiedConstraints=new Set();hintsUsed=0;
-  renderMistakes();renderSelectedNum();
-  startTimer();render();
+  state.puzzles[curWeek].m=0;state.puzzles[curWeek].h=0;state.puzzles[curWeek].hc=null;state.puzzles[curWeek].n=null;
+  renderMistakes();renderSelectedNum();renderHintCount();
+  startTimer();render();saveProgress();
   showToast("Puzzle restarted");
   ellaSay("Fresh start!",1500);
 }
@@ -1502,9 +1599,11 @@ function togglePencil(){
   pencilMode=!pencilMode;
   document.getElementById('btn-pencil').classList.toggle('active',pencilMode);
   document.getElementById('game-board').classList.toggle('pencil-mode',pencilMode);
+  // Clear multi-selection when leaving pencil mode
+  if(!pencilMode){selectedCells.clear();render();}
   renderSelectedNum();
   haptic(pencilMode?[8,4,8]:[6,3,6]);
-  if(pencilMode) showToast("Notes mode",800);
+  if(pencilMode) showToast("Notes mode — tap multiple cells to select them",1200);
 }
 
 function renderHintCount(){
@@ -1921,6 +2020,7 @@ function render(){
       const marks=curPuzzle.notes[r][c];
       if(marks.size){
         const d=document.createElement('div');d.className='notes';
+        if(cell._cageLabel) d.classList.add('has-cage-label');
         for(let n=1;n<=9;n++){
           const s=document.createElement('span');
           s.textContent=marks.has(n)?n:'';
@@ -1935,6 +2035,10 @@ function render(){
       else if(r===selCell.r||c===selCell.c||
         (Math.floor(r/3)===Math.floor(selCell.r/3)&&Math.floor(c/3)===Math.floor(selCell.c/3)))
         cell.classList.add('peer');
+    }
+    // Highlight all multi-selected cells in pencil mode
+    if(selectedCells.has(r+','+c)&&!(selCell&&r===selCell.r&&c===selCell.c)){
+      cell.classList.add('multi-selected');
     }
     // Highlight all cells with the same number
     if(hlNum>0&&v===hlNum&&!(selCell&&r===selCell.r&&c===selCell.c))cell.classList.add('same-num');
@@ -1954,9 +2058,11 @@ function render(){
   // Numpad — remaining count, selected state, done state
   document.querySelectorAll('.num-btn').forEach(b=>{
     const num=+b.dataset.num,used=cnt[num]||0;
-    b.classList.toggle('done',used>=9);
-    b.classList.toggle('sel',num===selectedNum&&!pencilMode);
-    b.classList.toggle('digit-locked',digitFirstMode&&num===selectedNum&&!pencilMode);
+    const isDone=used>=9;
+    b.classList.toggle('done',isDone);
+    b.classList.toggle('completed',isDone);
+    b.classList.toggle('sel',num===selectedNum&&!pencilMode&&!isDone);
+    b.classList.toggle('digit-locked',digitFirstMode&&num===selectedNum&&!pencilMode&&!isDone);
     let sub=b.querySelector('.num-remain');
     if(used>0&&used<9){
       if(!sub){sub=document.createElement('span');sub.className='num-remain';b.appendChild(sub);}
@@ -2030,7 +2136,7 @@ function drawConstraints(){
     });
   }
 
-  // ---- Thermos (purple gradient, large bulb) ----
+  // ---- Thermos (vibrant purple gradient, large bulb) ----
   if(pz.thermos&&pz.thermos.length){
     activeTypes.add('thermo');
     pz.thermos.forEach((th,ti)=>{
@@ -2040,20 +2146,20 @@ function drawConstraints(){
       // Per-thermo gradient
       const gid=`tG${ti}`;
       const grad=svgEl('linearGradient',{id:gid,gradientUnits:'userSpaceOnUse',x1:pts[0].x,y1:pts[0].y,x2:pts[pts.length-1].x,y2:pts[pts.length-1].y});
-      [{o:'0',c:'#9C27B0',op:'.85'},{o:'1',c:'#E1BEE7',op:'.55'}].forEach(s=>{
+      [{o:'0',c:'#ba68c8',op:'.95'},{o:'1',c:'#ce93d8',op:'.75'}].forEach(s=>{
         grad.appendChild(svgEl('stop',{offset:s.o,'stop-color':s.c,'stop-opacity':s.op}));
       });
       defs.appendChild(grad);
       // Background glow
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#9C27B0','stroke-width':'14','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.08'}));
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#ba68c8','stroke-width':'14','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.15'}));
       // Main line
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:`url(#${gid})`,'stroke-width':'8','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.4'}));
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:`url(#${gid})`,'stroke-width':'8','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.65'}));
       // Bulb glow
-      g.appendChild(svgEl('circle',{cx:pts[0].x,cy:pts[0].y,r:'17',fill:'#9C27B0',opacity:'.1'}));
+      g.appendChild(svgEl('circle',{cx:pts[0].x,cy:pts[0].y,r:'17',fill:'#ba68c8',opacity:'.2'}));
       // Bulb
-      g.appendChild(svgEl('circle',{cx:pts[0].x,cy:pts[0].y,r:'13',fill:'#9C27B0',opacity:'.35'}));
+      g.appendChild(svgEl('circle',{cx:pts[0].x,cy:pts[0].y,r:'13',fill:'#ba68c8',opacity:'.55'}));
       // Tip markers
-      for(let i=1;i<pts.length;i++) g.appendChild(svgEl('circle',{cx:pts[i].x,cy:pts[i].y,r:'3',fill:'#CE93D8',opacity:'.25'}));
+      for(let i=1;i<pts.length;i++) g.appendChild(svgEl('circle',{cx:pts[i].x,cy:pts[i].y,r:'3',fill:'#ba68c8',opacity:'.45'}));
       svg.appendChild(g);
     });
   }
@@ -2065,19 +2171,19 @@ function drawConstraints(){
       const g=svgEl('g',{'data-constraint':'arrow'});
       const cx=ar.o[1]*cs+cs/2,cy=ar.o[0]*cs+cs/2;
       // Circle bg
-      g.appendChild(svgEl('circle',{cx,cy,r:'19',fill:'#1565C0',opacity:'.06'}));
+      g.appendChild(svgEl('circle',{cx,cy,r:'19',fill:'rgba(200,200,200,.1)'}));
       // Circle
-      g.appendChild(svgEl('circle',{cx,cy,r:'16',fill:'none',stroke:'#42A5F5','stroke-width':'2.5',opacity:'.4'}));
+      g.appendChild(svgEl('circle',{cx,cy,r:'16',fill:'none',stroke:'#b0bec5','stroke-width':'2.5',opacity:'.6'}));
       if(ar.a.length){
         const pts=[{x:cx,y:cy},...ar.a.map(([r,c])=>pt(r,c))];
         // Line
-        g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#42A5F5','stroke-width':'3','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.5'}));
+        g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#b0bec5','stroke-width':'3','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.6'}));
         // Arrowhead
         const last=pts[pts.length-1],prev=pts[pts.length-2];
         const ang=Math.atan2(last.y-prev.y,last.x-prev.x),hl=11;
         g.appendChild(svgEl('polygon',{
           points:[`${last.x},${last.y}`,`${last.x-hl*Math.cos(ang-Math.PI/5.5)},${last.y-hl*Math.sin(ang-Math.PI/5.5)}`,`${last.x-hl*Math.cos(ang+Math.PI/5.5)},${last.y-hl*Math.sin(ang+Math.PI/5.5)}`].join(' '),
-          fill:'#42A5F5',opacity:'.5'
+          fill:'#b0bec5',opacity:'.6'
         }));
       }
       svg.appendChild(g);
@@ -2091,10 +2197,10 @@ function drawConstraints(){
       if(wh.length<2)return;
       const g=svgEl('g',{'data-constraint':'whisper'});
       const pts=wh.map(([r,c])=>pt(r,c));
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#4CAF50','stroke-width':'14','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.06'}));
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#66BB6A','stroke-width':'8','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.35'}));
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#4CAF50','stroke-width':'14','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.1'}));
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#66bb6a','stroke-width':'8','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.55'}));
       // Node dots
-      pts.forEach(p=>g.appendChild(svgEl('circle',{cx:p.x,cy:p.y,r:'3',fill:'#4CAF50',opacity:'.25'})));
+      pts.forEach(p=>g.appendChild(svgEl('circle',{cx:p.x,cy:p.y,r:'3.5',fill:'#4CAF50',opacity:'.45'})));
       svg.appendChild(g);
     });
   }
@@ -2108,16 +2214,16 @@ function drawConstraints(){
       const g=svgEl('g',{'data-constraint':'kropki'});
       const isBlack=k.t==='b';
       // Outer glow
-      g.appendChild(svgEl('circle',{cx:mx,cy:my,r:'10',fill:isBlack?'rgba(0,0,0,.15)':'rgba(255,255,255,.1)'}));
+      g.appendChild(svgEl('circle',{cx:mx,cy:my,r:'13',fill:isBlack?'rgba(0,0,0,.18)':'rgba(255,255,255,.15)'}));
       // Main dot
-      g.appendChild(svgEl('circle',{cx:mx,cy:my,r:'7',fill:isBlack?'#333':'#f5f5f5',stroke:isBlack?'#555':'#999','stroke-width':'1.8'}));
+      g.appendChild(svgEl('circle',{cx:mx,cy:my,r:'9',fill:isBlack?'#222':'#f5f5f5',stroke:isBlack?'#aaa':'#555','stroke-width':'2.2'}));
       // Inner highlight
-      g.appendChild(svgEl('circle',{cx:mx-1.5,cy:my-1.5,r:'2.2',fill:isBlack?'rgba(255,255,255,.12)':'rgba(255,255,255,.5)'}));
+      g.appendChild(svgEl('circle',{cx:mx-2,cy:my-2,r:'2.8',fill:isBlack?'rgba(255,255,255,.15)':'rgba(255,255,255,.6)'}));
       svg.appendChild(g);
     });
   }
 
-  // ---- Palindrome lines (grey, double-line effect) ----
+  // ---- Palindrome lines (cool grey-blue, double-line effect) ----
   if(pz.palindromes&&pz.palindromes.length){
     activeTypes.add('palindrome');
     pz.palindromes.forEach(pl=>{
@@ -2126,11 +2232,11 @@ function drawConstraints(){
       const pts=pl.map(([r,c])=>pt(r,c));
       const d=smoothPath(pts);
       // Outer wide line
-      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#90A4AE','stroke-width':'10','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.18'}));
+      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#78909c','stroke-width':'10','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.25'}));
       // Main line
-      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#B0BEC5','stroke-width':'6','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.3'}));
+      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#78909c','stroke-width':'6','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.5'}));
       // Inner highlight line
-      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#CFD8DC','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.2'}));
+      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#b0bec5','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.4'}));
       svg.appendChild(g);
     });
   }
@@ -2144,11 +2250,11 @@ function drawConstraints(){
       const pts=rb.map(([r,c])=>pt(r,c));
       const d=smoothPath(pts);
       // Background
-      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#E91E63','stroke-width':'13','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.06'}));
+      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#f06292','stroke-width':'13','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.1'}));
       // Dotted outer
-      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#F06292','stroke-width':'7','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.3','stroke-dasharray':'1 12'}));
+      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#f06292','stroke-width':'7','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.45','stroke-dasharray':'1 12'}));
       // Solid center
-      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#F48FB1','stroke-width':'3','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.32'}));
+      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#f06292','stroke-width':'3','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.55'}));
       svg.appendChild(g);
     });
   }
@@ -2160,10 +2266,10 @@ function drawConstraints(){
       if(dw.length<2)return;
       const g=svgEl('g',{'data-constraint':'dutch'});
       const pts=dw.map(([r,c])=>pt(r,c));
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#FF9800','stroke-width':'14','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.06'}));
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#FFB74D','stroke-width':'8','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.35','stroke-dasharray':'14 6'}));
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#FF9800','stroke-width':'14','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.1'}));
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#FFB74D','stroke-width':'8','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.55','stroke-dasharray':'14 6'}));
       // Diamond markers
-      pts.forEach(p=>g.appendChild(svgEl('polygon',{points:`${p.x},${p.y-4} ${p.x+4},${p.y} ${p.x},${p.y+4} ${p.x-4},${p.y}`,fill:'#FFB74D',opacity:'.25'})));
+      pts.forEach(p=>g.appendChild(svgEl('polygon',{points:`${p.x},${p.y-4} ${p.x+4},${p.y} ${p.x},${p.y+4} ${p.x-4},${p.y}`,fill:'#FFB74D',opacity:'.4'})));
       svg.appendChild(g);
     });
   }
@@ -2180,13 +2286,13 @@ function buildConstraintLegend(types){
   const el=document.getElementById('constraint-legend');if(!el)return;
   el.innerHTML='';
   const defs={
-    killer:{color:'#E91E63',label:'Cages',shape:'dash'},
-    thermo:{color:'#9C27B0',label:'Thermo',shape:'line'},
-    arrow:{color:'#42A5F5',label:'Arrow',shape:'dot'},
-    whisper:{color:'#66BB6A',label:'Whisper',shape:'line'},
+    killer:{color:'#ff7043',label:'Cages',shape:'dash'},
+    thermo:{color:'#ba68c8',label:'Thermo',shape:'line'},
+    arrow:{color:'#b0bec5',label:'Arrow',shape:'dot'},
+    whisper:{color:'#66bb6a',label:'Whisper',shape:'line'},
     kropki:{color:'#999',label:'Kropki',shape:'dot'},
-    palindrome:{color:'#B0BEC5',label:'Palindrome',shape:'line'},
-    renban:{color:'#F06292',label:'Renban',shape:'dash'},
+    palindrome:{color:'#78909c',label:'Palindrome',shape:'line'},
+    renban:{color:'#f06292',label:'Renban',shape:'dash'},
     dutch:{color:'#FFB74D',label:'Dutch',shape:'dash'},
     knight:{color:'#64b5f6',label:'Anti-Knight',shape:'dot'},
     king:{color:'#ce93d8',label:'Anti-King',shape:'dot'}
@@ -2252,7 +2358,9 @@ function checkWin(){
   // WIN!
   stopTimer();stopEllaIdleWatch();
   state.puzzles[curWeek].done=true;state.puzzles[curWeek].at=new Date().toISOString();
-  state.puzzles[curWeek].t=elapsed;state.puzzles[curWeek].g=null;save();
+  state.puzzles[curWeek].t=elapsed;state.puzzles[curWeek].g=null;
+  state.puzzles[curWeek].m=mistakes;state.puzzles[curWeek].h=hintsUsed;
+  state.puzzles[curWeek].n=null;state.puzzles[curWeek].hc=null;save();
   // Update stats
   stats.totalSolves++;stats.totalTime+=elapsed;stats.totalMistakes+=mistakes;stats.totalHints+=hintsUsed;
   if(mistakes===0)stats.perfectRuns++;
@@ -2332,7 +2440,7 @@ function saveProgress(showIndicator){
     state.puzzles[curWeek].n=curPuzzle.notes.map(r=>r.map(s=>[...s]));
     state.puzzles[curWeek].m=mistakes;
     state.puzzles[curWeek].h=hintsUsed;
-    if(curPuzzle.hintCells)state.puzzles[curWeek].hc=[...curPuzzle.hintCells];
+    state.puzzles[curWeek].hc=curPuzzle.hintCells?[...curPuzzle.hintCells]:null;
     save();
     if(showIndicator) flashSaveIndicator();
   }
@@ -3660,6 +3768,11 @@ document.addEventListener('visibilitychange',()=>{
       MusicEngine.start();
     }
   }
+});
+
+// Save on page close/navigate — critical last-resort persistence
+window.addEventListener('beforeunload',()=>{
+  if(curWeek>=0&&curPuzzle&&document.getElementById('game').classList.contains('active'))saveProgress();
 });
 
 // ============== SERVICE WORKER ==============
