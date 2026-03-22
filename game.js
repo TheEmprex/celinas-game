@@ -2139,10 +2139,10 @@ function drawConstraints(){
       }
       if(segs.length){
         const d=segs.map(([x1,y1,x2,y2])=>`M${x1},${y1}L${x2},${y2}`).join(' ');
-        g.appendChild(svgEl('path',{d,fill:'none',stroke:'#000','stroke-width':'2','stroke-dasharray':'4 3','stroke-linecap':'round',opacity:'1'}));
+        g.appendChild(svgEl('path',{d,fill:'none',stroke:'rgba(255,255,255,.7)','stroke-width':'1.8','stroke-dasharray':'4 3','stroke-linecap':'round'}));
       }
       let tl=cage.c[0];cage.c.forEach(([r,c])=>{if(r<tl[0]||(r===tl[0]&&c<tl[1]))tl=[r,c];});
-      const label=svgEl('text',{x:tl[1]*cs+IN+1,y:tl[0]*cs+IN+9,fill:'#000','font-size':'10','font-weight':'700','font-family':"'Quicksand',sans-serif",'pointer-events':'none',opacity:'1'});
+      const label=svgEl('text',{x:tl[1]*cs+IN+1,y:tl[0]*cs+IN+9,fill:'rgba(255,255,255,.8)','font-size':'10','font-weight':'700','font-family':"'Quicksand',sans-serif",'pointer-events':'none'});
       label.textContent=cage.s;
       g.appendChild(label);
       svg.appendChild(g);
@@ -2158,8 +2158,8 @@ function drawConstraints(){
       if(th.length<2)return;
       const g=svgEl('g',{'data-constraint':'thermo'});
       const pts=th.map(([r,c])=>pt(r,c));
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#999','stroke-width':'6','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.5'}));
-      g.appendChild(svgEl('circle',{cx:pts[0].x,cy:pts[0].y,r:'12',fill:'#999',opacity:'.45'}));
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#aaa','stroke-width':'6','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.55'}));
+      g.appendChild(svgEl('circle',{cx:pts[0].x,cy:pts[0].y,r:'12',fill:'#aaa',opacity:'.5'}));
       svg.appendChild(g);
     });
   }
@@ -2170,13 +2170,13 @@ function drawConstraints(){
     pz.arrows.forEach(ar=>{
       const g=svgEl('g',{'data-constraint':'arrow'});
       const cx=ar.o[1]*cs+cs/2,cy=ar.o[0]*cs+cs/2;
-      g.appendChild(svgEl('circle',{cx,cy,r:'19',fill:'none',stroke:'#aab8c2','stroke-width':'1.8',opacity:'.55'}));
+      g.appendChild(svgEl('circle',{cx,cy,r:'19',fill:'none',stroke:'#b0c4d0','stroke-width':'1.8',opacity:'.6'}));
       if(ar.a.length){
         const pts=[{x:cx,y:cy},...ar.a.map(([r,c])=>pt(r,c))];
-        g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#aab8c2','stroke-width':'2.5','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.55'}));
+        g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#b0c4d0','stroke-width':'2.5','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.6'}));
         const last=pts[pts.length-1],prev=pts[pts.length-2];
         const ang=Math.atan2(last.y-prev.y,last.x-prev.x),hl=10;
-        g.appendChild(svgEl('polygon',{points:[`${last.x},${last.y}`,`${last.x-hl*Math.cos(ang-.45)},${last.y-hl*Math.sin(ang-.45)}`,`${last.x-hl*Math.cos(ang+.45)},${last.y-hl*Math.sin(ang+.45)}`].join(' '),fill:'#aab8c2',opacity:'.55'}));
+        g.appendChild(svgEl('polygon',{points:[`${last.x},${last.y}`,`${last.x-hl*Math.cos(ang-.45)},${last.y-hl*Math.sin(ang-.45)}`,`${last.x-hl*Math.cos(ang+.45)},${last.y-hl*Math.sin(ang+.45)}`].join(' '),fill:'#b0c4d0',opacity:'.6'}));
       }
       svg.appendChild(g);
     });
@@ -2189,7 +2189,7 @@ function drawConstraints(){
       if(wh.length<2)return;
       const g=svgEl('g',{'data-constraint':'whisper'});
       const pts=wh.map(([r,c])=>pt(r,c));
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#4caf50','stroke-width':'6','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.48'}));
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#66bb6a','stroke-width':'6','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.5'}));
       svg.appendChild(g);
     });
   }
@@ -2202,7 +2202,7 @@ function drawConstraints(){
       const mx=(c1+c2)/2*cs+cs/2,my=(r1+r2)/2*cs+cs/2;
       const g=svgEl('g',{'data-constraint':'kropki'});
       const isBlack=k.t==='b';
-      g.appendChild(svgEl('circle',{cx:mx,cy:my,r:'7',fill:isBlack?'#222':'#fff',stroke:'#333','stroke-width':'1.5'}));
+      g.appendChild(svgEl('circle',{cx:mx,cy:my,r:'7',fill:isBlack?'#222':'#eee',stroke:'rgba(255,255,255,.5)','stroke-width':'1.5'}));
       svg.appendChild(g);
     });
   }
@@ -2214,7 +2214,7 @@ function drawConstraints(){
       if(pl.length<2)return;
       const g=svgEl('g',{'data-constraint':'palindrome'});
       const pts=pl.map(([r,c])=>pt(r,c));
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#ccc','stroke-width':'6','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.5'}));
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#bbb','stroke-width':'6','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.45'}));
       svg.appendChild(g);
     });
   }
@@ -2226,7 +2226,7 @@ function drawConstraints(){
       if(rb.length<2)return;
       const g=svgEl('g',{'data-constraint':'renban'});
       const pts=rb.map(([r,c])=>pt(r,c));
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#9c27b0','stroke-width':'6','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.45'}));
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#ce93d8','stroke-width':'6','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.45'}));
       svg.appendChild(g);
     });
   }
@@ -2238,7 +2238,7 @@ function drawConstraints(){
       if(dw.length<2)return;
       const g=svgEl('g',{'data-constraint':'dutch'});
       const pts=dw.map(([r,c])=>pt(r,c));
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#ff9800','stroke-width':'6','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.42'}));
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#ffb74d','stroke-width':'6','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.45'}));
       svg.appendChild(g);
     });
   }
@@ -2255,14 +2255,14 @@ function buildConstraintLegend(types){
   const el=document.getElementById('constraint-legend');if(!el)return;
   el.innerHTML='';
   const defs={
-    killer:{color:'#000',label:'Cages',shape:'dash'},
-    thermo:{color:'#999',label:'Thermo',shape:'line'},
-    arrow:{color:'#aab8c2',label:'Arrow',shape:'dot'},
-    whisper:{color:'#4caf50',label:'Whisper',shape:'line'},
-    kropki:{color:'#555',label:'Kropki',shape:'dot'},
-    palindrome:{color:'#ccc',label:'Palindrome',shape:'line'},
-    renban:{color:'#9c27b0',label:'Renban',shape:'line'},
-    dutch:{color:'#ff9800',label:'Dutch',shape:'line'},
+    killer:{color:'rgba(255,255,255,.7)',label:'Cages',shape:'dash'},
+    thermo:{color:'#aaa',label:'Thermo',shape:'line'},
+    arrow:{color:'#b0c4d0',label:'Arrow',shape:'dot'},
+    whisper:{color:'#66bb6a',label:'Whisper',shape:'line'},
+    kropki:{color:'#ccc',label:'Kropki',shape:'dot'},
+    palindrome:{color:'#bbb',label:'Palindrome',shape:'line'},
+    renban:{color:'#ce93d8',label:'Renban',shape:'line'},
+    dutch:{color:'#ffb74d',label:'Dutch',shape:'line'},
     knight:{color:'#1976d2',label:'Anti-Knight',shape:'dot'},
     king:{color:'#7b1fa2',label:'Anti-King',shape:'dot'}
   };
