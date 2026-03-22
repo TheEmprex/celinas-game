@@ -15,10 +15,10 @@
   --cell:min(calc((100vw - 20px) / 9), 52px);--board:calc(var(--cell)*9);
   --safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px);
 
-  /* Board cells — dark theme */
-  --b-bg:#1e1828;--b-alt:#241e30;--b-thin:rgba(255,255,255,.08);--b-thick:rgba(255,255,255,.28);--b-outer:rgba(255,255,255,.35);
-  --b-sel:rgba(233,30,99,.18);--b-sel-ring:#e91e63;--b-peer:rgba(233,30,99,.06);--b-same:rgba(233,30,99,.14);
-  --b-given:#e0d4da;--b-user:#f48fb1;--b-error:#ef5350;
+  /* Board cells — SudokuPad white style */
+  --b-bg:#ffffff;--b-alt:#e8e8e8;--b-thin:#c0c0c0;--b-thick:#000000;--b-outer:#000000;
+  --b-sel:#bbdefb;--b-sel-ring:#1976d2;--b-peer:rgba(25,118,210,.08);--b-same:rgba(25,118,210,.16);
+  --b-given:#000;--b-user:#1565c0;--b-error:#d32f2f;
 
   /* Game chrome */
   --g-bg:linear-gradient(170deg,#1e1428 0%,#140f1e 45%,#1a1226 100%);
@@ -182,7 +182,7 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 /* ==================================================
    THE BOARD — white on dark = dramatic contrast
    ================================================== */
-.board-wrap{position:relative;width:var(--board);height:var(--board);flex-shrink:0;margin-top:auto;margin-bottom:12px;border-radius:16px;box-shadow:0 0 50px rgba(233,30,99,.05),0 12px 40px rgba(0,0,0,.25),0 2px 10px rgba(0,0,0,.12);overflow:hidden;transition:box-shadow .6s ease,transform .5s var(--bounce);-webkit-transform:translateZ(0);transform:translateZ(0)}
+.board-wrap{position:relative;width:var(--board);height:var(--board);flex-shrink:0;margin-top:auto;margin-bottom:12px;border-radius:4px;box-shadow:0 0 50px rgba(233,30,99,.05),0 12px 40px rgba(0,0,0,.25),0 2px 10px rgba(0,0,0,.12);overflow:hidden;transition:box-shadow .6s ease,transform .5s var(--bounce);-webkit-transform:translateZ(0);transform:translateZ(0)}
 #game.active .board-wrap{animation:boardIn .5s var(--ease) .05s both}
 @keyframes boardIn{from{opacity:0;transform:scale(.92) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
 /* Board shake on error */
@@ -191,7 +191,7 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 /* Golden board on win */
 .board-wrap.golden{box-shadow:0 0 40px rgba(255,215,0,.2),0 0 80px rgba(255,215,0,.1) !important;border:1.5px solid rgba(255,215,0,.3);transition:box-shadow 1s ease,border 1s ease}
 
-.board{display:grid;grid-template-columns:repeat(9,1fr);grid-template-rows:repeat(9,1fr);width:100%;height:100%;background:var(--b-bg);border:2.5px solid var(--b-outer);border-radius:16px;position:relative;z-index:1;gap:0}
+.board{display:grid;grid-template-columns:repeat(9,1fr);grid-template-rows:repeat(9,1fr);width:100%;height:100%;background:var(--b-bg);border:3px solid var(--b-outer);border-radius:4px;position:relative;z-index:1;gap:0}
 .board-overlay{position:absolute;inset:0;z-index:2;pointer-events:none}
 
 /* --- Cells --- */
@@ -271,7 +271,7 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 /* --- Notes --- */
 .cell .notes{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);position:absolute;inset:1px;animation:notesIn .2s ease-out}
 @keyframes notesIn{from{opacity:0}to{opacity:1}}
-.cell .notes span{display:flex;align-items:center;justify-content:center;font-size:calc(var(--cell)*.26);color:rgba(60,45,55,.7);font-weight:700;line-height:1;font-family:'Quicksand',sans-serif}
+.cell .notes span{display:flex;align-items:center;justify-content:center;font-size:calc(var(--cell)*.26);color:#1976d2;font-weight:700;line-height:1;font-family:'Quicksand',sans-serif}
 .cell .notes span.hl{color:var(--b-user);font-weight:800;text-shadow:0 0 4px rgba(216,27,96,.2)}
 .cell .notes.has-cage-label span:first-child{font-size:calc(var(--cell)*.18);padding-top:calc(var(--cell)*.06);opacity:.7}
 .cell.same-num .notes span.hl{color:var(--b-user);font-weight:800;font-size:calc(var(--cell)*.26)}
