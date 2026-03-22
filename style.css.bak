@@ -15,10 +15,10 @@
   --cell:min(calc((100vw - 20px) / 9), 52px);--board:calc(var(--cell)*9);
   --safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px);
 
-  /* Board cells — SudokuPad white style */
-  --b-bg:#ffffff;--b-alt:#e8e8e8;--b-thin:#c0c0c0;--b-thick:#000000;--b-outer:#000000;
-  --b-sel:#bbdefb;--b-sel-ring:#1976d2;--b-peer:rgba(25,118,210,.08);--b-same:rgba(25,118,210,.16);
-  --b-given:#000;--b-user:#1565c0;--b-error:#d32f2f;
+  /* Board cells — warm & cozy */
+  --b-bg:#faf5f6;--b-alt:#f3ecef;--b-thin:rgba(160,140,155,.13);--b-thick:rgba(100,80,95,.3);--b-outer:rgba(100,80,95,.28);
+  --b-sel:#fce4ec;--b-sel-ring:#e91e63;--b-peer:rgba(233,30,99,.04);--b-same:rgba(233,30,99,.1);
+  --b-given:#3d2e38;--b-user:#d81b60;--b-error:#ef5350;
 
   /* Game chrome */
   --g-bg:linear-gradient(170deg,#1e1428 0%,#140f1e 45%,#1a1226 100%);
@@ -182,7 +182,7 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 /* ==================================================
    THE BOARD — white on dark = dramatic contrast
    ================================================== */
-.board-wrap{position:relative;width:var(--board);height:var(--board);flex-shrink:0;margin-top:auto;margin-bottom:12px;border-radius:4px;box-shadow:0 0 50px rgba(233,30,99,.05),0 12px 40px rgba(0,0,0,.25),0 2px 10px rgba(0,0,0,.12);overflow:hidden;transition:box-shadow .6s ease,transform .5s var(--bounce);-webkit-transform:translateZ(0);transform:translateZ(0)}
+.board-wrap{position:relative;width:var(--board);height:var(--board);flex-shrink:0;margin-top:auto;margin-bottom:12px;border-radius:16px;box-shadow:0 0 50px rgba(233,30,99,.05),0 12px 40px rgba(0,0,0,.25),0 2px 10px rgba(0,0,0,.12);overflow:hidden;transition:box-shadow .6s ease,transform .5s var(--bounce);-webkit-transform:translateZ(0);transform:translateZ(0)}
 #game.active .board-wrap{animation:boardIn .5s var(--ease) .05s both}
 @keyframes boardIn{from{opacity:0;transform:scale(.92) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
 /* Board shake on error */
@@ -191,40 +191,36 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 /* Golden board on win */
 .board-wrap.golden{box-shadow:0 0 40px rgba(255,215,0,.2),0 0 80px rgba(255,215,0,.1) !important;border:1.5px solid rgba(255,215,0,.3);transition:box-shadow 1s ease,border 1s ease}
 
-.board{display:grid;grid-template-columns:repeat(9,1fr);grid-template-rows:repeat(9,1fr);width:100%;height:100%;background:var(--b-bg);border:3px solid var(--b-outer);border-radius:4px;position:relative;z-index:1;gap:0}
+.board{display:grid;grid-template-columns:repeat(9,1fr);grid-template-rows:repeat(9,1fr);width:100%;height:100%;background:var(--b-bg);border:2px solid var(--b-outer);border-radius:16px;position:relative;z-index:1;gap:0}
 .board-overlay{position:absolute;inset:0;z-index:2;pointer-events:none}
 
 /* --- Cells --- */
 .cell{display:flex;align-items:center;justify-content:center;font-size:calc(var(--cell)*.52);font-weight:600;cursor:pointer;position:relative;background:var(--b-bg);font-family:'Quicksand',sans-serif;transition:background-color .15s ease;-webkit-touch-callout:none;border-right:1px solid var(--b-thin);border-bottom:1px solid var(--b-thin)}
 .cell:nth-child(9n){border-right:none}
 .cell:nth-child(n+73):nth-child(-n+81){border-bottom:none}
-.cell:nth-child(3n){border-right:2px solid var(--b-thick)}
-.cell:nth-child(3n+1){border-left:2px solid var(--b-thick)}
+.cell:nth-child(3n){border-right:1.5px solid var(--b-thick)}
+.cell:nth-child(3n+1){border-left:1.5px solid var(--b-thick)}
 .cell:nth-child(9n-8){border-left:none}
-.cell:nth-child(n+19):nth-child(-n+27){border-bottom:2px solid var(--b-thick)}
-.cell:nth-child(n+28):nth-child(-n+36){border-top:2px solid var(--b-thick)}
-.cell:nth-child(n+46):nth-child(-n+54){border-bottom:2px solid var(--b-thick)}
-.cell:nth-child(n+55):nth-child(-n+63){border-top:2px solid var(--b-thick)}
+.cell:nth-child(n+19):nth-child(-n+27){border-bottom:1.5px solid var(--b-thick)}
+.cell:nth-child(n+28):nth-child(-n+36){border-top:1.5px solid var(--b-thick)}
+.cell:nth-child(n+46):nth-child(-n+54){border-bottom:1.5px solid var(--b-thick)}
+.cell:nth-child(n+55):nth-child(-n+63){border-top:1.5px solid var(--b-thick)}
 .cell:nth-child(-n+9){border-top:none}
 .cell:nth-child(n+73){border-bottom:none}
 .cell.box-alt{background:var(--b-alt)}
 
 /* --- Cell states --- */
 .cell.given{color:var(--b-given);font-weight:700;font-family:'Playfair Display',serif;font-size:calc(var(--cell)*.54)}
-.cell.user-val{color:var(--b-user);font-weight:700;font-size:calc(var(--cell)*.54);animation:digitIn .15s ease-out}
-.cell.hint-val{color:#7ba7d4;font-weight:600;font-style:italic;font-size:calc(var(--cell)*.52);animation:digitIn .15s ease-out}
+.cell.user-val{color:var(--b-user);font-weight:700;animation:digitIn .15s ease-out}
+.cell.hint-val{color:#5c90c4;font-weight:600;font-style:italic;animation:digitIn .15s ease-out}
 @keyframes digitIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
 .cell.selected{background:var(--b-sel) !important;z-index:3;animation:selPulse 2.5s ease-in-out infinite}
 @keyframes selPulse{0%,100%{box-shadow:inset 0 0 0 2px var(--b-sel-ring)}50%{box-shadow:inset 0 0 0 2px var(--b-sel-ring),0 0 8px rgba(233,30,99,.15)}}
-.cell.multi-selected{background:var(--b-sel) !important;opacity:.85;z-index:2;box-shadow:inset 0 0 0 2px var(--b-sel-ring);animation:multiSelPulse 2s ease-in-out infinite}
-@keyframes multiSelPulse{0%,100%{box-shadow:inset 0 0 0 2px var(--b-sel-ring)}50%{box-shadow:inset 0 0 0 2.5px var(--b-sel-ring),0 0 6px rgba(233,30,99,.1)}}
 .cell.peer{background:var(--b-peer)}
-.cell.same-num{background:var(--b-same);font-weight:800;animation:sameFlash .3s ease-out;box-shadow:inset 0 0 0 1.5px rgba(233,30,99,.18)}
-.cell.same-num.user-val,.cell.same-num.correct{color:var(--b-user)}
-.cell.same-num.given{color:var(--b-given)}
-@keyframes sameFlash{from{background:rgba(233,30,99,.25)}to{background:var(--b-same)}}
+.cell.same-num{background:var(--b-same);font-weight:800;color:var(--b-user);animation:sameFlash .3s ease-out}
+@keyframes sameFlash{from{background:rgba(233,30,99,.2)}to{background:var(--b-same)}}
 .cell.correct{color:var(--b-user)}
-.cell.error{color:var(--b-error) !important;font-weight:800;background:rgba(239,83,80,.06) !important}
+.cell.error{color:var(--b-error) !important;font-weight:800}
 .cell.shake-hard{animation:shakeHard .4s ease}
 @keyframes shakeHard{0%{transform:translate(0)}15%{transform:translate(-4px,0)}30%{transform:translate(4px,0)}45%{transform:translate(-3px,0)}60%{transform:translate(3px,0)}75%{transform:translate(-1px,0)}90%{transform:translate(1px,0)}100%{transform:translate(0)}}
 .cell.flash-error{animation:flashErr .6s ease}
@@ -271,29 +267,30 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 /* --- Notes --- */
 .cell .notes{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);position:absolute;inset:1px;animation:notesIn .2s ease-out}
 @keyframes notesIn{from{opacity:0}to{opacity:1}}
-.cell .notes span{display:flex;align-items:center;justify-content:center;font-size:calc(var(--cell)*.26);color:#1976d2;font-weight:700;line-height:1;font-family:'Quicksand',sans-serif}
-.cell .notes span.hl{color:var(--b-user);font-weight:800;text-shadow:0 0 4px rgba(216,27,96,.2)}
-.cell .notes.has-cage-label span:first-child{font-size:calc(var(--cell)*.18);padding-top:calc(var(--cell)*.06);opacity:.7}
-.cell.same-num .notes span.hl{color:var(--b-user);font-weight:800;font-size:calc(var(--cell)*.26)}
+.cell .notes span{display:flex;align-items:center;justify-content:center;font-size:calc(var(--cell)*.22);color:rgba(80,60,70,.35);font-weight:700;line-height:1;font-family:'Quicksand',sans-serif}
+.cell .notes span.hl{color:var(--b-user);font-weight:800}
 
 /* --- Killer cages --- */
-.cage-label{position:absolute;top:0;left:1px;font-size:calc(var(--cell)*.18);color:#E65100;font-weight:800;z-index:5;line-height:1;pointer-events:none;font-family:'Quicksand',sans-serif;padding:0 2px;border-radius:0 0 3px 0;text-shadow:0 0 3px rgba(255,255,255,.8),0 0 1px rgba(255,255,255,1)}
-/* Cage borders now rendered via SVG overlay - see drawConstraints() */
+.cage-label{position:absolute;top:0;left:1px;font-size:calc(var(--cell)*.17);color:rgba(230,81,0,.85);font-weight:700;z-index:4;line-height:1;pointer-events:none;font-family:'Quicksand',sans-serif;padding:0 1px;border-radius:0 0 3px 0}
+.cell.cage-t{border-top:2.5px dashed rgba(255,112,67,.7) !important}
+.cell.cage-b{border-bottom:2.5px dashed rgba(255,112,67,.7) !important}
+.cell.cage-l{border-left:2.5px dashed rgba(255,112,67,.7) !important}
+.cell.cage-r{border-right:2.5px dashed rgba(255,112,67,.7) !important}
 
 /* Constraint badges */
 .constraint-badge{display:inline-block;font-size:.58rem;text-transform:uppercase;letter-spacing:1px;padding:2px 8px;border-radius:10px;font-weight:700;margin:1px 2px}
-.constraint-badge.killer{background:rgba(230,81,0,.15);color:#E65100}
-.constraint-badge.thermo{background:rgba(170,170,170,.2);color:#AAAAAA}
-.constraint-badge.whisper{background:rgba(102,187,106,.2);color:#66BB6A}
+.constraint-badge.killer{background:rgba(255,112,67,.2);color:#ff7043}
+.constraint-badge.thermo{background:rgba(186,104,200,.2);color:#ba68c8}
+.constraint-badge.whisper{background:rgba(76,175,80,.2);color:#81c784}
 .constraint-badge.kropki{background:rgba(255,255,255,.15);color:rgba(255,255,255,.8)}
-.constraint-badge.palindrome{background:rgba(212,160,212,.2);color:#D4A0D4}
-.constraint-badge.renban{background:rgba(171,71,188,.15);color:#AB47BC}
-.constraint-badge.arrow{background:rgba(92,107,192,.2);color:#5C6BC0}
-.constraint-badge.dutch{background:rgba(255,167,38,.15);color:#FFA726}
-.constraint-badge.knight{background:rgba(66,165,245,.15);color:#42A5F5}
+.constraint-badge.palindrome{background:rgba(120,144,156,.2);color:#78909c}
+.constraint-badge.renban{background:rgba(233,30,99,.15);color:#f48fb1}
+.constraint-badge.arrow{background:rgba(21,101,192,.2);color:#64b5f6}
+.constraint-badge.dutch{background:rgba(255,152,0,.15);color:#ffb74d}
+.constraint-badge.knight{background:rgba(21,101,192,.15);color:#64b5f6}
 .constraint-badge.mixed{background:rgba(255,215,0,.15);color:var(--gold-soft)}
 
-.board.pencil-mode~.board-overlay{opacity:.95}
+.board.pencil-mode~.board-overlay{opacity:.85}
 
 /* Sparkle particles */
 .sparkle-particle{position:fixed;border-radius:50%;pointer-events:none;z-index:200;animation:sparkFly .55s cubic-bezier(.25,.46,.45,.94) forwards}
@@ -321,7 +318,7 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 /* --- Number complete --- */
 .num-btn.num-complete{animation:numDone 1s var(--bounce)}
 @keyframes numDone{0%{transform:scale(1);box-shadow:none}25%{transform:scale(1.2) rotate(-4deg);box-shadow:0 0 24px rgba(255,215,0,.6);background:var(--gold)!important;color:#1a1018!important}45%{transform:scale(1.12) rotate(3deg);box-shadow:0 0 16px rgba(255,215,0,.4)}65%{transform:scale(1.05) rotate(0);box-shadow:0 0 8px rgba(255,215,0,.2)}100%{transform:scale(1);box-shadow:none}}
-.num-btn.completed{background:rgba(102,187,106,.08);border-color:rgba(102,187,106,.2);opacity:.45;pointer-events:none;box-shadow:none;color:rgba(102,187,106,.6)}
+.num-btn.completed{background:rgba(255,255,255,.02);border-color:transparent;opacity:.15;pointer-events:none;box-shadow:none}
 
 /* --- Number complete cell flash --- */
 .cell.num-complete-flash{animation:numFlash .8s ease;background:rgba(255,215,0,.2) !important}
@@ -346,8 +343,8 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 .num-btn.digit-locked{background:linear-gradient(145deg,#e91e63,#ad1457);color:#fff;border-color:transparent;box-shadow:0 0 28px rgba(233,30,99,.5),0 4px 18px rgba(233,30,99,.35),inset 0 1px 0 rgba(255,255,255,.15);transform:scale(1.08);text-shadow:0 1px 4px rgba(0,0,0,.3);animation:digitLockPulse 1.5s ease-in-out infinite}
 @keyframes digitLockPulse{0%,100%{box-shadow:0 0 28px rgba(233,30,99,.5),0 4px 18px rgba(233,30,99,.35)}50%{box-shadow:0 0 36px rgba(233,30,99,.7),0 4px 24px rgba(233,30,99,.5)}}
 .num-btn.long-press-flash{background:rgba(233,30,99,.15)}
-.num-btn.done{background:rgba(102,187,106,.06);border-color:rgba(102,187,106,.15);opacity:.4;pointer-events:none;box-shadow:none;color:rgba(102,187,106,.5)}
-.num-remain{position:absolute;bottom:2px;right:4px;font-size:.48rem;font-weight:700;color:var(--g-text-mid);line-height:1;font-family:'Quicksand',sans-serif;opacity:.7}
+.num-btn.done{background:rgba(255,255,255,.02);border-color:transparent;opacity:.15;pointer-events:none;box-shadow:none}
+.num-remain{position:absolute;bottom:2px;right:4px;font-size:.42rem;font-weight:700;color:var(--g-text-dim);line-height:1;font-family:'Quicksand',sans-serif}
 
 /* Tools — dark glass pill */
 .tools-row{display:flex;justify-content:space-around;gap:0;width:100%;background:rgba(20,14,28,.85);border-radius:16px;padding:4px 6px;border:1px solid var(--g-glass-b);box-shadow:0 2px 12px rgba(0,0,0,.15)}
@@ -358,9 +355,6 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 .t-btn:active svg{opacity:.8}
 .t-btn.active{color:var(--pink-400);background:rgba(233,30,99,.12);box-shadow:0 0 12px rgba(233,30,99,.1)}
 .t-btn.active svg{opacity:1}
-/* Digit-first mode indicator */
-.digit-first-ind{text-align:center;font-size:.58rem;font-weight:700;font-family:'Quicksand',sans-serif;color:var(--pink-300);padding:3px 0 1px;opacity:0;max-height:0;overflow:hidden;transition:all .2s ease;letter-spacing:.3px}
-.digit-first-ind.show{opacity:.85;max-height:24px;padding:3px 0 2px}
 /* Streak-mode numpad glow */
 .numpad.streak-glow .num-btn:not(.done){border-color:rgba(233,30,99,.15);box-shadow:0 2px 8px rgba(0,0,0,.2),0 0 8px rgba(233,30,99,.08)}
 .numpad.streak-fire .num-btn:not(.done){border-color:rgba(255,215,0,.15);box-shadow:0 2px 8px rgba(0,0,0,.2),0 0 12px rgba(255,215,0,.06)}
@@ -473,7 +467,7 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 .sent-content .sub{font-style:italic;color:var(--pink-200)!important;margin-bottom:24px!important}
 
 /* =============== ELLA =============== */
-#ella-container{position:fixed;bottom:calc(8px + var(--safe-b));left:-140px;z-index:100;width:110px;height:85px;cursor:grab;transition:transform .3s ease;-webkit-user-drag:none;user-select:none}
+#ella-container{position:fixed;bottom:calc(8px + var(--safe-b));left:-140px;z-index:100;width:110px;height:85px;cursor:pointer;transition:transform .3s ease}
 #ella-container.flip{transform:scaleX(-1)}
 .ella-sprite{width:100%;height:100%}
 .ella-tail-group{transform-origin:80px 55px;animation:tailWag 2s ease-in-out infinite}
@@ -564,8 +558,6 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 #game .g-progress-fill{background:linear-gradient(90deg,var(--accent,var(--pink-400)),var(--accent,var(--pink-500)))}
 #game .cell.selected{animation-name:selPulseAccent}
 @keyframes selPulseAccent{0%,100%{box-shadow:inset 0 0 0 2px var(--accent,var(--b-sel-ring))}50%{box-shadow:inset 0 0 0 2.5px var(--accent,var(--b-sel-ring)),0 0 14px var(--accent-glow,rgba(233,30,99,.2))}}
-#game .cell.multi-selected{animation-name:multiSelPulseAccent}
-@keyframes multiSelPulseAccent{0%,100%{box-shadow:inset 0 0 0 2px var(--accent,var(--b-sel-ring))}50%{box-shadow:inset 0 0 0 2.5px var(--accent,var(--b-sel-ring)),0 0 10px var(--accent-glow,rgba(233,30,99,.15))}}
 
 /* --- Puzzle 0: Rose Garden (pink, default — no overrides needed) --- */
 
@@ -573,10 +565,8 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 .puzzle-1 .g-progress-fill{background:linear-gradient(90deg,#81c784,#4caf50)}
 .puzzle-1 .num-btn.sel{background:rgba(129,199,132,.2);color:#81c784;box-shadow:0 0 12px rgba(129,199,132,.3)}
 .puzzle-1 .cell.selected{background:#e8f5e9;box-shadow:inset 0 0 0 2px #66bb6a}
-.puzzle-1 .cell.multi-selected{background:#e8f5e9 !important;box-shadow:inset 0 0 0 2px #66bb6a}
-.puzzle-1 .cell.peer{background:rgba(129,199,132,.1)}
-.puzzle-1 .cell.same-num{background:rgba(129,199,132,.16);box-shadow:inset 0 0 0 1.5px rgba(129,199,132,.2)}
-.puzzle-1 .cell.same-num.given{color:var(--b-given)}
+.puzzle-1 .cell.peer{background:rgba(129,199,132,.06)}
+.puzzle-1 .cell.same-num{background:rgba(129,199,132,.12)}
 .puzzle-1 .streak-counter{background:linear-gradient(90deg,#66bb6a,#43a047,#81c784);-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 0 8px rgba(129,199,132,.4))}
 .puzzle-1 .g-timer{text-shadow:0 0 6px rgba(129,199,132,.15)}
 #game.puzzle-1::before{background:radial-gradient(ellipse 60% 40% at 50% 50%,rgba(129,199,132,.06) 0%,transparent 70%),radial-gradient(circle at 20% 80%,rgba(76,175,80,.04) 0%,transparent 50%),radial-gradient(circle at 80% 20%,rgba(129,199,132,.04) 0%,transparent 50%)}
@@ -585,10 +575,8 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 .puzzle-2 .g-progress-fill{background:linear-gradient(90deg,#ffd54f,#ffb300)}
 .puzzle-2 .num-btn.sel{background:rgba(255,213,79,.2);color:#ffd54f;box-shadow:0 0 12px rgba(255,213,79,.3)}
 .puzzle-2 .cell.selected{background:#fff8e1;box-shadow:inset 0 0 0 2px #ffc107}
-.puzzle-2 .cell.multi-selected{background:#fff8e1 !important;box-shadow:inset 0 0 0 2px #ffc107}
-.puzzle-2 .cell.peer{background:rgba(255,213,79,.1)}
-.puzzle-2 .cell.same-num{background:rgba(255,213,79,.16);box-shadow:inset 0 0 0 1.5px rgba(255,213,79,.2)}
-.puzzle-2 .cell.same-num.given{color:var(--b-given)}
+.puzzle-2 .cell.peer{background:rgba(255,213,79,.06)}
+.puzzle-2 .cell.same-num{background:rgba(255,213,79,.12)}
 .puzzle-2 .streak-counter{background:linear-gradient(90deg,#ffc107,#ff8f00,#ffd54f);-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 0 8px rgba(255,213,79,.4))}
 .puzzle-2 .g-timer{text-shadow:0 0 6px rgba(255,213,79,.15)}
 #game.puzzle-2::before{background:radial-gradient(ellipse 60% 40% at 50% 50%,rgba(255,213,79,.06) 0%,transparent 70%),radial-gradient(circle at 20% 80%,rgba(255,179,0,.04) 0%,transparent 50%),radial-gradient(circle at 80% 20%,rgba(255,213,79,.04) 0%,transparent 50%)}
@@ -597,10 +585,8 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 .puzzle-3 .g-progress-fill{background:linear-gradient(90deg,#ce93d8,#9c27b0)}
 .puzzle-3 .num-btn.sel{background:rgba(206,147,216,.2);color:#ce93d8;box-shadow:0 0 12px rgba(206,147,216,.3)}
 .puzzle-3 .cell.selected{background:#f3e5f5;box-shadow:inset 0 0 0 2px #ba68c8}
-.puzzle-3 .cell.multi-selected{background:#f3e5f5 !important;box-shadow:inset 0 0 0 2px #ba68c8}
-.puzzle-3 .cell.peer{background:rgba(206,147,216,.1)}
-.puzzle-3 .cell.same-num{background:rgba(206,147,216,.16);box-shadow:inset 0 0 0 1.5px rgba(206,147,216,.2)}
-.puzzle-3 .cell.same-num.given{color:var(--b-given)}
+.puzzle-3 .cell.peer{background:rgba(206,147,216,.06)}
+.puzzle-3 .cell.same-num{background:rgba(206,147,216,.12)}
 .puzzle-3 .streak-counter{background:linear-gradient(90deg,#ba68c8,#8e24aa,#ce93d8);-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 0 8px rgba(206,147,216,.4))}
 .puzzle-3 .g-timer{text-shadow:0 0 6px rgba(206,147,216,.15)}
 #game.puzzle-3::before{background:radial-gradient(ellipse 60% 40% at 50% 50%,rgba(206,147,216,.06) 0%,transparent 70%),radial-gradient(circle at 20% 80%,rgba(156,39,176,.04) 0%,transparent 50%),radial-gradient(circle at 80% 20%,rgba(206,147,216,.04) 0%,transparent 50%)}
@@ -734,7 +720,7 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 /* =============== CONSTRAINT LEGEND STRIP =============== */
 .constraint-legend{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;padding:3px 0 1px;min-height:0}
 .constraint-legend:empty{display:none}
-.cl-item{display:flex;align-items:center;gap:3px;font-size:.55rem;color:rgba(255,255,255,.55);font-family:'Quicksand',sans-serif;font-weight:700;cursor:pointer;padding:3px 8px;border-radius:8px;transition:all .2s ease;letter-spacing:.3px;text-transform:uppercase;background:rgba(255,255,255,.04)}
+.cl-item{display:flex;align-items:center;gap:3px;font-size:.52rem;color:rgba(255,255,255,.45);font-family:'Quicksand',sans-serif;font-weight:700;cursor:pointer;padding:2px 7px;border-radius:8px;transition:all .2s ease;letter-spacing:.3px;text-transform:uppercase}
 .cl-item:active{transform:scale(.95)}
 .cl-item .cl-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
 .cl-item .cl-line{width:12px;height:3px;border-radius:2px;flex-shrink:0}
@@ -750,8 +736,8 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 .cell.king-zone::before{content:'';position:absolute;inset:2px;border:1.5px solid rgba(206,147,216,.15);border-radius:2px;pointer-events:none;z-index:1}
 
 /* =============== CONSTRAINT HIGHLIGHT =============== */
-#board-overlay g.constraint-hl path{filter:drop-shadow(0 0 8px currentColor) drop-shadow(0 0 3px currentColor);transition:filter .3s ease}
-#board-overlay g.constraint-hl circle{filter:drop-shadow(0 0 6px currentColor) drop-shadow(0 0 2px currentColor);transition:filter .3s ease}
+#board-overlay g.constraint-hl path{filter:drop-shadow(0 0 6px currentColor);transition:filter .3s ease}
+#board-overlay g.constraint-hl circle{filter:drop-shadow(0 0 4px currentColor);transition:filter .3s ease}
 
 /* =============== ELLA EXPRESSION STATES =============== */
 #ella-container.happy-eyes .ella-eyes ellipse:nth-child(5),
@@ -761,7 +747,7 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 
 /* =============== NUMPAD DONE CHECKMARK =============== */
 .num-btn.done{position:relative}
-.num-btn.done::after{content:'\2713';position:absolute;top:2px;right:3px;font-size:.55rem;color:rgba(102,187,106,1);font-weight:800}
+.num-btn.done::after{content:'\2713';position:absolute;font-size:.65rem;color:rgba(255,255,255,.15);font-weight:800}
 
 /* =============== BOARD NEAR-COMPLETION PULSE =============== */
 .board-wrap.near-done{animation:nearDonePulse 2s ease-in-out infinite}

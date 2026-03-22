@@ -249,48 +249,40 @@ const GIFT_PATHS=[
 const RULES_HTML = {
   "Killer + Thermo + Palindrome": `
     <p class="rule-heading">Constraint Types</p>
-    <ul>
-    <li>Normal sudoku rules apply (1\u20139 in each row, column and 3\u00d73 box).</li>
-    <li><svg viewBox="0 0 28 14" width="28" height="14" style="vertical-align:middle;margin-right:4px"><rect x="1" y="1" width="26" height="12" rx="2" fill="none" stroke="#777" stroke-width="1.5" stroke-dasharray="4 2.5"/><text x="4" y="10" fill="#E65100" font-size="8" font-weight="800">12</text></svg> <strong style="color:#E65100">Killer cages</strong> \u2014 digits in a cage sum to the clue number. No repeats within a cage.</li>
-    <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><circle cx="7" cy="7" r="5" fill="#AAAAAA" opacity=".6"/><line x1="12" y1="7" x2="35" y2="7" stroke="#AAAAAA" stroke-width="3" stroke-linecap="round" opacity=".65"/></svg> <strong style="color:#AAAAAA">Thermometers</strong> \u2014 digits strictly increase from the round bulb toward the tip.</li>
-    <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><line x1="4" y1="7" x2="36" y2="7" stroke="#D4A0D4" stroke-width="3" stroke-linecap="round" opacity=".55"/></svg> <strong style="color:#D4A0D4">Palindrome lines</strong> \u2014 the sequence of digits reads the same forwards and backwards.</li>
-    <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><line x1="4" y1="7" x2="36" y2="7" stroke="#AB47BC" stroke-width="3" stroke-linecap="round" opacity=".55"/></svg> <strong style="color:#AB47BC">Renban lines</strong> \u2014 cells contain a set of consecutive digits in any order (e.g. {3,4,5,6}).</li>
-    </ul>
+    <ul><li>Normal sudoku rules apply.</li>
+    <li><strong style="color:#f48fb1">Killer cages</strong> (dashed): digits sum to the clue. No repeats in a cage.</li>
+    <li><strong style="color:#ce93d8">Thermometers</strong> (purple): digits strictly increase from bulb to tip.</li>
+    <li><strong style="color:#90a4ae">Palindrome lines</strong> (grey): digits read the same forwards and backwards.</li>
+    <li><strong style="color:#f48fb1">Renban lines</strong> (pink): cells contain a set of consecutive digits in any order.</li></ul>
     <div class="rule-note">Tip: On a renban line of length 5, the digits form a run like {3,4,5,6,7} but can appear in any order along the line.</div>`,
   "Whisper + Anti-Knight/King": `
     <p class="rule-heading">Constraint Types</p>
-    <ul>
-    <li>Normal sudoku rules apply (1\u20139 in each row, column and 3\u00d73 box).</li>
-    <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><line x1="4" y1="12" x2="13" y2="2" stroke="#66BB6A" stroke-width="3" stroke-linecap="round" opacity=".55"/><line x1="13" y1="2" x2="22" y2="12" stroke="#66BB6A" stroke-width="3" stroke-linecap="round" opacity=".55"/><line x1="22" y1="12" x2="36" y2="2" stroke="#66BB6A" stroke-width="3" stroke-linecap="round" opacity=".55"/></svg> <strong style="color:#66BB6A">German Whisper lines</strong> \u2014 adjacent digits on the line must differ by at least 5.</li>
-    <li><svg viewBox="0 0 28 14" width="28" height="14" style="vertical-align:middle;margin-right:4px"><rect x="1" y="1" width="26" height="12" rx="2" fill="none" stroke="#777" stroke-width="1.5" stroke-dasharray="4 2.5"/><text x="4" y="10" fill="#E65100" font-size="8" font-weight="800">8</text></svg> <strong style="color:#E65100">Killer cages</strong> \u2014 digits sum to the clue. No repeats in a cage.</li>
-    <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><line x1="4" y1="7" x2="36" y2="7" stroke="#AB47BC" stroke-width="3" stroke-linecap="round" opacity=".55"/></svg> <strong style="color:#AB47BC">Renban lines</strong> \u2014 cells contain consecutive digits in any order.</li>
-    <li><svg viewBox="0 0 20 14" width="20" height="14" style="vertical-align:middle;margin-right:4px"><text x="2" y="12" fill="#42A5F5" font-size="13" font-weight="800">\u265E</text></svg> <strong style="color:#42A5F5">Anti-Knight</strong> \u2014 cells a chess knight\u2019s move apart cannot contain the same digit.</li>
-    <li><svg viewBox="0 0 20 14" width="20" height="14" style="vertical-align:middle;margin-right:4px"><text x="2" y="12" fill="#AB47BC" font-size="13" font-weight="800">\u265A</text></svg> <strong style="color:#AB47BC">Anti-King</strong> \u2014 cells diagonally adjacent cannot contain the same digit.</li>
-    </ul>
-    <div class="rule-note">Tip: Only digits 1\u20134 and 6\u20139 can appear on whisper lines (5 is never on a green line). Anti-knight and anti-king constraints are global \u2014 they apply to every cell!</div>`,
+    <ul><li>Normal sudoku rules apply.</li>
+    <li><strong style="color:#81c784">German Whisper lines</strong> (green): adjacent digits on the line must differ by at least 5.</li>
+    <li>Digits in <strong style="color:#f48fb1">cages</strong> must sum to the clue. No repeats in a cage.</li>
+    <li><strong style="color:#f48fb1">Renban lines</strong> (pink): cells contain consecutive digits in any order.</li>
+    <li><strong style="color:#64b5f6">Anti-Knight</strong>: cells a chess knight\u2019s move apart cannot contain the same digit.</li>
+    <li><strong style="color:#64b5f6">Anti-King</strong>: cells a chess king\u2019s move apart (diagonally adjacent) cannot contain the same digit.</li></ul>
+    <div class="rule-note">Tip: Only digits 1\u20134 and 6\u20139 can appear on whisper lines. 5 can never be on a green line. Anti-knight/king constraints are global!</div>`,
   "Kropki + Palindrome + Thermo": `
     <p class="rule-heading">Constraint Types</p>
-    <ul>
-    <li>Normal sudoku rules apply (1\u20139 in each row, column and 3\u00d73 box).</li>
-    <li><svg viewBox="0 0 28 14" width="28" height="14" style="vertical-align:middle;margin-right:4px"><circle cx="14" cy="7" r="5" fill="#fff" stroke="#333" stroke-width="1.5"/></svg> <strong>White dot</strong> \u25CB \u2014 the two cells differ by exactly 1.</li>
-    <li><svg viewBox="0 0 28 14" width="28" height="14" style="vertical-align:middle;margin-right:4px"><circle cx="14" cy="7" r="5" fill="#222" stroke="#333" stroke-width="1.5"/></svg> <strong>Black dot</strong> \u25CF \u2014 one cell is exactly double the other.</li>
-    <li><strong>No dot</strong> \u2014 if no dot is shown between two adjacent cells, neither condition holds. <em>This is a clue!</em></li>
-    <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><line x1="4" y1="7" x2="36" y2="7" stroke="#D4A0D4" stroke-width="3" stroke-linecap="round" opacity=".55"/></svg> <strong style="color:#D4A0D4">Palindrome lines</strong> \u2014 the sequence of digits reads the same forwards and backwards.</li>
-    <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><circle cx="7" cy="7" r="5" fill="#AAAAAA" opacity=".6"/><line x1="12" y1="7" x2="35" y2="7" stroke="#AAAAAA" stroke-width="3" stroke-linecap="round" opacity=".65"/></svg> <strong style="color:#AAAAAA">Thermometers</strong> \u2014 digits strictly increase from the round bulb toward the tip.</li>
-    </ul>
-    <div class="rule-note">Tip: The pair (1,2) satisfies both a white dot (differ by 1) and a black dot (2=2\u00d71). All dots are shown \u2014 if a dot is missing between two cells, that\u2019s important information!</div>`,
+    <ul><li>Normal sudoku rules apply.</li>
+    <li><strong>White dot</strong> \u25CB : the two cells differ by exactly 1.</li>
+    <li><strong>Black dot</strong> \u25CF : one cell is exactly double the other.</li>
+    <li><strong>No dot</strong>: neither condition holds \u2014 <em>negative constraint!</em></li>
+    <li><strong style="color:#90a4ae">Palindrome lines</strong> (grey): digits read the same forwards and backwards.</li>
+    <li><strong style="color:#ce93d8">Thermometers</strong> (purple): digits strictly increase from bulb to tip.</li></ul>
+    <div class="rule-note">Tip: The pair (1,2) satisfies both a white dot (differ by 1) and a black dot (2=2\u00d71). All dots are shown \u2014 a missing dot is a clue!</div>`,
   "Grand Artisanal Mix": `
     <p class="rule-heading">Constraint Types</p>
-    <ul>
-    <li>Normal sudoku rules apply (1\u20139 in each row, column and 3\u00d73 box).</li>
-    <li><svg viewBox="0 0 28 14" width="28" height="14" style="vertical-align:middle;margin-right:4px"><rect x="1" y="1" width="26" height="12" rx="2" fill="none" stroke="#777" stroke-width="1.5" stroke-dasharray="4 2.5"/><text x="4" y="10" fill="#E65100" font-size="8" font-weight="800">15</text></svg> <strong style="color:#E65100">Killer cages</strong> \u2014 digits sum to the clue. No repeats in a cage.</li>
-    <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><circle cx="7" cy="7" r="5" fill="#AAAAAA" opacity=".6"/><line x1="12" y1="7" x2="35" y2="7" stroke="#AAAAAA" stroke-width="3" stroke-linecap="round" opacity=".65"/></svg> <strong style="color:#AAAAAA">Thermometers</strong> \u2014 digits strictly increase from the round bulb toward the tip.</li>
-    <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><circle cx="7" cy="7" r="7" fill="none" stroke="#5C6BC0" stroke-width="1.5" opacity=".75"/><line x1="14" y1="7" x2="36" y2="7" stroke="#5C6BC0" stroke-width="2" stroke-linecap="round" opacity=".75"/><polygon points="36,7 31,4 31,10" fill="#5C6BC0" opacity=".75"/></svg> <strong style="color:#5C6BC0">Sum arrows</strong> \u2014 the circled digit equals the sum of digits along the arrow.</li>
-    <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><line x1="4" y1="7" x2="36" y2="7" stroke="#D4A0D4" stroke-width="3" stroke-linecap="round" opacity=".55"/></svg> <strong style="color:#D4A0D4">Palindrome lines</strong> \u2014 digits read the same forwards and backwards.</li>
-    <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><line x1="4" y1="7" x2="36" y2="7" stroke="#AB47BC" stroke-width="3" stroke-linecap="round" opacity=".55"/></svg> <strong style="color:#AB47BC">Renban lines</strong> \u2014 cells contain consecutive digits in any order.</li>
-    <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><line x1="4" y1="12" x2="20" y2="2" stroke="#FFA726" stroke-width="3" stroke-linecap="round" opacity=".55"/><line x1="20" y1="2" x2="36" y2="12" stroke="#FFA726" stroke-width="3" stroke-linecap="round" opacity=".55"/></svg> <strong style="color:#FFA726">Dutch Whisper lines</strong> \u2014 adjacent digits must differ by at least 4.</li>
-    </ul>
-    <div class="rule-note">The ultimate artisanal challenge \u2014 six constraint types combined! Use the constraint legend below the board to highlight each type.</div>`
+    <ul><li>Normal sudoku rules apply.</li>
+    <li><strong style="color:#f48fb1">Killer cages</strong> (dashed): digits sum to the clue. No repeats in a cage.</li>
+    <li><strong style="color:#ce93d8">Thermometers</strong> (purple): digits strictly increase from bulb to tip.</li>
+    <li><strong style="color:#64b5f6">Sum arrows</strong> (blue): the circled digit equals the sum of digits along the arrow.</li>
+    <li><strong style="color:#90a4ae">Palindrome lines</strong> (grey): digits read the same forwards and backwards.</li>
+    <li><strong style="color:#f48fb1">Renban lines</strong> (pink): cells contain consecutive digits in any order.</li>
+    <li><strong style="color:#ffb74d">Dutch Whisper lines</strong> (orange): adjacent digits must differ by at least 4.</li></ul>
+    <div class="rule-note">The ultimate artisanal challenge \u2014 six constraint types combined!</div>`
 };
 
 const CELEB = [
@@ -363,35 +355,13 @@ const MAX_HINTS = 3;
 function defaults(){
   return {
     firstVisit: new Date().toISOString(),
-    puzzles:[{done:false,at:null,t:0,g:null,n:null,m:0,h:0,hc:null},{done:false,at:null,t:0,g:null,n:null,m:0,h:0,hc:null},
-             {done:false,at:null,t:0,g:null,n:null,m:0,h:0,hc:null},{done:false,at:null,t:0,g:null,n:null,m:0,h:0,hc:null}],
+    puzzles:[{done:false,at:null,t:0,g:null},{done:false,at:null,t:0,g:null},
+             {done:false,at:null,t:0,g:null},{done:false,at:null,t:0,g:null}],
     giftsSent:false, selectedGifts:[], giftPath:null
   };
 }
-function loadState(){
-  try{
-    const s=localStorage.getItem('celina-state');
-    if(s){
-      const p=JSON.parse(s);
-      if(p.puzzles&&p.puzzles.length>=4){
-        const d=defaults();
-        if(p.giftsSent===undefined)p.giftsSent=d.giftsSent;
-        if(!Array.isArray(p.selectedGifts))p.selectedGifts=d.selectedGifts;
-        if(p.giftPath===undefined)p.giftPath=d.giftPath;
-        if(!p.firstVisit)p.firstVisit=d.firstVisit;
-        const dp={done:false,at:null,t:0,g:null,n:null,m:0,h:0,hc:null};
-        for(let i=0;i<p.puzzles.length;i++){
-          for(const k of Object.keys(dp)){
-            if(p.puzzles[i][k]===undefined)p.puzzles[i][k]=dp[k];
-          }
-        }
-        return p;
-      }
-    }
-  }catch(e){}
-  return defaults();
-}
-function save(){try{localStorage.setItem('celina-state',JSON.stringify(state));}catch(e){}}
+function loadState(){try{const s=localStorage.getItem('celina-state');if(s){const p=JSON.parse(s);if(p.puzzles&&p.puzzles.length>=4)return p;}}catch(e){}return defaults();}
+function save(){localStorage.setItem('celina-state',JSON.stringify(state));}
 
 // ============== VIEWS ==============
 function showView(id){
@@ -525,8 +495,8 @@ function initEllaDrag(el){
   el.addEventListener('touchstart',e=>{
     const t=e.touches[0];
     startX=t.clientX;startY=t.clientY;
-    origLeft=el.style.left?parseFloat(el.style.left):el.getBoundingClientRect().left;
-    origBottom=el.style.bottom?parseFloat(el.style.bottom):(window.innerHeight-el.getBoundingClientRect().bottom);
+    origLeft=parseFloat(el.style.left)||0;
+    origBottom=parseFloat(el.style.bottom)||8;
     dragging=true;moved=false;
     el.style.transition='none';
   },{passive:true});
@@ -555,13 +525,11 @@ function initEllaDrag(el){
 
   // Mouse events for desktop/laptop drag support
   el.addEventListener('mousedown',e=>{
-    e.preventDefault();
     startX=e.clientX;startY=e.clientY;
-    origLeft=el.style.left?parseFloat(el.style.left):el.getBoundingClientRect().left;
-    origBottom=el.style.bottom?parseFloat(el.style.bottom):(window.innerHeight-el.getBoundingClientRect().bottom);
+    origLeft=parseFloat(el.style.left)||0;
+    origBottom=parseFloat(el.style.bottom)||8;
     dragging=true;moved=false;
     el.style.transition='none';
-    el.style.cursor='grabbing';
   });
   document.addEventListener('mousemove',e=>{
     if(!dragging)return;
@@ -569,7 +537,6 @@ function initEllaDrag(el){
     if(!moved&&Math.abs(dx)<THRESHOLD&&Math.abs(dy)<THRESHOLD)return;
     moved=true;
     e.preventDefault();
-    document.body.style.cursor='grabbing';
     const newLeft=Math.max(0,Math.min(window.innerWidth-60,origLeft+dx));
     const newBottom=Math.max(0,Math.min(window.innerHeight-60,origBottom-dy));
     el.style.left=newLeft+'px';
@@ -585,8 +552,6 @@ function initEllaDrag(el){
       setTimeout(()=>el.classList.remove('ella-landed'),300);
     }
     dragging=false;
-    el.style.cursor='grab';
-    document.body.style.cursor='';
   });
 }
 
@@ -1144,7 +1109,7 @@ function initBoard(){
   document.getElementById('btn-retry').addEventListener('click',retryPuzzle);
   document.getElementById('btn-go-hub').addEventListener('click',()=>{
     document.getElementById('game-over-overlay').style.display='none';
-    state.puzzles[curWeek].g=null;state.puzzles[curWeek].t=0;state.puzzles[curWeek].m=0;state.puzzles[curWeek].h=0;state.puzzles[curWeek].hc=null;state.puzzles[curWeek].n=null;save();
+    state.puzzles[curWeek].g=null;state.puzzles[curWeek].t=0;state.puzzles[curWeek].m=0;save();
     ellaLeaveGame();showView('hub');updateHub();
     ellaSay("You'll get it next time, princess!");
   });
@@ -1335,7 +1300,6 @@ function inputNum(n){
         ellaReactCorrect();updateStreak();updateEllaTailSpeed();
         checkProgressMilestone();
         showTipOnce('pencil','Tip: Long-press a number for pencil marks!',3000);
-        if(tipsShown['pencil']) showTipOnce('digit-first','Tip: Double-tap a number to lock it, then tap cells to place it!',4000);
         updateBoardGlow();
         updateNearCompletion();
         checkConstraintSatisfaction();
@@ -1455,19 +1419,6 @@ function renderSelectedNum(){
     b.classList.toggle('sel',num===selectedNum&&!pencilMode);
     b.classList.toggle('digit-locked',digitFirstMode&&num===selectedNum&&!pencilMode);
   });
-  // Digit-first mode indicator
-  const np=document.getElementById('numpad');
-  let ind=document.getElementById('digit-first-indicator');
-  if(digitFirstMode&&selectedNum>0){
-    if(!ind){
-      ind=document.createElement('div');ind.id='digit-first-indicator';ind.className='digit-first-ind';
-      np.parentNode.insertBefore(ind,np);
-    }
-    ind.textContent='Placing '+selectedNum+'s \u2014 tap cells \u00b7 tap '+selectedNum+' again to exit';
-    ind.classList.add('show');
-  }else if(ind){
-    ind.classList.remove('show');
-  }
 }
 
 function checkDigitFirstComplete(n){
@@ -1577,7 +1528,7 @@ function gameOver(){
 
 function retryPuzzle(){
   document.getElementById('game-over-overlay').style.display='none';
-  state.puzzles[curWeek].g=null;state.puzzles[curWeek].t=0;state.puzzles[curWeek].m=0;state.puzzles[curWeek].h=0;state.puzzles[curWeek].hc=null;state.puzzles[curWeek].n=null;save();
+  state.puzzles[curWeek].g=null;state.puzzles[curWeek].t=0;state.puzzles[curWeek].m=0;save();
   openGame(curWeek);
 }
 
@@ -1590,15 +1541,11 @@ function restartPuzzle(){
   pushHist();
   const pz=PUZZLES[curWeek];
   curPuzzle.user=pz.givens.map(r=>[...r]);
-  curPuzzle.notes=mk9(()=>new Set());delete curPuzzle.hintCells;
+  curPuzzle.notes=mk9(()=>new Set());
   mistakes=0;streak=0;elapsed=0;selectedNum=0;lastMilestone=0;digitFirstMode=false;
-  selectedCells.clear();selCell=null;pencilMode=false;
-  document.getElementById('btn-pencil').classList.remove('active');
-  document.getElementById('game-board').classList.remove('pencil-mode');
   completedGroups=new Set();satisfiedConstraints=new Set();hintsUsed=0;
-  state.puzzles[curWeek].m=0;state.puzzles[curWeek].h=0;state.puzzles[curWeek].hc=null;state.puzzles[curWeek].n=null;
-  renderMistakes();renderSelectedNum();renderHintCount();
-  startTimer();render();saveProgress();
+  renderMistakes();renderSelectedNum();
+  startTimer();render();
   showToast("Puzzle restarted");
   ellaSay("Fresh start!",1500);
 }
@@ -2021,7 +1968,7 @@ function render(){
     // Alternating 3x3 box tint (checkerboard pattern)
     const boxR=Math.floor(r/3),boxC=Math.floor(c/3);
     if((boxR+boxC)%2===1) cell.classList.add('box-alt');
-    // cage classes removed – cages now rendered via SVG overlay
+    if(cell._cageClasses) cell._cageClasses.forEach(cl=>cell.classList.add(cl));
 
     if(giv){cell.classList.add('given');cell.textContent=v;}
     else if(v>0){
@@ -2033,7 +1980,6 @@ function render(){
       const marks=curPuzzle.notes[r][c];
       if(marks.size){
         const d=document.createElement('div');d.className='notes';
-        if(cell._cageLabel) d.classList.add('has-cage-label');
         for(let n=1;n<=9;n++){
           const s=document.createElement('span');
           s.textContent=marks.has(n)?n:'';
@@ -2049,14 +1995,12 @@ function render(){
         (Math.floor(r/3)===Math.floor(selCell.r/3)&&Math.floor(c/3)===Math.floor(selCell.c/3)))
         cell.classList.add('peer');
     }
-    // Highlight all multi-selected cells in pencil mode
-    if(selectedCells.has(r+','+c)&&!(selCell&&r===selCell.r&&c===selCell.c)){
-      cell.classList.add('multi-selected');
-    }
     // Highlight all cells with the same number
     if(hlNum>0&&v===hlNum&&!(selCell&&r===selCell.r&&c===selCell.c))cell.classList.add('same-num');
     // Re-add cage labels
-    // cage label removed from DOM – now rendered in SVG overlay
+    if(cell._cageLabel){
+      const lb=document.createElement('span');lb.className='cage-label';lb.textContent=cell._cageLabel;cell.appendChild(lb);
+    }
   }
 
   // Progress bar with color gradient
@@ -2069,11 +2013,9 @@ function render(){
   // Numpad — remaining count, selected state, done state
   document.querySelectorAll('.num-btn').forEach(b=>{
     const num=+b.dataset.num,used=cnt[num]||0;
-    const isDone=used>=9;
-    b.classList.toggle('done',isDone);
-    b.classList.toggle('completed',isDone);
-    b.classList.toggle('sel',num===selectedNum&&!pencilMode&&!isDone);
-    b.classList.toggle('digit-locked',digitFirstMode&&num===selectedNum&&!pencilMode&&!isDone);
+    b.classList.toggle('done',used>=9);
+    b.classList.toggle('sel',num===selectedNum&&!pencilMode);
+    b.classList.toggle('digit-locked',digitFirstMode&&num===selectedNum&&!pencilMode);
     let sub=b.querySelector('.num-remain');
     if(used>0&&used<9){
       if(!sub){sub=document.createElement('span');sub.className='num-remain';b.appendChild(sub);}
@@ -2087,13 +2029,22 @@ function drawConstraints(){
   const svg=document.getElementById('board-overlay');svg.innerHTML='';
   const cs=50; // viewBox 450/9
 
-  for(let r=0;r<9;r++)for(let c=0;c<9;c++){const cell=cellGrid[r][c];cell._cageClasses=[];cell._cageLabel=null;}
+  for(let r=0;r<9;r++)for(let c=0;c<9;c++){const cell=cellGrid[r][c];cell._cageClasses=[];cell._cageLabel=null;cell.classList.remove('cage-t','cage-b','cage-l','cage-r');}
 
   const pz=PUZZLES[curWeek];
   const activeTypes=new Set();
 
-  // SVG defs (minimal — no glow filters)
+  // ---- SVG Defs: gradients & glow filter ----
   const defs=document.createElementNS('http://www.w3.org/2000/svg','defs');
+  // Glow filter
+  const gf=document.createElementNS('http://www.w3.org/2000/svg','filter');
+  gf.id='cGlow';gf.setAttribute('x','-50%');gf.setAttribute('y','-50%');
+  gf.setAttribute('width','200%');gf.setAttribute('height','200%');
+  const gb=document.createElementNS('http://www.w3.org/2000/svg','feGaussianBlur');
+  gb.setAttribute('in','SourceGraphic');gb.setAttribute('stdDeviation','3');gb.setAttribute('result','blur');
+  const gm=document.createElementNS('http://www.w3.org/2000/svg','feMerge');
+  ['blur','SourceGraphic'].forEach(src=>{const n=document.createElementNS('http://www.w3.org/2000/svg','feMergeNode');n.setAttribute('in',src);gm.appendChild(n);});
+  gf.appendChild(gb);gf.appendChild(gm);defs.appendChild(gf);
   svg.appendChild(defs);
 
   // Helpers
@@ -2114,95 +2065,100 @@ function drawConstraints(){
     return el;
   }
 
-  // ---- Killer cages (SudokuPad: BLACK dotted inset outlines) ----
+  // ---- Killer cages ----
   if(pz.cages&&pz.cages.length){
     activeTypes.add('killer');
-    const IN=4;
     pz.cages.forEach(cage=>{
       const set=new Set(cage.c.map(([r,c])=>`${r},${c}`));
-      const g=svgEl('g',{'data-constraint':'killer'});
-      const segs=[];
-      for(const [r,c] of cage.c){
-        const x0=c*cs,y0=r*cs,x1=(c+1)*cs,y1=(r+1)*cs;
-        if(!set.has(`${r-1},${c}`)){
-          const lx=set.has(`${r},${c-1}`)&&!set.has(`${r-1},${c-1}`)?x0:x0+IN;
-          const rx=set.has(`${r},${c+1}`)&&!set.has(`${r-1},${c+1}`)?x1:x1-IN;
-          segs.push([lx,y0+IN,rx,y0+IN]);
-        }
-        if(!set.has(`${r+1},${c}`)){
-          const lx=set.has(`${r},${c-1}`)&&!set.has(`${r+1},${c-1}`)?x0:x0+IN;
-          const rx=set.has(`${r},${c+1}`)&&!set.has(`${r+1},${c+1}`)?x1:x1-IN;
-          segs.push([lx,y1-IN,rx,y1-IN]);
-        }
-        if(!set.has(`${r},${c-1}`)){
-          const ty=set.has(`${r-1},${c}`)&&!set.has(`${r-1},${c-1}`)?y0:y0+IN;
-          const by=set.has(`${r+1},${c}`)&&!set.has(`${r+1},${c-1}`)?y1:y1-IN;
-          segs.push([x0+IN,ty,x0+IN,by]);
-        }
-        if(!set.has(`${r},${c+1}`)){
-          const ty=set.has(`${r-1},${c}`)&&!set.has(`${r-1},${c+1}`)?y0:y0+IN;
-          const by=set.has(`${r+1},${c}`)&&!set.has(`${r+1},${c+1}`)?y1:y1-IN;
-          segs.push([x1-IN,ty,x1-IN,by]);
-        }
-      }
-      if(segs.length){
-        const d=segs.map(([x1,y1,x2,y2])=>`M${x1},${y1}L${x2},${y2}`).join(' ');
-        g.appendChild(svgEl('path',{d,fill:'none',stroke:'#777','stroke-width':'1.6','stroke-dasharray':'5 3','stroke-linecap':'round'}));
-      }
+      cage.c.forEach(([r,c])=>{
+        const cell=getCell(r,c);if(!cell)return;
+        const classes=[];
+        if(!set.has(`${r-1},${c}`))classes.push('cage-t');
+        if(!set.has(`${r+1},${c}`))classes.push('cage-b');
+        if(!set.has(`${r},${c-1}`))classes.push('cage-l');
+        if(!set.has(`${r},${c+1}`))classes.push('cage-r');
+        classes.forEach(cl=>cell.classList.add(cl));
+        cell._cageClasses=classes;
+      });
       let tl=cage.c[0];cage.c.forEach(([r,c])=>{if(r<tl[0]||(r===tl[0]&&c<tl[1]))tl=[r,c];});
-      const label=svgEl('text',{x:tl[1]*cs+IN+1,y:tl[0]*cs+IN+9,fill:'#E65100','font-size':'10.5','font-weight':'800','font-family':"'Quicksand',sans-serif",'pointer-events':'none'});
-      label.textContent=cage.s;
-      g.appendChild(label);
-      svg.appendChild(g);
-      cage.c.forEach(([r,c])=>{const cell=getCell(r,c);if(cell)cell._cageClasses=[];});
-      if(tl){const tlCell=getCell(tl[0],tl[1]);if(tlCell)tlCell._cageLabel=cage.s;}
+      const tlCell=getCell(tl[0],tl[1]);
+      if(tlCell){
+        tlCell._cageLabel=cage.s;
+        const lb=document.createElement('span');lb.className='cage-label';lb.textContent=cage.s;tlCell.appendChild(lb);
+      }
     });
   }
 
-  // ---- Thermos (SudokuPad: medium gray, round bulb) ----
+  // ---- Thermos (purple gradient, large bulb) ----
   if(pz.thermos&&pz.thermos.length){
     activeTypes.add('thermo');
-    pz.thermos.forEach(th=>{
+    pz.thermos.forEach((th,ti)=>{
       if(th.length<2)return;
       const g=svgEl('g',{'data-constraint':'thermo'});
       const pts=th.map(([r,c])=>pt(r,c));
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#AAAAAA','stroke-width':'7','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.65'}));
-      g.appendChild(svgEl('circle',{cx:pts[0].x,cy:pts[0].y,r:'13',fill:'#AAAAAA',opacity:'.6'}));
+      // Per-thermo gradient
+      const gid=`tG${ti}`;
+      const grad=svgEl('linearGradient',{id:gid,gradientUnits:'userSpaceOnUse',x1:pts[0].x,y1:pts[0].y,x2:pts[pts.length-1].x,y2:pts[pts.length-1].y});
+      [{o:'0',c:'#9C27B0',op:'.85'},{o:'1',c:'#E1BEE7',op:'.55'}].forEach(s=>{
+        grad.appendChild(svgEl('stop',{offset:s.o,'stop-color':s.c,'stop-opacity':s.op}));
+      });
+      defs.appendChild(grad);
+      // Background glow
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#9C27B0','stroke-width':'14','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.08'}));
+      // Main line
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:`url(#${gid})`,'stroke-width':'8','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.4'}));
+      // Bulb glow
+      g.appendChild(svgEl('circle',{cx:pts[0].x,cy:pts[0].y,r:'17',fill:'#9C27B0',opacity:'.1'}));
+      // Bulb
+      g.appendChild(svgEl('circle',{cx:pts[0].x,cy:pts[0].y,r:'13',fill:'#9C27B0',opacity:'.35'}));
+      // Tip markers
+      for(let i=1;i<pts.length;i++) g.appendChild(svgEl('circle',{cx:pts[i].x,cy:pts[i].y,r:'3',fill:'#CE93D8',opacity:'.25'}));
       svg.appendChild(g);
     });
   }
 
-  // ---- Arrows (SudokuPad: gray circle + gray line + arrowhead) ----
+  // ---- Arrows (blue circle + line + arrowhead) ----
   if(pz.arrows&&pz.arrows.length){
     activeTypes.add('arrow');
     pz.arrows.forEach(ar=>{
       const g=svgEl('g',{'data-constraint':'arrow'});
       const cx=ar.o[1]*cs+cs/2,cy=ar.o[0]*cs+cs/2;
-      g.appendChild(svgEl('circle',{cx,cy,r:'19',fill:'none',stroke:'#5C6BC0','stroke-width':'1.8',opacity:'.75'}));
+      // Circle bg
+      g.appendChild(svgEl('circle',{cx,cy,r:'19',fill:'#1565C0',opacity:'.06'}));
+      // Circle
+      g.appendChild(svgEl('circle',{cx,cy,r:'16',fill:'none',stroke:'#42A5F5','stroke-width':'2.5',opacity:'.4'}));
       if(ar.a.length){
         const pts=[{x:cx,y:cy},...ar.a.map(([r,c])=>pt(r,c))];
-        g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#5C6BC0','stroke-width':'2.5','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.75'}));
+        // Line
+        g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#42A5F5','stroke-width':'3','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.5'}));
+        // Arrowhead
         const last=pts[pts.length-1],prev=pts[pts.length-2];
-        const ang=Math.atan2(last.y-prev.y,last.x-prev.x),hl=10;
-        g.appendChild(svgEl('polygon',{points:[`${last.x},${last.y}`,`${last.x-hl*Math.cos(ang-.45)},${last.y-hl*Math.sin(ang-.45)}`,`${last.x-hl*Math.cos(ang+.45)},${last.y-hl*Math.sin(ang+.45)}`].join(' '),fill:'#5C6BC0',opacity:'.75'}));
+        const ang=Math.atan2(last.y-prev.y,last.x-prev.x),hl=11;
+        g.appendChild(svgEl('polygon',{
+          points:[`${last.x},${last.y}`,`${last.x-hl*Math.cos(ang-Math.PI/5.5)},${last.y-hl*Math.sin(ang-Math.PI/5.5)}`,`${last.x-hl*Math.cos(ang+Math.PI/5.5)},${last.y-hl*Math.sin(ang+Math.PI/5.5)}`].join(' '),
+          fill:'#42A5F5',opacity:'.5'
+        }));
       }
       svg.appendChild(g);
     });
   }
 
-  // ---- German Whisper lines (SudokuPad: GREEN) ----
+  // ---- German Whisper lines (solid green) ----
   if(pz.whispers&&pz.whispers.length){
     activeTypes.add('whisper');
     pz.whispers.forEach(wh=>{
       if(wh.length<2)return;
       const g=svgEl('g',{'data-constraint':'whisper'});
       const pts=wh.map(([r,c])=>pt(r,c));
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#66BB6A','stroke-width':'5','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.55'}));
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#4CAF50','stroke-width':'14','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.06'}));
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#66BB6A','stroke-width':'8','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.35'}));
+      // Node dots
+      pts.forEach(p=>g.appendChild(svgEl('circle',{cx:p.x,cy:p.y,r:'3',fill:'#4CAF50',opacity:'.25'})));
       svg.appendChild(g);
     });
   }
 
-  // ---- Kropki dots (SudokuPad: clean B/W dots on cell edge) ----
+  // ---- Kropki dots (bigger, with glow) ----
   if(pz.kropki&&pz.kropki.length){
     activeTypes.add('kropki');
     pz.kropki.forEach(k=>{
@@ -2210,43 +2166,63 @@ function drawConstraints(){
       const mx=(c1+c2)/2*cs+cs/2,my=(r1+r2)/2*cs+cs/2;
       const g=svgEl('g',{'data-constraint':'kropki'});
       const isBlack=k.t==='b';
-      g.appendChild(svgEl('circle',{cx:mx,cy:my,r:'7',fill:isBlack?'#222':'#fff',stroke:'#333','stroke-width':'1.5'}));
+      // Outer glow
+      g.appendChild(svgEl('circle',{cx:mx,cy:my,r:'10',fill:isBlack?'rgba(0,0,0,.15)':'rgba(255,255,255,.1)'}));
+      // Main dot
+      g.appendChild(svgEl('circle',{cx:mx,cy:my,r:'7',fill:isBlack?'#333':'#f5f5f5',stroke:isBlack?'#555':'#999','stroke-width':'1.8'}));
+      // Inner highlight
+      g.appendChild(svgEl('circle',{cx:mx-1.5,cy:my-1.5,r:'2.2',fill:isBlack?'rgba(255,255,255,.12)':'rgba(255,255,255,.5)'}));
       svg.appendChild(g);
     });
   }
 
-  // ---- Palindrome lines (SudokuPad: light SILVER/GRAY) ----
+  // ---- Palindrome lines (grey, double-line effect) ----
   if(pz.palindromes&&pz.palindromes.length){
     activeTypes.add('palindrome');
     pz.palindromes.forEach(pl=>{
       if(pl.length<2)return;
       const g=svgEl('g',{'data-constraint':'palindrome'});
       const pts=pl.map(([r,c])=>pt(r,c));
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#D4A0D4','stroke-width':'5','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.5'}));
+      const d=smoothPath(pts);
+      // Outer wide line
+      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#90A4AE','stroke-width':'10','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.18'}));
+      // Main line
+      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#B0BEC5','stroke-width':'6','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.3'}));
+      // Inner highlight line
+      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#CFD8DC','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.2'}));
       svg.appendChild(g);
     });
   }
 
-  // ---- Renban lines (SudokuPad: PURPLE) ----
+  // ---- Renban lines (pink, dotted pattern) ----
   if(pz.renbans&&pz.renbans.length){
     activeTypes.add('renban');
     pz.renbans.forEach(rb=>{
       if(rb.length<2)return;
       const g=svgEl('g',{'data-constraint':'renban'});
       const pts=rb.map(([r,c])=>pt(r,c));
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#AB47BC','stroke-width':'5','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.55'}));
+      const d=smoothPath(pts);
+      // Background
+      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#E91E63','stroke-width':'13','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.06'}));
+      // Dotted outer
+      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#F06292','stroke-width':'7','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.3','stroke-dasharray':'1 12'}));
+      // Solid center
+      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#F48FB1','stroke-width':'3','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.32'}));
       svg.appendChild(g);
     });
   }
 
-  // ---- Dutch Whisper lines (SudokuPad: ORANGE) ----
+  // ---- Dutch Whisper lines (orange, dashed) ----
   if(pz.dutchWhispers&&pz.dutchWhispers.length){
     activeTypes.add('dutch');
     pz.dutchWhispers.forEach(dw=>{
       if(dw.length<2)return;
       const g=svgEl('g',{'data-constraint':'dutch'});
       const pts=dw.map(([r,c])=>pt(r,c));
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#FFA726','stroke-width':'5','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.55'}));
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#FF9800','stroke-width':'14','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.06'}));
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#FFB74D','stroke-width':'8','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.35','stroke-dasharray':'14 6'}));
+      // Diamond markers
+      pts.forEach(p=>g.appendChild(svgEl('polygon',{points:`${p.x},${p.y-4} ${p.x+4},${p.y} ${p.x},${p.y+4} ${p.x-4},${p.y}`,fill:'#FFB74D',opacity:'.25'})));
       svg.appendChild(g);
     });
   }
@@ -2263,16 +2239,16 @@ function buildConstraintLegend(types){
   const el=document.getElementById('constraint-legend');if(!el)return;
   el.innerHTML='';
   const defs={
-    killer:{color:'#999',label:'Cages',shape:'dash'},
-    thermo:{color:'#AAAAAA',label:'Thermo',shape:'line'},
-    arrow:{color:'#5C6BC0',label:'Arrow',shape:'dot'},
+    killer:{color:'#E91E63',label:'Cages',shape:'dash'},
+    thermo:{color:'#9C27B0',label:'Thermo',shape:'line'},
+    arrow:{color:'#42A5F5',label:'Arrow',shape:'dot'},
     whisper:{color:'#66BB6A',label:'Whisper',shape:'line'},
-    kropki:{color:'#888',label:'Kropki',shape:'dot'},
-    palindrome:{color:'#D4A0D4',label:'Palindrome',shape:'line'},
-    renban:{color:'#AB47BC',label:'Renban',shape:'line'},
-    dutch:{color:'#FFA726',label:'Dutch',shape:'line'},
-    knight:{color:'#42A5F5',label:'Anti-Knight',shape:'dot'},
-    king:{color:'#AB47BC',label:'Anti-King',shape:'dot'}
+    kropki:{color:'#999',label:'Kropki',shape:'dot'},
+    palindrome:{color:'#B0BEC5',label:'Palindrome',shape:'line'},
+    renban:{color:'#F06292',label:'Renban',shape:'dash'},
+    dutch:{color:'#FFB74D',label:'Dutch',shape:'dash'},
+    knight:{color:'#64b5f6',label:'Anti-Knight',shape:'dot'},
+    king:{color:'#ce93d8',label:'Anti-King',shape:'dot'}
   };
   const tips={
     killer:'Cage digits sum to the clue. No repeats.',
@@ -2335,9 +2311,7 @@ function checkWin(){
   // WIN!
   stopTimer();stopEllaIdleWatch();
   state.puzzles[curWeek].done=true;state.puzzles[curWeek].at=new Date().toISOString();
-  state.puzzles[curWeek].t=elapsed;state.puzzles[curWeek].g=null;
-  state.puzzles[curWeek].m=mistakes;state.puzzles[curWeek].h=hintsUsed;
-  state.puzzles[curWeek].n=null;state.puzzles[curWeek].hc=null;save();
+  state.puzzles[curWeek].t=elapsed;state.puzzles[curWeek].g=null;save();
   // Update stats
   stats.totalSolves++;stats.totalTime+=elapsed;stats.totalMistakes+=mistakes;stats.totalHints+=hintsUsed;
   if(mistakes===0)stats.perfectRuns++;
@@ -2417,7 +2391,7 @@ function saveProgress(showIndicator){
     state.puzzles[curWeek].n=curPuzzle.notes.map(r=>r.map(s=>[...s]));
     state.puzzles[curWeek].m=mistakes;
     state.puzzles[curWeek].h=hintsUsed;
-    state.puzzles[curWeek].hc=curPuzzle.hintCells?[...curPuzzle.hintCells]:null;
+    if(curPuzzle.hintCells)state.puzzles[curWeek].hc=[...curPuzzle.hintCells];
     save();
     if(showIndicator) flashSaveIndicator();
   }
@@ -3745,11 +3719,6 @@ document.addEventListener('visibilitychange',()=>{
       MusicEngine.start();
     }
   }
-});
-
-// Save on page close/navigate — critical last-resort persistence
-window.addEventListener('beforeunload',()=>{
-  if(curWeek>=0&&curPuzzle&&document.getElementById('game').classList.contains('active'))saveProgress();
 });
 
 // ============== SERVICE WORKER ==============
