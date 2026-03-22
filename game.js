@@ -2084,17 +2084,8 @@ function drawConstraints(){
   const pz=PUZZLES[curWeek];
   const activeTypes=new Set();
 
-  // ---- SVG Defs: gradients & glow filter ----
+  // SVG defs (minimal — no glow filters)
   const defs=document.createElementNS('http://www.w3.org/2000/svg','defs');
-  // Glow filter
-  const gf=document.createElementNS('http://www.w3.org/2000/svg','filter');
-  gf.id='cGlow';gf.setAttribute('x','-50%');gf.setAttribute('y','-50%');
-  gf.setAttribute('width','200%');gf.setAttribute('height','200%');
-  const gb=document.createElementNS('http://www.w3.org/2000/svg','feGaussianBlur');
-  gb.setAttribute('in','SourceGraphic');gb.setAttribute('stdDeviation','3');gb.setAttribute('result','blur');
-  const gm=document.createElementNS('http://www.w3.org/2000/svg','feMerge');
-  ['blur','SourceGraphic'].forEach(src=>{const n=document.createElementNS('http://www.w3.org/2000/svg','feMergeNode');n.setAttribute('in',src);gm.appendChild(n);});
-  gf.appendChild(gb);gf.appendChild(gm);defs.appendChild(gf);
   svg.appendChild(defs);
 
   // Helpers
@@ -2115,147 +2106,95 @@ function drawConstraints(){
     return el;
   }
 
-  // ---- Killer cages (SudokuPad-style SVG outlines) ----
+  // ---- Killer cages (SudokuPad-style: thin inset dashed outlines) ----
   if(pz.cages&&pz.cages.length){
     activeTypes.add('killer');
-    const INSET=3.5;
+    const IN=3;
     pz.cages.forEach(cage=>{
       const set=new Set(cage.c.map(([r,c])=>`${r},${c}`));
       const g=svgEl('g',{'data-constraint':'killer'});
-
-      // Collect boundary edge segments
       const segs=[];
       for(const [r,c] of cage.c){
         const x0=c*cs,y0=r*cs,x1=(c+1)*cs,y1=(r+1)*cs;
-        // Check each of the 4 edges - if neighbor is NOT in cage, it's a boundary
         if(!set.has(`${r-1},${c}`)){
-          // Top edge - inset down
-          const lx=set.has(`${r},${c-1}`)&&!set.has(`${r-1},${c-1}`)?x0:x0+INSET;
-          const rx=set.has(`${r},${c+1}`)&&!set.has(`${r-1},${c+1}`)?x1:x1-INSET;
-          segs.push([lx,y0+INSET,rx,y0+INSET]);
+          const lx=set.has(`${r},${c-1}`)&&!set.has(`${r-1},${c-1}`)?x0:x0+IN;
+          const rx=set.has(`${r},${c+1}`)&&!set.has(`${r-1},${c+1}`)?x1:x1-IN;
+          segs.push([lx,y0+IN,rx,y0+IN]);
         }
         if(!set.has(`${r+1},${c}`)){
-          // Bottom edge - inset up
-          const lx=set.has(`${r},${c-1}`)&&!set.has(`${r+1},${c-1}`)?x0:x0+INSET;
-          const rx=set.has(`${r},${c+1}`)&&!set.has(`${r+1},${c+1}`)?x1:x1-INSET;
-          segs.push([lx,y1-INSET,rx,y1-INSET]);
+          const lx=set.has(`${r},${c-1}`)&&!set.has(`${r+1},${c-1}`)?x0:x0+IN;
+          const rx=set.has(`${r},${c+1}`)&&!set.has(`${r+1},${c+1}`)?x1:x1-IN;
+          segs.push([lx,y1-IN,rx,y1-IN]);
         }
         if(!set.has(`${r},${c-1}`)){
-          // Left edge - inset right
-          const ty=set.has(`${r-1},${c}`)&&!set.has(`${r-1},${c-1}`)?y0:y0+INSET;
-          const by=set.has(`${r+1},${c}`)&&!set.has(`${r+1},${c-1}`)?y1:y1-INSET;
-          segs.push([x0+INSET,ty,x0+INSET,by]);
+          const ty=set.has(`${r-1},${c}`)&&!set.has(`${r-1},${c-1}`)?y0:y0+IN;
+          const by=set.has(`${r+1},${c}`)&&!set.has(`${r+1},${c-1}`)?y1:y1-IN;
+          segs.push([x0+IN,ty,x0+IN,by]);
         }
         if(!set.has(`${r},${c+1}`)){
-          // Right edge - inset left
-          const ty=set.has(`${r-1},${c}`)&&!set.has(`${r-1},${c+1}`)?y0:y0+INSET;
-          const by=set.has(`${r+1},${c}`)&&!set.has(`${r+1},${c+1}`)?y1:y1-INSET;
-          segs.push([x1-INSET,ty,x1-INSET,by]);
+          const ty=set.has(`${r-1},${c}`)&&!set.has(`${r-1},${c+1}`)?y0:y0+IN;
+          const by=set.has(`${r+1},${c}`)&&!set.has(`${r+1},${c+1}`)?y1:y1-IN;
+          segs.push([x1-IN,ty,x1-IN,by]);
         }
       }
-
-      // Draw cage outline
       if(segs.length){
         const d=segs.map(([x1,y1,x2,y2])=>`M${x1},${y1}L${x2},${y2}`).join(' ');
-        // Background glow
-        g.appendChild(svgEl('path',{d,fill:'none',stroke:'rgba(255,112,67,.12)','stroke-width':'6','stroke-linecap':'round'}));
-        // Main dashed outline
-        g.appendChild(svgEl('path',{d,fill:'none',stroke:'rgba(255,112,67,.7)','stroke-width':'1.5','stroke-dasharray':'6 3','stroke-linecap':'round'}));
+        g.appendChild(svgEl('path',{d,fill:'none',stroke:'rgba(80,80,80,.45)','stroke-width':'1','stroke-dasharray':'4 2.5','stroke-linecap':'square'}));
       }
-
-      // Cage sum label in SVG
       let tl=cage.c[0];cage.c.forEach(([r,c])=>{if(r<tl[0]||(r===tl[0]&&c<tl[1]))tl=[r,c];});
-      const label=svgEl('text',{
-        x:tl[1]*cs+INSET+1.5,y:tl[0]*cs+INSET+8.5,
-        fill:'rgba(230,81,0,.85)',
-        'font-size':'9','font-weight':'800',
-        'font-family':"'Quicksand',sans-serif",
-        'pointer-events':'none'
-      });
+      const label=svgEl('text',{x:tl[1]*cs+IN+1,y:tl[0]*cs+IN+8,fill:'rgba(80,80,80,.7)','font-size':'8','font-weight':'700','font-family':"'Quicksand',sans-serif",'pointer-events':'none'});
       label.textContent=cage.s;
       g.appendChild(label);
-
       svg.appendChild(g);
-
-      // Still store cage label info for notes offset
-      cage.c.forEach(([r,c])=>{
-        const cell=getCell(r,c);if(!cell)return;
-        cell._cageClasses=[];
-      });
+      cage.c.forEach(([r,c])=>{const cell=getCell(r,c);if(cell)cell._cageClasses=[];});
       if(tl){const tlCell=getCell(tl[0],tl[1]);if(tlCell)tlCell._cageLabel=cage.s;}
     });
   }
 
-  // ---- Thermos (vibrant purple gradient, large bulb) ----
+  // ---- Thermos (SudokuPad: gray line + round bulb) ----
   if(pz.thermos&&pz.thermos.length){
     activeTypes.add('thermo');
-    pz.thermos.forEach((th,ti)=>{
+    pz.thermos.forEach(th=>{
       if(th.length<2)return;
       const g=svgEl('g',{'data-constraint':'thermo'});
       const pts=th.map(([r,c])=>pt(r,c));
-      // Per-thermo gradient
-      const gid=`tG${ti}`;
-      const grad=svgEl('linearGradient',{id:gid,gradientUnits:'userSpaceOnUse',x1:pts[0].x,y1:pts[0].y,x2:pts[pts.length-1].x,y2:pts[pts.length-1].y});
-      [{o:'0',c:'#ba68c8',op:'.95'},{o:'1',c:'#ce93d8',op:'.75'}].forEach(s=>{
-        grad.appendChild(svgEl('stop',{offset:s.o,'stop-color':s.c,'stop-opacity':s.op}));
-      });
-      defs.appendChild(grad);
-      // Background glow
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#ba68c8','stroke-width':'14','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.15'}));
-      // Main line
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:`url(#${gid})`,'stroke-width':'9','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.75'}));
-      // Bulb glow
-      g.appendChild(svgEl('circle',{cx:pts[0].x,cy:pts[0].y,r:'17',fill:'#ba68c8',opacity:'.2'}));
-      // Bulb
-      g.appendChild(svgEl('circle',{cx:pts[0].x,cy:pts[0].y,r:'14',fill:'#ba68c8',opacity:'.7'}));
-      // Tip markers
-      for(let i=1;i<pts.length;i++) g.appendChild(svgEl('circle',{cx:pts[i].x,cy:pts[i].y,r:'3',fill:'#ba68c8',opacity:'.45'}));
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#999','stroke-width':'4','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.4'}));
+      g.appendChild(svgEl('circle',{cx:pts[0].x,cy:pts[0].y,r:'10',fill:'#999',opacity:'.35'}));
       svg.appendChild(g);
     });
   }
 
-  // ---- Arrows (blue circle + line + arrowhead) ----
+  // ---- Arrows (SudokuPad: thin circle + thin line) ----
   if(pz.arrows&&pz.arrows.length){
     activeTypes.add('arrow');
     pz.arrows.forEach(ar=>{
       const g=svgEl('g',{'data-constraint':'arrow'});
       const cx=ar.o[1]*cs+cs/2,cy=ar.o[0]*cs+cs/2;
-      // Circle bg
-      g.appendChild(svgEl('circle',{cx,cy,r:'19',fill:'rgba(200,200,200,.1)'}));
-      // Circle
-      g.appendChild(svgEl('circle',{cx,cy,r:'16',fill:'none',stroke:'#42a5f5','stroke-width':'2.5',opacity:'.7'}));
+      g.appendChild(svgEl('circle',{cx,cy,r:'18',fill:'none',stroke:'#aaa','stroke-width':'1.5',opacity:'.5'}));
       if(ar.a.length){
         const pts=[{x:cx,y:cy},...ar.a.map(([r,c])=>pt(r,c))];
-        // Line
-        g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#42a5f5','stroke-width':'3','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.7'}));
-        // Arrowhead
+        g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#aaa','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.5'}));
         const last=pts[pts.length-1],prev=pts[pts.length-2];
-        const ang=Math.atan2(last.y-prev.y,last.x-prev.x),hl=11;
-        g.appendChild(svgEl('polygon',{
-          points:[`${last.x},${last.y}`,`${last.x-hl*Math.cos(ang-Math.PI/5.5)},${last.y-hl*Math.sin(ang-Math.PI/5.5)}`,`${last.x-hl*Math.cos(ang+Math.PI/5.5)},${last.y-hl*Math.sin(ang+Math.PI/5.5)}`].join(' '),
-          fill:'#42a5f5',opacity:'.7'
-        }));
+        const ang=Math.atan2(last.y-prev.y,last.x-prev.x),hl=9;
+        g.appendChild(svgEl('polygon',{points:[`${last.x},${last.y}`,`${last.x-hl*Math.cos(ang-.5)},${last.y-hl*Math.sin(ang-.5)}`,`${last.x-hl*Math.cos(ang+.5)},${last.y-hl*Math.sin(ang+.5)}`].join(' '),fill:'#aaa',opacity:'.5'}));
       }
       svg.appendChild(g);
     });
   }
 
-  // ---- German Whisper lines (solid green) ----
+  // ---- German Whisper lines (SudokuPad: green line) ----
   if(pz.whispers&&pz.whispers.length){
     activeTypes.add('whisper');
     pz.whispers.forEach(wh=>{
       if(wh.length<2)return;
       const g=svgEl('g',{'data-constraint':'whisper'});
       const pts=wh.map(([r,c])=>pt(r,c));
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#4CAF50','stroke-width':'14','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.1'}));
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#66bb6a','stroke-width':'9','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.65'}));
-      // Node dots
-      pts.forEach(p=>g.appendChild(svgEl('circle',{cx:p.x,cy:p.y,r:'3.5',fill:'#4CAF50',opacity:'.55'})));
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#66bb6a','stroke-width':'4','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.4'}));
       svg.appendChild(g);
     });
   }
 
-  // ---- Kropki dots (bigger, with glow) ----
+  // ---- Kropki dots (SudokuPad: clean small dots on edge) ----
   if(pz.kropki&&pz.kropki.length){
     activeTypes.add('kropki');
     pz.kropki.forEach(k=>{
@@ -2263,63 +2202,43 @@ function drawConstraints(){
       const mx=(c1+c2)/2*cs+cs/2,my=(r1+r2)/2*cs+cs/2;
       const g=svgEl('g',{'data-constraint':'kropki'});
       const isBlack=k.t==='b';
-      // Outer glow
-      g.appendChild(svgEl('circle',{cx:mx,cy:my,r:'13',fill:isBlack?'rgba(0,0,0,.18)':'rgba(255,255,255,.15)'}));
-      // Main dot
-      g.appendChild(svgEl('circle',{cx:mx,cy:my,r:'10',fill:isBlack?'#222':'#f5f5f5',stroke:isBlack?'#aaa':'#555','stroke-width':'2.2'}));
-      // Inner highlight
-      g.appendChild(svgEl('circle',{cx:mx-2,cy:my-2,r:'2.8',fill:isBlack?'rgba(255,255,255,.15)':'rgba(255,255,255,.6)'}));
+      g.appendChild(svgEl('circle',{cx:mx,cy:my,r:'6',fill:isBlack?'#333':'#fff',stroke:isBlack?'#666':'#999','stroke-width':'1.5'}));
       svg.appendChild(g);
     });
   }
 
-  // ---- Palindrome lines (cool grey-blue, double-line effect) ----
+  // ---- Palindrome lines (SudokuPad: grey line) ----
   if(pz.palindromes&&pz.palindromes.length){
     activeTypes.add('palindrome');
     pz.palindromes.forEach(pl=>{
       if(pl.length<2)return;
       const g=svgEl('g',{'data-constraint':'palindrome'});
       const pts=pl.map(([r,c])=>pt(r,c));
-      const d=smoothPath(pts);
-      // Outer wide line
-      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#90a4ae','stroke-width':'10','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.25'}));
-      // Main line
-      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#90a4ae','stroke-width':'6','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.6'}));
-      // Inner highlight line
-      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#b0bec5','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.5'}));
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#b0bec5','stroke-width':'4','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.4'}));
       svg.appendChild(g);
     });
   }
 
-  // ---- Renban lines (pink, dotted pattern) ----
+  // ---- Renban lines (SudokuPad: purple/pink line) ----
   if(pz.renbans&&pz.renbans.length){
     activeTypes.add('renban');
     pz.renbans.forEach(rb=>{
       if(rb.length<2)return;
       const g=svgEl('g',{'data-constraint':'renban'});
       const pts=rb.map(([r,c])=>pt(r,c));
-      const d=smoothPath(pts);
-      // Background
-      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#f06292','stroke-width':'13','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.1'}));
-      // Dotted outer
-      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#f06292','stroke-width':'7','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.55','stroke-dasharray':'1 12'}));
-      // Solid center
-      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#f06292','stroke-width':'3','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.65'}));
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#ce93d8','stroke-width':'4','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.4'}));
       svg.appendChild(g);
     });
   }
 
-  // ---- Dutch Whisper lines (orange, dashed) ----
+  // ---- Dutch Whisper lines (SudokuPad: orange line) ----
   if(pz.dutchWhispers&&pz.dutchWhispers.length){
     activeTypes.add('dutch');
     pz.dutchWhispers.forEach(dw=>{
       if(dw.length<2)return;
       const g=svgEl('g',{'data-constraint':'dutch'});
       const pts=dw.map(([r,c])=>pt(r,c));
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#FF9800','stroke-width':'14','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.1'}));
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#FFB74D','stroke-width':'8','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.65','stroke-dasharray':'14 6'}));
-      // Diamond markers
-      pts.forEach(p=>g.appendChild(svgEl('polygon',{points:`${p.x},${p.y-4} ${p.x+4},${p.y} ${p.x},${p.y+4} ${p.x-4},${p.y}`,fill:'#FFB74D',opacity:'.55'})));
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#FFB74D','stroke-width':'4','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.4'}));
       svg.appendChild(g);
     });
   }
@@ -2336,14 +2255,14 @@ function buildConstraintLegend(types){
   const el=document.getElementById('constraint-legend');if(!el)return;
   el.innerHTML='';
   const defs={
-    killer:{color:'#ff7043',label:'Cages',shape:'dash'},
-    thermo:{color:'#ba68c8',label:'Thermo',shape:'line'},
-    arrow:{color:'#42a5f5',label:'Arrow',shape:'dot'},
+    killer:{color:'#888',label:'Cages',shape:'dash'},
+    thermo:{color:'#999',label:'Thermo',shape:'line'},
+    arrow:{color:'#aaa',label:'Arrow',shape:'dot'},
     whisper:{color:'#66bb6a',label:'Whisper',shape:'line'},
-    kropki:{color:'#999',label:'Kropki',shape:'dot'},
-    palindrome:{color:'#90a4ae',label:'Palindrome',shape:'line'},
-    renban:{color:'#f06292',label:'Renban',shape:'dash'},
-    dutch:{color:'#FFB74D',label:'Dutch',shape:'dash'},
+    kropki:{color:'#888',label:'Kropki',shape:'dot'},
+    palindrome:{color:'#b0bec5',label:'Palindrome',shape:'line'},
+    renban:{color:'#ce93d8',label:'Renban',shape:'line'},
+    dutch:{color:'#FFB74D',label:'Dutch',shape:'line'},
     knight:{color:'#64b5f6',label:'Anti-Knight',shape:'dot'},
     king:{color:'#ce93d8',label:'Anti-King',shape:'dot'}
   };
