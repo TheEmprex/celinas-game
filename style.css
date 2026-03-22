@@ -12,7 +12,7 @@
   --glass:rgba(255,255,255,.05);--glass-b:rgba(255,255,255,.08);
   --r:16px;--r-sm:10px;
   --ease:cubic-bezier(.4,0,.2,1);--bounce:cubic-bezier(.175,.885,.32,1.275);
-  --cell:min(calc((100vw - 12px) / 9), 52px);--board:calc(var(--cell)*9);
+  --cell:min(calc((100vw - 8px) / 9), 56px);--board:calc(var(--cell)*9);
   --safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px);
 
   /* Board cells — SudokuPad white style */
@@ -130,8 +130,8 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
    GAME VIEW — Premium dark theme
    ================================================================ */
 #game{
-  justify-content:flex-start;padding:0 6px;
-  padding-top:calc(8px + var(--safe-t));padding-bottom:calc(10px + var(--safe-b));
+  justify-content:flex-start;padding:0 4px;
+  padding-top:calc(2px + var(--safe-t));padding-bottom:calc(4px + var(--safe-b));
   gap:0;background:var(--g-bg);
 }
 #game::before{
@@ -145,7 +145,7 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 #game>*{position:relative;z-index:1}
 
 /* --- Header (dark) --- */
-.g-header{display:flex;align-items:center;width:100%;max-width:var(--board);height:40px;flex-shrink:0}
+.g-header{display:flex;align-items:center;width:100%;max-width:var(--board);height:34px;flex-shrink:0}
 #game.active .g-header{animation:headerIn .35s var(--ease) both}
 @keyframes headerIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
 .g-back{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;border:none;background:transparent;color:var(--g-text-mid);cursor:pointer;transition:all .15s;flex-shrink:0}
@@ -182,7 +182,7 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 /* ==================================================
    THE BOARD — white on dark = dramatic contrast
    ================================================== */
-.board-wrap{position:relative;width:var(--board);height:var(--board);flex-shrink:0;margin-top:6px;margin-bottom:8px;border-radius:4px;box-shadow:0 0 50px rgba(233,30,99,.05),0 12px 40px rgba(0,0,0,.25),0 2px 10px rgba(0,0,0,.12);overflow:hidden;transition:box-shadow .6s ease,transform .5s var(--bounce);-webkit-transform:translateZ(0);transform:translateZ(0)}
+.board-wrap{position:relative;width:var(--board);height:var(--board);flex-shrink:0;margin-top:2px;margin-bottom:4px;border-radius:2px;box-shadow:0 4px 20px rgba(0,0,0,.3),0 1px 6px rgba(0,0,0,.15);overflow:hidden;transition:box-shadow .6s ease,transform .5s var(--bounce);-webkit-transform:translateZ(0);transform:translateZ(0)}
 #game.active .board-wrap{animation:boardIn .5s var(--ease) .05s both}
 @keyframes boardIn{from{opacity:0;transform:scale(.92) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
 /* Board shake on error */
@@ -191,23 +191,19 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 /* Golden board on win */
 .board-wrap.golden{box-shadow:0 0 40px rgba(255,215,0,.2),0 0 80px rgba(255,215,0,.1) !important;border:1.5px solid rgba(255,215,0,.3);transition:box-shadow 1s ease,border 1s ease}
 
-.board{display:grid;grid-template-columns:repeat(9,1fr);grid-template-rows:repeat(9,1fr);width:100%;height:100%;background:var(--b-bg);border:3px solid var(--b-outer);border-radius:4px;position:relative;z-index:1;gap:0}
+.board{display:grid;grid-template-columns:repeat(9,1fr);grid-template-rows:repeat(9,1fr);width:100%;height:100%;background:var(--b-bg);border:2.5px solid var(--b-outer);border-radius:2px;position:relative;z-index:1;gap:0}
 .board-overlay{position:absolute;inset:0;z-index:2;pointer-events:none}
 
 /* --- Cells --- */
-.cell{display:flex;align-items:center;justify-content:center;font-size:calc(var(--cell)*.52);font-weight:600;cursor:pointer;position:relative;background:var(--b-bg);font-family:'Quicksand',sans-serif;transition:background-color .15s ease;-webkit-touch-callout:none;border-right:1px solid var(--b-thin);border-bottom:1px solid var(--b-thin)}
+.cell{display:flex;align-items:center;justify-content:center;font-size:calc(var(--cell)*.52);font-weight:600;cursor:pointer;position:relative;background:var(--b-bg);font-family:'Quicksand',sans-serif;transition:background-color .15s ease;-webkit-touch-callout:none;border-right:.5px solid var(--b-thin);border-bottom:.5px solid var(--b-thin)}
 .cell:nth-child(9n){border-right:none}
 .cell:nth-child(n+73):nth-child(-n+81){border-bottom:none}
-.cell:nth-child(3n){border-right:2px solid var(--b-thick)}
-.cell:nth-child(3n+1){border-left:2px solid var(--b-thick)}
-.cell:nth-child(9n-8){border-left:none}
-.cell:nth-child(n+19):nth-child(-n+27){border-bottom:2px solid var(--b-thick)}
-.cell:nth-child(n+28):nth-child(-n+36){border-top:2px solid var(--b-thick)}
-.cell:nth-child(n+46):nth-child(-n+54){border-bottom:2px solid var(--b-thick)}
-.cell:nth-child(n+55):nth-child(-n+63){border-top:2px solid var(--b-thick)}
+.cell:nth-child(3n):not(:nth-child(9n)){border-right:1.5px solid var(--b-thick)}
+.cell:nth-child(n+19):nth-child(-n+27){border-bottom:1.5px solid var(--b-thick)}
+.cell:nth-child(n+46):nth-child(-n+54){border-bottom:1.5px solid var(--b-thick)}
 .cell:nth-child(-n+9){border-top:none}
 .cell:nth-child(n+73){border-bottom:none}
-.cell.box-alt{background:var(--b-alt)}
+.cell.box-alt{background:#f2f2f2}
 
 /* --- Cell states --- */
 .cell.given{color:var(--b-given);font-weight:700;font-family:'Playfair Display',serif;font-size:calc(var(--cell)*.54)}
@@ -342,7 +338,7 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 /* ==================================================
    CONTROLS — dark glass aesthetic
    ================================================== */
-.g-controls{width:100%;max-width:var(--board);display:flex;flex-direction:column;gap:10px;flex-shrink:0}
+.g-controls{width:100%;max-width:var(--board);display:flex;flex-direction:column;gap:6px;flex-shrink:0}
 
 /* Numpad — dark glass buttons */
 .numpad{display:grid;grid-template-columns:repeat(9,1fr);gap:6px;width:100%}
@@ -740,7 +736,7 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 @keyframes checkBgPulse{0%,100%{fill:rgba(76,175,80,.2)}50%{fill:rgba(76,175,80,.35)}}
 
 /* =============== CONSTRAINT LEGEND STRIP =============== */
-.constraint-legend{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;padding:3px 0 1px;min-height:0}
+.constraint-legend{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;padding:1px 0;min-height:0}
 .constraint-legend:empty{display:none}
 .cl-item{display:flex;align-items:center;gap:3px;font-size:.55rem;color:rgba(255,255,255,.55);font-family:'Quicksand',sans-serif;font-weight:700;cursor:pointer;padding:3px 8px;border-radius:8px;transition:all .2s ease;letter-spacing:.3px;text-transform:uppercase;background:rgba(255,255,255,.04)}
 .cl-item:active{transform:scale(.95)}
@@ -876,40 +872,39 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 
 /* =============== RESPONSIVE =============== */
 @media(max-height:640px){
-  :root{--cell:min(calc((100vw - 12px) / 9), 42px)}
-  #game{padding-top:4px;padding-left:6px;padding-right:6px;padding-bottom:calc(6px + var(--safe-b))}
-  .g-header{height:32px}
-  .g-title{font-size:.65rem}
-  .g-timer{font-size:.6rem}
-  .board-wrap{margin-bottom:4px;border-radius:12px}
-  .board{border-radius:12px}
-  .numpad{gap:4px}
+  :root{--cell:min(calc((100vw - 8px) / 9), 42px)}
+  #game{padding-top:2px;padding-left:4px;padding-right:4px;padding-bottom:calc(4px + var(--safe-b))}
+  .g-header{height:28px}
+  .g-title{font-size:.6rem}
+  .g-timer{font-size:.58rem}
+  .board-wrap{margin-top:1px;margin-bottom:2px}
+  .numpad{gap:3px}
   .num-btn{font-size:1.1rem;border-radius:10px}
-  .g-controls{gap:6px}
-  .tools-row .t-btn{height:36px;font-size:.4rem}
-  .t-btn svg{width:17px;height:17px}
+  .g-controls{gap:4px}
+  .tools-row .t-btn{height:34px;font-size:.4rem}
+  .t-btn svg{width:16px;height:16px}
   .streak-counter{font-size:.9rem}
   .mistake-hearts svg{width:11px!important;height:11px!important}
 }
 @media(min-height:641px) and (max-height:750px){
-  :root{--cell:min(calc((100vw - 12px) / 9), 46px)}
-  .g-controls{gap:8px}
-  .numpad{gap:5px}
+  :root{--cell:min(calc((100vw - 8px) / 9), 48px)}
+  .g-controls{gap:6px}
+  .numpad{gap:4px}
 }
 @media(min-height:751px) and (max-height:932px){
-  :root{--cell:min(calc((100vw - 12px) / 9), 50px)}
-  .g-controls{gap:10px}
-  .numpad{gap:6px}
-  .num-btn{font-size:1.4rem;border-radius:16px}
-  .board-wrap{margin-bottom:8px}
+  :root{--cell:min(calc((100vw - 8px) / 9), 52px)}
+  .g-controls{gap:8px}
+  .numpad{gap:5px}
+  .num-btn{font-size:1.4rem;border-radius:14px}
+  .board-wrap{margin-bottom:4px}
 }
 @media(min-height:933px){
-  :root{--cell:min(calc((100vw - 12px) / 9), 56px)}
-  .g-controls{gap:12px}
-  .numpad{gap:7px}
-  .num-btn{font-size:1.5rem;border-radius:16px}
-  .board-wrap{margin-bottom:10px}
-  .tools-row .t-btn{height:48px;font-size:.5rem}
+  :root{--cell:min(calc((100vw - 8px) / 9), 58px)}
+  .g-controls{gap:10px}
+  .numpad{gap:6px}
+  .num-btn{font-size:1.5rem;border-radius:14px}
+  .board-wrap{margin-bottom:6px}
+  .tools-row .t-btn{height:46px;font-size:.48rem}
 }
 @media(min-width:768px){
   :root{--cell:52px}
