@@ -1156,7 +1156,23 @@ function initBoard(){
   // Keyboard
   document.addEventListener('keydown',e=>{
     if(!document.getElementById('game').classList.contains('active'))return;
-    const n=+e.key;if(n>=1&&n<=9)inputNum(n);
+    const n=+e.key;
+    if(n>=1&&n<=9){
+      if(e.shiftKey&&!e.ctrlKey&&!e.metaKey){
+        // Shift+number: toggle note without changing pencil mode
+        if(selCell&&!gamePaused){
+          const{r,c}=selCell;
+          if(!isGiven(r,c)){
+            pushHist();
+            const s=curPuzzle.notes[r][c];s.has(n)?s.delete(n):s.add(n);
+            if(s.size>0)curPuzzle.user[r][c]=0;
+            render();updateSmartHighlight();
+          }
+        }
+      }else if(!e.ctrlKey&&!e.metaKey){
+        inputNum(n);
+      }
+    }
     if(e.key==='Backspace'||e.key==='Delete')erase();
     if(e.key==='z'&&(e.ctrlKey||e.metaKey)&&!e.shiftKey)undo();
     if(e.key==='y'&&(e.ctrlKey||e.metaKey))redo();
@@ -1164,10 +1180,10 @@ function initBoard(){
     if(e.key==='p'||e.key==='P')togglePencil();
     if(selCell){
       const{r,c}=selCell;
-      if(e.key==='ArrowUp'&&r>0)selectCell(r-1,c);
-      if(e.key==='ArrowDown'&&r<8)selectCell(r+1,c);
-      if(e.key==='ArrowLeft'&&c>0)selectCell(r,c-1);
-      if(e.key==='ArrowRight'&&c<8)selectCell(r,c+1);
+      if(e.key==='ArrowUp'){e.preventDefault();if(r>0)selectCell(r-1,c);}
+      if(e.key==='ArrowDown'){e.preventDefault();if(r<8)selectCell(r+1,c);}
+      if(e.key==='ArrowLeft'){e.preventDefault();if(c>0)selectCell(r,c-1);}
+      if(e.key==='ArrowRight'){e.preventDefault();if(c<8)selectCell(r,c+1);}
     }
   });
   // Swipe on board for cell navigation (mobile)
@@ -1616,7 +1632,7 @@ function togglePencil(){
   if(!pencilMode){selectedCells.clear();render();}
   renderSelectedNum();
   haptic(pencilMode?[8,4,8]:[6,3,6]);
-  if(pencilMode) showToast("Notes mode — tap multiple cells to select them",1200);
+  if(pencilMode) showToast("Notes mode",800);
 }
 
 function renderHintCount(){
