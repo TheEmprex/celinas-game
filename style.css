@@ -15,8 +15,8 @@
   --cell:min(calc((100vw - 20px) / 9), 52px);--board:calc(var(--cell)*9);
   --safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px);
 
-  /* Board cells — warm & cozy */
-  --b-bg:#faf5f6;--b-alt:#f3ecef;--b-thin:rgba(100,80,95,.18);--b-thick:rgba(60,40,55,.55);--b-outer:rgba(50,35,45,.65);
+  /* Board cells — clean SudokuPad style */
+  --b-bg:#ffffff;--b-alt:#f7f7f7;--b-thin:rgba(0,0,0,.1);--b-thick:rgba(0,0,0,.55);--b-outer:rgba(0,0,0,.7);
   --b-sel:#fce4ec;--b-sel-ring:#e91e63;--b-peer:rgba(233,30,99,.08);--b-same:rgba(233,30,99,.14);
   --b-given:#3d2e38;--b-user:#d81b60;--b-error:#ef5350;
 
