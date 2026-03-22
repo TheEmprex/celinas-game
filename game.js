@@ -517,8 +517,8 @@ function initEllaDrag(el){
   el.addEventListener('touchstart',e=>{
     const t=e.touches[0];
     startX=t.clientX;startY=t.clientY;
-    origLeft=parseFloat(el.style.left)||0;
-    origBottom=parseFloat(el.style.bottom)||8;
+    origLeft=el.style.left?parseFloat(el.style.left):el.getBoundingClientRect().left;
+    origBottom=el.style.bottom?parseFloat(el.style.bottom):(window.innerHeight-el.getBoundingClientRect().bottom);
     dragging=true;moved=false;
     el.style.transition='none';
   },{passive:true});
@@ -547,11 +547,13 @@ function initEllaDrag(el){
 
   // Mouse events for desktop/laptop drag support
   el.addEventListener('mousedown',e=>{
+    e.preventDefault();
     startX=e.clientX;startY=e.clientY;
-    origLeft=parseFloat(el.style.left)||0;
-    origBottom=parseFloat(el.style.bottom)||8;
+    origLeft=el.style.left?parseFloat(el.style.left):el.getBoundingClientRect().left;
+    origBottom=el.style.bottom?parseFloat(el.style.bottom):(window.innerHeight-el.getBoundingClientRect().bottom);
     dragging=true;moved=false;
     el.style.transition='none';
+    el.style.cursor='grabbing';
   });
   document.addEventListener('mousemove',e=>{
     if(!dragging)return;
@@ -559,6 +561,7 @@ function initEllaDrag(el){
     if(!moved&&Math.abs(dx)<THRESHOLD&&Math.abs(dy)<THRESHOLD)return;
     moved=true;
     e.preventDefault();
+    document.body.style.cursor='grabbing';
     const newLeft=Math.max(0,Math.min(window.innerWidth-60,origLeft+dx));
     const newBottom=Math.max(0,Math.min(window.innerHeight-60,origBottom-dy));
     el.style.left=newLeft+'px';
@@ -574,6 +577,8 @@ function initEllaDrag(el){
       setTimeout(()=>el.classList.remove('ella-landed'),300);
     }
     dragging=false;
+    el.style.cursor='grab';
+    document.body.style.cursor='';
   });
 }
 
@@ -2008,7 +2013,7 @@ function render(){
     // Alternating 3x3 box tint (checkerboard pattern)
     const boxR=Math.floor(r/3),boxC=Math.floor(c/3);
     if((boxR+boxC)%2===1) cell.classList.add('box-alt');
-    if(cell._cageClasses) cell._cageClasses.forEach(cl=>cell.classList.add(cl));
+    // cage classes removed – cages now rendered via SVG overlay
 
     if(giv){cell.classList.add('given');cell.textContent=v;}
     else if(v>0){
@@ -2043,9 +2048,7 @@ function render(){
     // Highlight all cells with the same number
     if(hlNum>0&&v===hlNum&&!(selCell&&r===selCell.r&&c===selCell.c))cell.classList.add('same-num');
     // Re-add cage labels
-    if(cell._cageLabel){
-      const lb=document.createElement('span');lb.className='cage-label';lb.textContent=cell._cageLabel;cell.appendChild(lb);
-    }
+    // cage label removed from DOM – now rendered in SVG overlay
   }
 
   // Progress bar with color gradient
@@ -2076,7 +2079,7 @@ function drawConstraints(){
   const svg=document.getElementById('board-overlay');svg.innerHTML='';
   const cs=50; // viewBox 450/9
 
-  for(let r=0;r<9;r++)for(let c=0;c<9;c++){const cell=cellGrid[r][c];cell._cageClasses=[];cell._cageLabel=null;cell.classList.remove('cage-t','cage-b','cage-l','cage-r');}
+  for(let r=0;r<9;r++)for(let c=0;c<9;c++){const cell=cellGrid[r][c];cell._cageClasses=[];cell._cageLabel=null;}
 
   const pz=PUZZLES[curWeek];
   const activeTypes=new Set();
@@ -2112,27 +2115,74 @@ function drawConstraints(){
     return el;
   }
 
-  // ---- Killer cages ----
+  // ---- Killer cages (SudokuPad-style SVG outlines) ----
   if(pz.cages&&pz.cages.length){
     activeTypes.add('killer');
+    const INSET=3.5;
     pz.cages.forEach(cage=>{
       const set=new Set(cage.c.map(([r,c])=>`${r},${c}`));
+      const g=svgEl('g',{'data-constraint':'killer'});
+
+      // Collect boundary edge segments
+      const segs=[];
+      for(const [r,c] of cage.c){
+        const x0=c*cs,y0=r*cs,x1=(c+1)*cs,y1=(r+1)*cs;
+        // Check each of the 4 edges - if neighbor is NOT in cage, it's a boundary
+        if(!set.has(`${r-1},${c}`)){
+          // Top edge - inset down
+          const lx=set.has(`${r},${c-1}`)&&!set.has(`${r-1},${c-1}`)?x0:x0+INSET;
+          const rx=set.has(`${r},${c+1}`)&&!set.has(`${r-1},${c+1}`)?x1:x1-INSET;
+          segs.push([lx,y0+INSET,rx,y0+INSET]);
+        }
+        if(!set.has(`${r+1},${c}`)){
+          // Bottom edge - inset up
+          const lx=set.has(`${r},${c-1}`)&&!set.has(`${r+1},${c-1}`)?x0:x0+INSET;
+          const rx=set.has(`${r},${c+1}`)&&!set.has(`${r+1},${c+1}`)?x1:x1-INSET;
+          segs.push([lx,y1-INSET,rx,y1-INSET]);
+        }
+        if(!set.has(`${r},${c-1}`)){
+          // Left edge - inset right
+          const ty=set.has(`${r-1},${c}`)&&!set.has(`${r-1},${c-1}`)?y0:y0+INSET;
+          const by=set.has(`${r+1},${c}`)&&!set.has(`${r+1},${c-1}`)?y1:y1-INSET;
+          segs.push([x0+INSET,ty,x0+INSET,by]);
+        }
+        if(!set.has(`${r},${c+1}`)){
+          // Right edge - inset left
+          const ty=set.has(`${r-1},${c}`)&&!set.has(`${r-1},${c+1}`)?y0:y0+INSET;
+          const by=set.has(`${r+1},${c}`)&&!set.has(`${r+1},${c+1}`)?y1:y1-INSET;
+          segs.push([x1-INSET,ty,x1-INSET,by]);
+        }
+      }
+
+      // Draw cage outline
+      if(segs.length){
+        const d=segs.map(([x1,y1,x2,y2])=>`M${x1},${y1}L${x2},${y2}`).join(' ');
+        // Background glow
+        g.appendChild(svgEl('path',{d,fill:'none',stroke:'rgba(255,112,67,.12)','stroke-width':'6','stroke-linecap':'round'}));
+        // Main dashed outline
+        g.appendChild(svgEl('path',{d,fill:'none',stroke:'rgba(255,112,67,.7)','stroke-width':'1.5','stroke-dasharray':'6 3','stroke-linecap':'round'}));
+      }
+
+      // Cage sum label in SVG
+      let tl=cage.c[0];cage.c.forEach(([r,c])=>{if(r<tl[0]||(r===tl[0]&&c<tl[1]))tl=[r,c];});
+      const label=svgEl('text',{
+        x:tl[1]*cs+INSET+1.5,y:tl[0]*cs+INSET+8.5,
+        fill:'rgba(230,81,0,.85)',
+        'font-size':'9','font-weight':'800',
+        'font-family':"'Quicksand',sans-serif",
+        'pointer-events':'none'
+      });
+      label.textContent=cage.s;
+      g.appendChild(label);
+
+      svg.appendChild(g);
+
+      // Still store cage label info for notes offset
       cage.c.forEach(([r,c])=>{
         const cell=getCell(r,c);if(!cell)return;
-        const classes=[];
-        if(!set.has(`${r-1},${c}`))classes.push('cage-t');
-        if(!set.has(`${r+1},${c}`))classes.push('cage-b');
-        if(!set.has(`${r},${c-1}`))classes.push('cage-l');
-        if(!set.has(`${r},${c+1}`))classes.push('cage-r');
-        classes.forEach(cl=>cell.classList.add(cl));
-        cell._cageClasses=classes;
+        cell._cageClasses=[];
       });
-      let tl=cage.c[0];cage.c.forEach(([r,c])=>{if(r<tl[0]||(r===tl[0]&&c<tl[1]))tl=[r,c];});
-      const tlCell=getCell(tl[0],tl[1]);
-      if(tlCell){
-        tlCell._cageLabel=cage.s;
-        const lb=document.createElement('span');lb.className='cage-label';lb.textContent=cage.s;tlCell.appendChild(lb);
-      }
+      if(tl){const tlCell=getCell(tl[0],tl[1]);if(tlCell)tlCell._cageLabel=cage.s;}
     });
   }
 
@@ -2153,11 +2203,11 @@ function drawConstraints(){
       // Background glow
       g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#ba68c8','stroke-width':'14','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.15'}));
       // Main line
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:`url(#${gid})`,'stroke-width':'8','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.65'}));
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:`url(#${gid})`,'stroke-width':'9','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.75'}));
       // Bulb glow
       g.appendChild(svgEl('circle',{cx:pts[0].x,cy:pts[0].y,r:'17',fill:'#ba68c8',opacity:'.2'}));
       // Bulb
-      g.appendChild(svgEl('circle',{cx:pts[0].x,cy:pts[0].y,r:'13',fill:'#ba68c8',opacity:'.55'}));
+      g.appendChild(svgEl('circle',{cx:pts[0].x,cy:pts[0].y,r:'14',fill:'#ba68c8',opacity:'.7'}));
       // Tip markers
       for(let i=1;i<pts.length;i++) g.appendChild(svgEl('circle',{cx:pts[i].x,cy:pts[i].y,r:'3',fill:'#ba68c8',opacity:'.45'}));
       svg.appendChild(g);
@@ -2173,17 +2223,17 @@ function drawConstraints(){
       // Circle bg
       g.appendChild(svgEl('circle',{cx,cy,r:'19',fill:'rgba(200,200,200,.1)'}));
       // Circle
-      g.appendChild(svgEl('circle',{cx,cy,r:'16',fill:'none',stroke:'#b0bec5','stroke-width':'2.5',opacity:'.6'}));
+      g.appendChild(svgEl('circle',{cx,cy,r:'16',fill:'none',stroke:'#42a5f5','stroke-width':'2.5',opacity:'.7'}));
       if(ar.a.length){
         const pts=[{x:cx,y:cy},...ar.a.map(([r,c])=>pt(r,c))];
         // Line
-        g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#b0bec5','stroke-width':'3','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.6'}));
+        g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#42a5f5','stroke-width':'3','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.7'}));
         // Arrowhead
         const last=pts[pts.length-1],prev=pts[pts.length-2];
         const ang=Math.atan2(last.y-prev.y,last.x-prev.x),hl=11;
         g.appendChild(svgEl('polygon',{
           points:[`${last.x},${last.y}`,`${last.x-hl*Math.cos(ang-Math.PI/5.5)},${last.y-hl*Math.sin(ang-Math.PI/5.5)}`,`${last.x-hl*Math.cos(ang+Math.PI/5.5)},${last.y-hl*Math.sin(ang+Math.PI/5.5)}`].join(' '),
-          fill:'#b0bec5',opacity:'.6'
+          fill:'#42a5f5',opacity:'.7'
         }));
       }
       svg.appendChild(g);
@@ -2198,9 +2248,9 @@ function drawConstraints(){
       const g=svgEl('g',{'data-constraint':'whisper'});
       const pts=wh.map(([r,c])=>pt(r,c));
       g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#4CAF50','stroke-width':'14','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.1'}));
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#66bb6a','stroke-width':'8','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.55'}));
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#66bb6a','stroke-width':'9','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.65'}));
       // Node dots
-      pts.forEach(p=>g.appendChild(svgEl('circle',{cx:p.x,cy:p.y,r:'3.5',fill:'#4CAF50',opacity:'.45'})));
+      pts.forEach(p=>g.appendChild(svgEl('circle',{cx:p.x,cy:p.y,r:'3.5',fill:'#4CAF50',opacity:'.55'})));
       svg.appendChild(g);
     });
   }
@@ -2216,7 +2266,7 @@ function drawConstraints(){
       // Outer glow
       g.appendChild(svgEl('circle',{cx:mx,cy:my,r:'13',fill:isBlack?'rgba(0,0,0,.18)':'rgba(255,255,255,.15)'}));
       // Main dot
-      g.appendChild(svgEl('circle',{cx:mx,cy:my,r:'9',fill:isBlack?'#222':'#f5f5f5',stroke:isBlack?'#aaa':'#555','stroke-width':'2.2'}));
+      g.appendChild(svgEl('circle',{cx:mx,cy:my,r:'10',fill:isBlack?'#222':'#f5f5f5',stroke:isBlack?'#aaa':'#555','stroke-width':'2.2'}));
       // Inner highlight
       g.appendChild(svgEl('circle',{cx:mx-2,cy:my-2,r:'2.8',fill:isBlack?'rgba(255,255,255,.15)':'rgba(255,255,255,.6)'}));
       svg.appendChild(g);
@@ -2232,11 +2282,11 @@ function drawConstraints(){
       const pts=pl.map(([r,c])=>pt(r,c));
       const d=smoothPath(pts);
       // Outer wide line
-      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#78909c','stroke-width':'10','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.25'}));
+      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#90a4ae','stroke-width':'10','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.25'}));
       // Main line
-      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#78909c','stroke-width':'6','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.5'}));
+      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#90a4ae','stroke-width':'6','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.6'}));
       // Inner highlight line
-      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#b0bec5','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.4'}));
+      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#b0bec5','stroke-width':'2','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.5'}));
       svg.appendChild(g);
     });
   }
@@ -2252,9 +2302,9 @@ function drawConstraints(){
       // Background
       g.appendChild(svgEl('path',{d,fill:'none',stroke:'#f06292','stroke-width':'13','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.1'}));
       // Dotted outer
-      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#f06292','stroke-width':'7','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.45','stroke-dasharray':'1 12'}));
+      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#f06292','stroke-width':'7','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.55','stroke-dasharray':'1 12'}));
       // Solid center
-      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#f06292','stroke-width':'3','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.55'}));
+      g.appendChild(svgEl('path',{d,fill:'none',stroke:'#f06292','stroke-width':'3','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.65'}));
       svg.appendChild(g);
     });
   }
@@ -2267,9 +2317,9 @@ function drawConstraints(){
       const g=svgEl('g',{'data-constraint':'dutch'});
       const pts=dw.map(([r,c])=>pt(r,c));
       g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#FF9800','stroke-width':'14','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.1'}));
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#FFB74D','stroke-width':'8','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.55','stroke-dasharray':'14 6'}));
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#FFB74D','stroke-width':'8','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.65','stroke-dasharray':'14 6'}));
       // Diamond markers
-      pts.forEach(p=>g.appendChild(svgEl('polygon',{points:`${p.x},${p.y-4} ${p.x+4},${p.y} ${p.x},${p.y+4} ${p.x-4},${p.y}`,fill:'#FFB74D',opacity:'.4'})));
+      pts.forEach(p=>g.appendChild(svgEl('polygon',{points:`${p.x},${p.y-4} ${p.x+4},${p.y} ${p.x},${p.y+4} ${p.x-4},${p.y}`,fill:'#FFB74D',opacity:'.55'})));
       svg.appendChild(g);
     });
   }
@@ -2288,10 +2338,10 @@ function buildConstraintLegend(types){
   const defs={
     killer:{color:'#ff7043',label:'Cages',shape:'dash'},
     thermo:{color:'#ba68c8',label:'Thermo',shape:'line'},
-    arrow:{color:'#b0bec5',label:'Arrow',shape:'dot'},
+    arrow:{color:'#42a5f5',label:'Arrow',shape:'dot'},
     whisper:{color:'#66bb6a',label:'Whisper',shape:'line'},
     kropki:{color:'#999',label:'Kropki',shape:'dot'},
-    palindrome:{color:'#78909c',label:'Palindrome',shape:'line'},
+    palindrome:{color:'#90a4ae',label:'Palindrome',shape:'line'},
     renban:{color:'#f06292',label:'Renban',shape:'dash'},
     dutch:{color:'#FFB74D',label:'Dutch',shape:'dash'},
     knight:{color:'#64b5f6',label:'Anti-Knight',shape:'dot'},
