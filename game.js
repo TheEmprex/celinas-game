@@ -2139,10 +2139,10 @@ function drawConstraints(){
       }
       if(segs.length){
         const d=segs.map(([x1,y1,x2,y2])=>`M${x1},${y1}L${x2},${y2}`).join(' ');
-        g.appendChild(svgEl('path',{d,fill:'none',stroke:'#000','stroke-width':'1.5','stroke-dasharray':'3 3','stroke-linecap':'butt',opacity:'.72'}));
+        g.appendChild(svgEl('path',{d,fill:'none',stroke:'#000','stroke-width':'2','stroke-dasharray':'4 3','stroke-linecap':'round',opacity:'1'}));
       }
       let tl=cage.c[0];cage.c.forEach(([r,c])=>{if(r<tl[0]||(r===tl[0]&&c<tl[1]))tl=[r,c];});
-      const label=svgEl('text',{x:tl[1]*cs+IN+1,y:tl[0]*cs+IN+9,fill:'#000','font-size':'9','font-weight':'700','font-family':"'Quicksand',sans-serif",'pointer-events':'none',opacity:'.75'});
+      const label=svgEl('text',{x:tl[1]*cs+IN+1,y:tl[0]*cs+IN+9,fill:'#000','font-size':'10','font-weight':'700','font-family':"'Quicksand',sans-serif",'pointer-events':'none',opacity:'1'});
       label.textContent=cage.s;
       g.appendChild(label);
       svg.appendChild(g);
