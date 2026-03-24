@@ -274,19 +274,19 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 .cell.peer .notes span{color:#546e7a}
 
 /* --- Killer cages --- */
-.cage-label{position:absolute;top:0;left:1px;font-size:calc(var(--cell)*.18);color:#E65100;font-weight:800;z-index:5;line-height:1;pointer-events:none;font-family:'Quicksand',sans-serif;padding:0 2px;border-radius:0 0 3px 0;text-shadow:0 0 3px rgba(255,255,255,.8),0 0 1px rgba(255,255,255,1)}
+.cage-label{position:absolute;top:0;left:1px;font-size:calc(var(--cell)*.18);color:#BF360C;font-weight:800;z-index:5;line-height:1;pointer-events:none;font-family:'Quicksand',sans-serif;padding:0 2px;border-radius:0 0 3px 0;text-shadow:0 0 3px rgba(255,255,255,.8),0 0 1px rgba(255,255,255,1)}
 /* Cage borders now rendered via SVG overlay - see drawConstraints() */
 
 /* Constraint badges */
 .constraint-badge{display:inline-block;font-size:.58rem;text-transform:uppercase;letter-spacing:1px;padding:2px 8px;border-radius:10px;font-weight:700;margin:1px 2px}
-.constraint-badge.killer{background:rgba(230,81,0,.15);color:#E65100}
-.constraint-badge.thermo{background:rgba(170,170,170,.2);color:#AAAAAA}
-.constraint-badge.whisper{background:rgba(102,187,106,.2);color:#66BB6A}
+.constraint-badge.killer{background:rgba(68,68,68,.15);color:#444}
+.constraint-badge.thermo{background:rgba(158,158,158,.2);color:#9E9E9E}
+.constraint-badge.whisper{background:rgba(67,160,71,.2);color:#43A047}
 .constraint-badge.kropki{background:rgba(255,255,255,.15);color:rgba(255,255,255,.8)}
-.constraint-badge.palindrome{background:rgba(212,160,212,.2);color:#D4A0D4}
-.constraint-badge.renban{background:rgba(171,71,188,.15);color:#AB47BC}
-.constraint-badge.arrow{background:rgba(92,107,192,.2);color:#5C6BC0}
-.constraint-badge.dutch{background:rgba(255,167,38,.15);color:#FFA726}
+.constraint-badge.palindrome{background:rgba(236,64,122,.15);color:#EC407A}
+.constraint-badge.renban{background:rgba(123,31,162,.15);color:#7B1FA2}
+.constraint-badge.arrow{background:rgba(57,73,171,.2);color:#3949AB}
+.constraint-badge.dutch{background:rgba(239,108,0,.15);color:#EF6C00}
 .constraint-badge.knight{background:rgba(66,165,245,.15);color:#42A5F5}
 .constraint-badge.mixed{background:rgba(255,215,0,.15);color:var(--gold-soft)}
 
@@ -740,7 +740,7 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 
 /* =============== CONSTRAINT TOOLTIP =============== */
 .constraint-tip{margin:0 auto;text-align:center;background:rgba(20,15,25,.95);color:rgba(255,255,255,.85);padding:5px 14px;border-radius:10px;font-size:.6rem;font-weight:600;font-family:'Quicksand',sans-serif;max-height:0;opacity:0;overflow:hidden;transition:all .25s ease;pointer-events:none;border:1px solid rgba(255,255,255,.06)}
-.constraint-tip.show{max-height:30px;opacity:1;padding:5px 14px;margin-top:2px}
+.constraint-tip.show{max-height:36px;opacity:1;padding:5px 14px;margin-top:2px}
 
 /* =============== ANTI-KNIGHT/KING ZONES =============== */
 .cell.knight-zone::before{content:'';position:absolute;inset:2px;border:1.5px solid rgba(100,181,246,.18);border-radius:2px;pointer-events:none;z-index:1}
