@@ -274,13 +274,13 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 .cell.peer .notes span{color:#546e7a}
 
 /* --- Killer cages --- */
-.cage-label{position:absolute;top:0;left:1px;font-size:calc(var(--cell)*.18);color:#BF360C;font-weight:800;z-index:5;line-height:1;pointer-events:none;font-family:'Quicksand',sans-serif;padding:0 2px;border-radius:0 0 3px 0;text-shadow:0 0 3px rgba(255,255,255,.8),0 0 1px rgba(255,255,255,1)}
+.cage-label{position:absolute;top:0;left:1px;font-size:calc(var(--cell)*.18);color:#B71C1C;font-weight:800;z-index:5;line-height:1;pointer-events:none;font-family:'Quicksand',sans-serif;padding:0 2px;border-radius:0 0 3px 0;text-shadow:0 0 3px rgba(255,255,255,.9),0 0 1px rgba(255,255,255,1)}
 /* Cage borders now rendered via SVG overlay - see drawConstraints() */
 
 /* Constraint badges */
 .constraint-badge{display:inline-block;font-size:.58rem;text-transform:uppercase;letter-spacing:1px;padding:2px 8px;border-radius:10px;font-weight:700;margin:1px 2px}
-.constraint-badge.killer{background:rgba(68,68,68,.15);color:#444}
-.constraint-badge.thermo{background:rgba(158,158,158,.2);color:#9E9E9E}
+.constraint-badge.killer{background:rgba(34,34,34,.12);color:#222}
+.constraint-badge.thermo{background:rgba(176,190,197,.2);color:#B0BEC5}
 .constraint-badge.whisper{background:rgba(67,160,71,.2);color:#43A047}
 .constraint-badge.kropki{background:rgba(255,255,255,.15);color:rgba(255,255,255,.8)}
 .constraint-badge.palindrome{background:rgba(236,64,122,.15);color:#EC407A}

@@ -252,7 +252,7 @@ const RULES_HTML = {
     <ul>
     <li>Normal sudoku rules apply (1\u20139 in each row, column and 3\u00d73 box).</li>
     <li><svg viewBox="0 0 28 14" width="28" height="14" style="vertical-align:middle;margin-right:4px"><rect x="1" y="1" width="26" height="12" rx="2" fill="none" stroke="#777" stroke-width="1.5" stroke-dasharray="4 2.5"/><text x="4" y="10" fill="#E65100" font-size="8" font-weight="800">12</text></svg> <strong style="color:#E65100">Killer cages</strong> \u2014 digits in a cage sum to the clue number. No repeats within a cage.</li>
-    <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><circle cx="7" cy="7" r="5" fill="#9E9E9E" opacity=".65"/><line x1="12" y1="7" x2="35" y2="7" stroke="#9E9E9E" stroke-width="3" stroke-linecap="round" opacity=".7"/></svg> <strong style="color:#9E9E9E">Thermometers</strong> \u2014 digits strictly increase from the round bulb toward the tip.</li>
+    <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><circle cx="7" cy="7" r="5" fill="#B0BEC5" opacity=".65"/><line x1="12" y1="7" x2="35" y2="7" stroke="#B0BEC5" stroke-width="3" stroke-linecap="round" opacity=".7"/></svg> <strong style="color:#B0BEC5">Thermometers</strong> \u2014 digits strictly increase from the round bulb toward the tip.</li>
     <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><line x1="4" y1="7" x2="36" y2="7" stroke="#EC407A" stroke-width="3" stroke-linecap="round" opacity=".4"/></svg> <strong style="color:#EC407A">Palindrome lines</strong> \u2014 the sequence of digits reads the same forwards and backwards.</li>
     <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><line x1="4" y1="7" x2="36" y2="7" stroke="#7B1FA2" stroke-width="3" stroke-linecap="round" opacity=".5"/></svg> <strong style="color:#7B1FA2">Renban lines</strong> \u2014 cells contain a set of consecutive digits in any order (e.g. {3,4,5,6}).</li>
     </ul>
@@ -276,7 +276,7 @@ const RULES_HTML = {
     <li><svg viewBox="0 0 28 14" width="28" height="14" style="vertical-align:middle;margin-right:4px"><circle cx="14" cy="7" r="5" fill="#222" stroke="#333" stroke-width="1.5"/></svg> <strong>Black dot</strong> \u25CF \u2014 one cell is exactly double the other.</li>
     <li><strong>No dot</strong> \u2014 if no dot is shown between two adjacent cells, neither condition holds. <em>This is a clue!</em></li>
     <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><line x1="4" y1="7" x2="36" y2="7" stroke="#EC407A" stroke-width="3" stroke-linecap="round" opacity=".4"/></svg> <strong style="color:#EC407A">Palindrome lines</strong> \u2014 the sequence of digits reads the same forwards and backwards.</li>
-    <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><circle cx="7" cy="7" r="5" fill="#9E9E9E" opacity=".65"/><line x1="12" y1="7" x2="35" y2="7" stroke="#9E9E9E" stroke-width="3" stroke-linecap="round" opacity=".7"/></svg> <strong style="color:#9E9E9E">Thermometers</strong> \u2014 digits strictly increase from the round bulb toward the tip.</li>
+    <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><circle cx="7" cy="7" r="5" fill="#B0BEC5" opacity=".65"/><line x1="12" y1="7" x2="35" y2="7" stroke="#B0BEC5" stroke-width="3" stroke-linecap="round" opacity=".7"/></svg> <strong style="color:#B0BEC5">Thermometers</strong> \u2014 digits strictly increase from the round bulb toward the tip.</li>
     </ul>
     <div class="rule-note">Tip: The pair (1,2) satisfies both a white dot (differ by 1) and a black dot (2=2\u00d71). All dots are shown \u2014 if a dot is missing between two cells, that\u2019s important information!</div>`,
   "Grand Artisanal Mix": `
@@ -284,7 +284,7 @@ const RULES_HTML = {
     <ul>
     <li>Normal sudoku rules apply (1\u20139 in each row, column and 3\u00d73 box).</li>
     <li><svg viewBox="0 0 28 14" width="28" height="14" style="vertical-align:middle;margin-right:4px"><rect x="1" y="1" width="26" height="12" rx="2" fill="none" stroke="#777" stroke-width="1.5" stroke-dasharray="4 2.5"/><text x="4" y="10" fill="#E65100" font-size="8" font-weight="800">15</text></svg> <strong style="color:#E65100">Killer cages</strong> \u2014 digits sum to the clue. No repeats in a cage.</li>
-    <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><circle cx="7" cy="7" r="5" fill="#9E9E9E" opacity=".65"/><line x1="12" y1="7" x2="35" y2="7" stroke="#9E9E9E" stroke-width="3" stroke-linecap="round" opacity=".7"/></svg> <strong style="color:#9E9E9E">Thermometers</strong> \u2014 digits strictly increase from the round bulb toward the tip.</li>
+    <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><circle cx="7" cy="7" r="5" fill="#B0BEC5" opacity=".65"/><line x1="12" y1="7" x2="35" y2="7" stroke="#B0BEC5" stroke-width="3" stroke-linecap="round" opacity=".7"/></svg> <strong style="color:#B0BEC5">Thermometers</strong> \u2014 digits strictly increase from the round bulb toward the tip.</li>
     <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><circle cx="7" cy="7" r="7" fill="none" stroke="#3949AB" stroke-width="1.5" opacity=".8"/><line x1="14" y1="7" x2="36" y2="7" stroke="#3949AB" stroke-width="2" stroke-linecap="round" opacity=".8"/><polygon points="36,7 31,4 31,10" fill="#3949AB" opacity=".8"/></svg> <strong style="color:#3949AB">Sum arrows</strong> \u2014 the circled digit equals the sum of digits along the arrow.</li>
     <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><line x1="4" y1="7" x2="36" y2="7" stroke="#EC407A" stroke-width="3" stroke-linecap="round" opacity=".4"/></svg> <strong style="color:#EC407A">Palindrome lines</strong> \u2014 digits read the same forwards and backwards.</li>
     <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><line x1="4" y1="7" x2="36" y2="7" stroke="#7B1FA2" stroke-width="3" stroke-linecap="round" opacity=".5"/></svg> <strong style="color:#7B1FA2">Renban lines</strong> \u2014 cells contain consecutive digits in any order.</li>
@@ -2194,7 +2194,10 @@ function drawConstraints(){
       }
 
       if(pathD.trim()){
-        g.appendChild(svgEl('path',{d:pathD.trim(),fill:'none',stroke:'#444','stroke-width':'1.5','stroke-dasharray':'5 3','stroke-linejoin':'round','stroke-linecap':'round'}));
+        // Subtle fill to make cage area visible even without reading the outline
+        g.appendChild(svgEl('path',{d:pathD.trim(),fill:'rgba(0,0,0,.03)',stroke:'none'}));
+        // Dark dashed outline — must be clearly visible on phone screens
+        g.appendChild(svgEl('path',{d:pathD.trim(),fill:'none',stroke:'#222','stroke-width':'2','stroke-dasharray':'4 2','stroke-linejoin':'round','stroke-linecap':'round'}));
       }
 
       // Collect cage sum label data for deferred rendering
@@ -2213,8 +2216,8 @@ function drawConstraints(){
       if(th.length<2)return;
       const g=svgEl('g',{'data-constraint':'thermo'});
       const pts=th.map(([r,c])=>pt(r,c));
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#9E9E9E','stroke-width':'8','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.7'}));
-      g.appendChild(svgEl('circle',{cx:pts[0].x,cy:pts[0].y,r:'14',fill:'#9E9E9E',opacity:'.65'}));
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#B0BEC5','stroke-width':'8','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.7'}));
+      g.appendChild(svgEl('circle',{cx:pts[0].x,cy:pts[0].y,r:'14',fill:'#B0BEC5',opacity:'.65'}));
       svg.appendChild(g);
     });
   }
@@ -2302,7 +2305,11 @@ function drawConstraints(){
   if(deferredCageLabels.length){
     const labelG=svgEl('g',{'data-constraint':'killer-labels','pointer-events':'none'});
     deferredCageLabels.forEach(lb=>{
-      const label=svgEl('text',{x:lb.x,y:lb.y,fill:'#BF360C','font-size':'11','font-weight':'800','font-family':"'Quicksand',sans-serif",'pointer-events':'none'});
+      // White halo behind label for readability
+      const halo=svgEl('text',{x:lb.x,y:lb.y,fill:'#fff',stroke:'#fff','stroke-width':'3','font-size':'11','font-weight':'800','font-family':"'Quicksand',sans-serif",'pointer-events':'none','paint-order':'stroke'});
+      halo.textContent=lb.s;
+      labelG.appendChild(halo);
+      const label=svgEl('text',{x:lb.x,y:lb.y,fill:'#B71C1C','font-size':'11','font-weight':'800','font-family':"'Quicksand',sans-serif",'pointer-events':'none'});
       label.textContent=lb.s;
       labelG.appendChild(label);
     });
@@ -2321,8 +2328,8 @@ function buildConstraintLegend(types){
   const el=document.getElementById('constraint-legend');if(!el)return;
   el.innerHTML='';
   const defs={
-    killer:{color:'#444',label:'Cages',shape:'dash'},
-    thermo:{color:'#9E9E9E',label:'Thermo',shape:'line'},
+    killer:{color:'#222',label:'Cages',shape:'dash'},
+    thermo:{color:'#B0BEC5',label:'Thermo',shape:'line'},
     arrow:{color:'#3949AB',label:'Arrow',shape:'dot'},
     whisper:{color:'#43A047',label:'Whisper',shape:'line'},
     kropki:{color:'#888',label:'Kropki',shape:'dot'},
