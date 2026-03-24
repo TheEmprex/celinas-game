@@ -253,8 +253,8 @@ const RULES_HTML = {
     <li>Normal sudoku rules apply (1\u20139 in each row, column and 3\u00d73 box).</li>
     <li><svg viewBox="0 0 28 14" width="28" height="14" style="vertical-align:middle;margin-right:4px"><rect x="1" y="1" width="26" height="12" rx="2" fill="none" stroke="#777" stroke-width="1.5" stroke-dasharray="4 2.5"/><text x="4" y="10" fill="#E65100" font-size="8" font-weight="800">12</text></svg> <strong style="color:#E65100">Killer cages</strong> \u2014 digits in a cage sum to the clue number. No repeats within a cage.</li>
     <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><circle cx="7" cy="7" r="5" fill="#B0BEC5" opacity=".65"/><line x1="12" y1="7" x2="35" y2="7" stroke="#B0BEC5" stroke-width="3" stroke-linecap="round" opacity=".7"/></svg> <strong style="color:#B0BEC5">Thermometers</strong> \u2014 digits strictly increase from the round bulb toward the tip.</li>
-    <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><line x1="4" y1="7" x2="36" y2="7" stroke="#EC407A" stroke-width="3" stroke-linecap="round" opacity=".4"/></svg> <strong style="color:#EC407A">Palindrome lines</strong> \u2014 the sequence of digits reads the same forwards and backwards.</li>
-    <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><line x1="4" y1="7" x2="36" y2="7" stroke="#7B1FA2" stroke-width="3" stroke-linecap="round" opacity=".5"/></svg> <strong style="color:#7B1FA2">Renban lines</strong> \u2014 cells contain a set of consecutive digits in any order (e.g. {3,4,5,6}).</li>
+    <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><line x1="4" y1="7" x2="36" y2="7" stroke="#EC407A" stroke-width="3" stroke-linecap="round" opacity=".5"/></svg> <strong style="color:#EC407A">Palindrome lines</strong> \u2014 the sequence of digits reads the same forwards and backwards.</li>
+    <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><line x1="4" y1="7" x2="36" y2="7" stroke="#7B1FA2" stroke-width="3" stroke-linecap="round" opacity=".55"/></svg> <strong style="color:#7B1FA2">Renban lines</strong> \u2014 cells contain a set of consecutive digits in any order (e.g. {3,4,5,6}).</li>
     </ul>
     <div class="rule-note">Tip: On a renban line of length 5, the digits form a run like {3,4,5,6,7} but can appear in any order along the line.</div>`,
   "Whisper + Anti-Knight/King": `
@@ -263,9 +263,9 @@ const RULES_HTML = {
     <li>Normal sudoku rules apply (1\u20139 in each row, column and 3\u00d73 box).</li>
     <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><line x1="4" y1="12" x2="13" y2="2" stroke="#43A047" stroke-width="3" stroke-linecap="round" opacity=".5"/><line x1="13" y1="2" x2="22" y2="12" stroke="#43A047" stroke-width="3" stroke-linecap="round" opacity=".5"/><line x1="22" y1="12" x2="36" y2="2" stroke="#43A047" stroke-width="3" stroke-linecap="round" opacity=".5"/></svg> <strong style="color:#43A047">German Whisper lines</strong> \u2014 adjacent digits on the line must differ by at least 5.</li>
     <li><svg viewBox="0 0 28 14" width="28" height="14" style="vertical-align:middle;margin-right:4px"><rect x="1" y="1" width="26" height="12" rx="2" fill="none" stroke="#777" stroke-width="1.5" stroke-dasharray="4 2.5"/><text x="4" y="10" fill="#E65100" font-size="8" font-weight="800">8</text></svg> <strong style="color:#E65100">Killer cages</strong> \u2014 digits sum to the clue. No repeats in a cage.</li>
-    <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><line x1="4" y1="7" x2="36" y2="7" stroke="#7B1FA2" stroke-width="3" stroke-linecap="round" opacity=".5"/></svg> <strong style="color:#7B1FA2">Renban lines</strong> \u2014 cells contain consecutive digits in any order.</li>
+    <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><line x1="4" y1="7" x2="36" y2="7" stroke="#7B1FA2" stroke-width="3" stroke-linecap="round" opacity=".55"/></svg> <strong style="color:#7B1FA2">Renban lines</strong> \u2014 cells contain consecutive digits in any order.</li>
     <li><svg viewBox="0 0 20 14" width="20" height="14" style="vertical-align:middle;margin-right:4px"><text x="2" y="12" fill="#42A5F5" font-size="13" font-weight="800">\u265E</text></svg> <strong style="color:#42A5F5">Anti-Knight</strong> \u2014 cells a chess knight\u2019s move apart cannot contain the same digit.</li>
-    <li><svg viewBox="0 0 20 14" width="20" height="14" style="vertical-align:middle;margin-right:4px"><text x="2" y="12" fill="#7B1FA2" font-size="13" font-weight="800">\u265A</text></svg> <strong style="color:#7B1FA2">Anti-King</strong> \u2014 cells diagonally adjacent cannot contain the same digit.</li>
+    <li><svg viewBox="0 0 20 14" width="20" height="14" style="vertical-align:middle;margin-right:4px"><text x="2" y="12" fill="#E91E63" font-size="13" font-weight="800">\u265A</text></svg> <strong style="color:#E91E63">Anti-King</strong> \u2014 cells diagonally adjacent cannot contain the same digit.</li>
     </ul>
     <div class="rule-note">Tip: Only digits 1\u20134 and 6\u20139 can appear on whisper lines (5 is never on a green line). Anti-knight and anti-king constraints are global \u2014 they apply to every cell!</div>`,
   "Kropki + Palindrome + Thermo": `
@@ -275,7 +275,7 @@ const RULES_HTML = {
     <li><svg viewBox="0 0 28 14" width="28" height="14" style="vertical-align:middle;margin-right:4px"><circle cx="14" cy="7" r="5" fill="#fff" stroke="#333" stroke-width="1.5"/></svg> <strong>White dot</strong> \u25CB \u2014 the two cells differ by exactly 1.</li>
     <li><svg viewBox="0 0 28 14" width="28" height="14" style="vertical-align:middle;margin-right:4px"><circle cx="14" cy="7" r="5" fill="#222" stroke="#333" stroke-width="1.5"/></svg> <strong>Black dot</strong> \u25CF \u2014 one cell is exactly double the other.</li>
     <li><strong>No dot</strong> \u2014 if no dot is shown between two adjacent cells, neither condition holds. <em>This is a clue!</em></li>
-    <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><line x1="4" y1="7" x2="36" y2="7" stroke="#EC407A" stroke-width="3" stroke-linecap="round" opacity=".4"/></svg> <strong style="color:#EC407A">Palindrome lines</strong> \u2014 the sequence of digits reads the same forwards and backwards.</li>
+    <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><line x1="4" y1="7" x2="36" y2="7" stroke="#EC407A" stroke-width="3" stroke-linecap="round" opacity=".5"/></svg> <strong style="color:#EC407A">Palindrome lines</strong> \u2014 the sequence of digits reads the same forwards and backwards.</li>
     <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><circle cx="7" cy="7" r="5" fill="#B0BEC5" opacity=".65"/><line x1="12" y1="7" x2="35" y2="7" stroke="#B0BEC5" stroke-width="3" stroke-linecap="round" opacity=".7"/></svg> <strong style="color:#B0BEC5">Thermometers</strong> \u2014 digits strictly increase from the round bulb toward the tip.</li>
     </ul>
     <div class="rule-note">Tip: The pair (1,2) satisfies both a white dot (differ by 1) and a black dot (2=2\u00d71). All dots are shown \u2014 if a dot is missing between two cells, that\u2019s important information!</div>`,
@@ -286,8 +286,8 @@ const RULES_HTML = {
     <li><svg viewBox="0 0 28 14" width="28" height="14" style="vertical-align:middle;margin-right:4px"><rect x="1" y="1" width="26" height="12" rx="2" fill="none" stroke="#777" stroke-width="1.5" stroke-dasharray="4 2.5"/><text x="4" y="10" fill="#E65100" font-size="8" font-weight="800">15</text></svg> <strong style="color:#E65100">Killer cages</strong> \u2014 digits sum to the clue. No repeats in a cage.</li>
     <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><circle cx="7" cy="7" r="5" fill="#B0BEC5" opacity=".65"/><line x1="12" y1="7" x2="35" y2="7" stroke="#B0BEC5" stroke-width="3" stroke-linecap="round" opacity=".7"/></svg> <strong style="color:#B0BEC5">Thermometers</strong> \u2014 digits strictly increase from the round bulb toward the tip.</li>
     <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><circle cx="7" cy="7" r="7" fill="none" stroke="#3949AB" stroke-width="1.5" opacity=".8"/><line x1="14" y1="7" x2="36" y2="7" stroke="#3949AB" stroke-width="2" stroke-linecap="round" opacity=".8"/><polygon points="36,7 31,4 31,10" fill="#3949AB" opacity=".8"/></svg> <strong style="color:#3949AB">Sum arrows</strong> \u2014 the circled digit equals the sum of digits along the arrow.</li>
-    <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><line x1="4" y1="7" x2="36" y2="7" stroke="#EC407A" stroke-width="3" stroke-linecap="round" opacity=".4"/></svg> <strong style="color:#EC407A">Palindrome lines</strong> \u2014 digits read the same forwards and backwards.</li>
-    <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><line x1="4" y1="7" x2="36" y2="7" stroke="#7B1FA2" stroke-width="3" stroke-linecap="round" opacity=".5"/></svg> <strong style="color:#7B1FA2">Renban lines</strong> \u2014 cells contain consecutive digits in any order.</li>
+    <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><line x1="4" y1="7" x2="36" y2="7" stroke="#EC407A" stroke-width="3" stroke-linecap="round" opacity=".5"/></svg> <strong style="color:#EC407A">Palindrome lines</strong> \u2014 digits read the same forwards and backwards.</li>
+    <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><line x1="4" y1="7" x2="36" y2="7" stroke="#7B1FA2" stroke-width="3" stroke-linecap="round" opacity=".55"/></svg> <strong style="color:#7B1FA2">Renban lines</strong> \u2014 cells contain consecutive digits in any order.</li>
     <li><svg viewBox="0 0 40 14" width="40" height="14" style="vertical-align:middle;margin-right:4px"><line x1="4" y1="12" x2="20" y2="2" stroke="#EF6C00" stroke-width="3" stroke-linecap="round" opacity=".5"/><line x1="20" y1="2" x2="36" y2="12" stroke="#EF6C00" stroke-width="3" stroke-linecap="round" opacity=".5"/></svg> <strong style="color:#EF6C00">Dutch Whisper lines</strong> \u2014 adjacent digits must differ by at least 4.</li>
     </ul>
     <div class="rule-note">The ultimate artisanal challenge \u2014 six constraint types combined! Use the constraint legend below the board to highlight each type.</div>`
@@ -2116,8 +2116,8 @@ function drawConstraints(){
   const gridG=svgEl('g',{'data-grid':'true','pointer-events':'none'});
   for(let i=1;i<9;i++){
     const thick=i%3===0;
-    const w=thick?'1.5':'0.7';
-    const col=thick?'#333':'#c8c8c8';
+    const w=thick?'1.5':'0.8';
+    const col=thick?'#333':'#d0d0d0';
     gridG.appendChild(svgEl('line',{x1:0,y1:i*cs,x2:9*cs,y2:i*cs,stroke:col,'stroke-width':w}));
     gridG.appendChild(svgEl('line',{x1:i*cs,y1:0,x2:i*cs,y2:9*cs,stroke:col,'stroke-width':w}));
   }
@@ -2196,8 +2196,8 @@ function drawConstraints(){
       if(pathD.trim()){
         // Subtle fill to make cage area visible even without reading the outline
         g.appendChild(svgEl('path',{d:pathD.trim(),fill:'rgba(0,0,0,.03)',stroke:'none'}));
-        // Dark dashed outline — must be clearly visible on phone screens
-        g.appendChild(svgEl('path',{d:pathD.trim(),fill:'none',stroke:'#222','stroke-width':'2','stroke-dasharray':'4 2','stroke-linejoin':'round','stroke-linecap':'round'}));
+        // Solid thin outline — crisp and visible at any screen size
+        g.appendChild(svgEl('path',{d:pathD.trim(),fill:'none',stroke:'#000','stroke-width':'1.2','stroke-linejoin':'round','stroke-linecap':'round'}));
       }
 
       // Collect cage sum label data for deferred rendering
@@ -2229,7 +2229,7 @@ function drawConstraints(){
       if(pl.length<2)return;
       const g=svgEl('g',{'data-constraint':'palindrome'});
       const pts=pl.map(([r,c])=>pt(r,c));
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#EC407A','stroke-width':'5','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.4'}));
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#EC407A','stroke-width':'5','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.5'}));
       svg.appendChild(g);
     });
   }
@@ -2241,7 +2241,7 @@ function drawConstraints(){
       if(rb.length<2)return;
       const g=svgEl('g',{'data-constraint':'renban'});
       const pts=rb.map(([r,c])=>pt(r,c));
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#7B1FA2','stroke-width':'5','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.5'}));
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#7B1FA2','stroke-width':'5','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.55'}));
       svg.appendChild(g);
     });
   }
@@ -2328,7 +2328,7 @@ function buildConstraintLegend(types){
   const el=document.getElementById('constraint-legend');if(!el)return;
   el.innerHTML='';
   const defs={
-    killer:{color:'#222',label:'Cages',shape:'dash'},
+    killer:{color:'#000',label:'Cages',shape:'line'},
     thermo:{color:'#B0BEC5',label:'Thermo',shape:'line'},
     arrow:{color:'#3949AB',label:'Arrow',shape:'dot'},
     whisper:{color:'#43A047',label:'Whisper',shape:'line'},
@@ -2337,7 +2337,7 @@ function buildConstraintLegend(types){
     renban:{color:'#7B1FA2',label:'Renban',shape:'line'},
     dutch:{color:'#EF6C00',label:'Dutch',shape:'line'},
     knight:{color:'#42A5F5',label:'Anti-Knight',shape:'dot'},
-    king:{color:'#7B1FA2',label:'Anti-King',shape:'dot'}
+    king:{color:'#E91E63',label:'Anti-King',shape:'dot'}
   };
   const tips={
     killer:'Cage digits sum to the clue. No repeats.',

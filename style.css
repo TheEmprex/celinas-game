@@ -16,7 +16,7 @@
   --safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px);
 
   /* Board cells — SudokuPad white style */
-  --b-bg:#ffffff;--b-alt:#e8e8e8;--b-thin:#c0c0c0;--b-thick:#000000;--b-outer:#000000;
+  --b-bg:#ffffff;--b-alt:#e8e8e8;--b-thin:#c0c0c0;--b-thick:#333;--b-outer:#333;
   --b-sel:#bbdefb;--b-sel-ring:#1976d2;--b-peer:rgba(25,118,210,.08);--b-same:rgba(25,118,210,.16);
   --b-given:#000;--b-user:#1565c0;--b-error:#d32f2f;
 
@@ -191,12 +191,12 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 /* Golden board on win */
 .board-wrap.golden{box-shadow:0 0 40px rgba(255,215,0,.2),0 0 80px rgba(255,215,0,.1) !important;border:1.5px solid rgba(255,215,0,.3);transition:box-shadow 1s ease,border 1s ease}
 
-.board{display:grid;grid-template-columns:repeat(9,1fr);grid-template-rows:repeat(9,1fr);width:100%;height:100%;background:var(--b-bg);border:2px solid var(--b-outer);border-radius:2px;position:relative;z-index:1;gap:0}
+.board{display:grid;grid-template-columns:repeat(9,1fr);grid-template-rows:repeat(9,1fr);width:100%;height:100%;background:var(--b-bg);border:1.5px solid var(--b-outer);border-radius:2px;position:relative;z-index:1;gap:0}
 .board-overlay{position:absolute;inset:0;z-index:2;pointer-events:none}
 
 /* --- Cells (grid lines drawn in SVG for crisp rendering) --- */
 .cell{display:flex;align-items:center;justify-content:center;font-size:calc(var(--cell)*.52);font-weight:600;cursor:pointer;position:relative;background:var(--b-bg);font-family:'Quicksand',sans-serif;transition:background-color .15s ease;-webkit-touch-callout:none;border:none}
-.cell.box-alt{background:#f4f4f4}
+.cell.box-alt{background:#f7f7f7}
 
 /* --- Cell states --- */
 .cell.given{color:var(--b-given);font-weight:700;font-family:'Playfair Display',serif;font-size:calc(var(--cell)*.54)}
@@ -279,7 +279,7 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 
 /* Constraint badges */
 .constraint-badge{display:inline-block;font-size:.58rem;text-transform:uppercase;letter-spacing:1px;padding:2px 8px;border-radius:10px;font-weight:700;margin:1px 2px}
-.constraint-badge.killer{background:rgba(34,34,34,.12);color:#222}
+.constraint-badge.killer{background:rgba(0,0,0,.1);color:#000}
 .constraint-badge.thermo{background:rgba(176,190,197,.2);color:#B0BEC5}
 .constraint-badge.whisper{background:rgba(67,160,71,.2);color:#43A047}
 .constraint-badge.kropki{background:rgba(255,255,255,.15);color:rgba(255,255,255,.8)}
@@ -288,6 +288,7 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 .constraint-badge.arrow{background:rgba(57,73,171,.2);color:#3949AB}
 .constraint-badge.dutch{background:rgba(239,108,0,.15);color:#EF6C00}
 .constraint-badge.knight{background:rgba(66,165,245,.15);color:#42A5F5}
+.constraint-badge.king{background:rgba(233,30,99,.15);color:#E91E63}
 .constraint-badge.mixed{background:rgba(255,215,0,.15);color:var(--gold-soft)}
 
 .board.pencil-mode~.board-overlay{opacity:.95}
@@ -557,7 +558,7 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 #game.puzzle-0{--accent:#e91e63;--accent-glow:rgba(233,30,99,.3)}
 #game.puzzle-1{--accent:#81c784;--accent-glow:rgba(129,199,132,.3)}
 #game.puzzle-2{--accent:#ffd54f;--accent-glow:rgba(255,213,79,.3)}
-#game.puzzle-3{--accent:#ce93d8;--accent-glow:rgba(206,147,216,.3)}
+#game.puzzle-3{--accent:#f48fb1;--accent-glow:rgba(244,143,177,.3)}
 #game .g-progress-fill{background:linear-gradient(90deg,var(--accent,var(--pink-400)),var(--accent,var(--pink-500)))}
 #game .cell.selected{animation-name:selPulseAccent}
 @keyframes selPulseAccent{0%,100%{box-shadow:inset 0 0 0 2px var(--accent,var(--b-sel-ring))}50%{box-shadow:inset 0 0 0 2.5px var(--accent,var(--b-sel-ring)),0 0 14px var(--accent-glow,rgba(233,30,99,.2))}}
@@ -591,16 +592,16 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 #game.puzzle-2::before{background:radial-gradient(ellipse 60% 40% at 50% 50%,rgba(255,213,79,.06) 0%,transparent 70%),radial-gradient(circle at 20% 80%,rgba(255,179,0,.04) 0%,transparent 50%),radial-gradient(circle at 80% 20%,rgba(255,213,79,.04) 0%,transparent 50%)}
 
 /* --- Puzzle 3: Eternal Love (purple/diamond accent) --- */
-.puzzle-3 .g-progress-fill{background:linear-gradient(90deg,#ce93d8,#9c27b0)}
-.puzzle-3 .num-btn.sel{background:rgba(206,147,216,.2);color:#ce93d8;box-shadow:0 0 12px rgba(206,147,216,.3)}
-.puzzle-3 .cell.selected{background:#f3e5f5;box-shadow:inset 0 0 0 2px #ba68c8}
-.puzzle-3 .cell.multi-selected{background:#f3e5f5 !important;box-shadow:inset 0 0 0 2px #ba68c8}
-.puzzle-3 .cell.peer{background:rgba(206,147,216,.1)}
-.puzzle-3 .cell.same-num{background:rgba(206,147,216,.16);box-shadow:inset 0 0 0 1.5px rgba(206,147,216,.2)}
+.puzzle-3 .g-progress-fill{background:linear-gradient(90deg,#f48fb1,#e91e63)}
+.puzzle-3 .num-btn.sel{background:rgba(244,143,177,.2);color:#f48fb1;box-shadow:0 0 12px rgba(244,143,177,.3)}
+.puzzle-3 .cell.selected{background:#fce4ec;box-shadow:inset 0 0 0 2px #f06292}
+.puzzle-3 .cell.multi-selected{background:#fce4ec !important;box-shadow:inset 0 0 0 2px #f06292}
+.puzzle-3 .cell.peer{background:rgba(244,143,177,.1)}
+.puzzle-3 .cell.same-num{background:rgba(244,143,177,.16);box-shadow:inset 0 0 0 1.5px rgba(244,143,177,.2)}
 .puzzle-3 .cell.same-num.given{color:var(--b-given)}
-.puzzle-3 .streak-counter{background:linear-gradient(90deg,#ba68c8,#8e24aa,#ce93d8);-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 0 8px rgba(206,147,216,.4))}
-.puzzle-3 .g-timer{text-shadow:0 0 6px rgba(206,147,216,.15)}
-#game.puzzle-3::before{background:radial-gradient(ellipse 60% 40% at 50% 50%,rgba(206,147,216,.06) 0%,transparent 70%),radial-gradient(circle at 20% 80%,rgba(156,39,176,.04) 0%,transparent 50%),radial-gradient(circle at 80% 20%,rgba(206,147,216,.04) 0%,transparent 50%)}
+.puzzle-3 .streak-counter{background:linear-gradient(90deg,#f06292,#e91e63,#f48fb1);-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 0 8px rgba(244,143,177,.4))}
+.puzzle-3 .g-timer{text-shadow:0 0 6px rgba(244,143,177,.15)}
+#game.puzzle-3::before{background:radial-gradient(ellipse 60% 40% at 50% 50%,rgba(244,143,177,.06) 0%,transparent 70%),radial-gradient(circle at 20% 80%,rgba(233,30,99,.04) 0%,transparent 50%),radial-gradient(circle at 80% 20%,rgba(244,143,177,.04) 0%,transparent 50%)}
 
 /* =============== BOARD CELL WAVE ENTRY =============== */
 .cell.cell-enter{opacity:0;transform:scale(.5);animation:cellWaveIn .3s var(--bounce) forwards}
