@@ -194,16 +194,9 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 .board{display:grid;grid-template-columns:repeat(9,1fr);grid-template-rows:repeat(9,1fr);width:100%;height:100%;background:var(--b-bg);border:2px solid var(--b-outer);border-radius:2px;position:relative;z-index:1;gap:0}
 .board-overlay{position:absolute;inset:0;z-index:2;pointer-events:none}
 
-/* --- Cells --- */
-.cell{display:flex;align-items:center;justify-content:center;font-size:calc(var(--cell)*.52);font-weight:600;cursor:pointer;position:relative;background:var(--b-bg);font-family:'Quicksand',sans-serif;transition:background-color .15s ease;-webkit-touch-callout:none;border-right:1px solid var(--b-thin);border-bottom:1px solid var(--b-thin)}
-.cell:nth-child(9n){border-right:none}
-.cell:nth-child(n+73):nth-child(-n+81){border-bottom:none}
-/* 3x3 box thick borders — right side of columns 3 and 6 */
-.cell:nth-child(3n):not(:nth-child(9n)){border-right:2px solid var(--b-thick)}
-/* 3x3 box thick borders — bottom of rows 3 and 6 */
-.cell:nth-child(n+19):nth-child(-n+27){border-bottom:2px solid var(--b-thick)}
-.cell:nth-child(n+46):nth-child(-n+54){border-bottom:2px solid var(--b-thick)}
-.cell.box-alt{background:#f2f2f2}
+/* --- Cells (grid lines drawn in SVG for crisp rendering) --- */
+.cell{display:flex;align-items:center;justify-content:center;font-size:calc(var(--cell)*.52);font-weight:600;cursor:pointer;position:relative;background:var(--b-bg);font-family:'Quicksand',sans-serif;transition:background-color .15s ease;-webkit-touch-callout:none;border:none}
+.cell.box-alt{background:#f4f4f4}
 
 /* --- Cell states --- */
 .cell.given{color:var(--b-given);font-weight:700;font-family:'Playfair Display',serif;font-size:calc(var(--cell)*.54)}

@@ -2108,9 +2108,20 @@ function drawConstraints(){
   const pz=PUZZLES[curWeek];
   const activeTypes=new Set();
 
-  // SVG defs (minimal — no glow filters)
+  // SVG defs
   const defs=document.createElementNS('http://www.w3.org/2000/svg','defs');
   svg.appendChild(defs);
+
+  // Draw clean SVG grid lines (renders crisper than CSS borders)
+  const gridG=svgEl('g',{'data-grid':'true','pointer-events':'none'});
+  for(let i=1;i<9;i++){
+    const thick=i%3===0;
+    const w=thick?'2':'0.5';
+    const col=thick?'#000':'#bbb';
+    gridG.appendChild(svgEl('line',{x1:0,y1:i*cs,x2:9*cs,y2:i*cs,stroke:col,'stroke-width':w}));
+    gridG.appendChild(svgEl('line',{x1:i*cs,y1:0,x2:i*cs,y2:9*cs,stroke:col,'stroke-width':w}));
+  }
+  svg.appendChild(gridG);
 
   // Helpers
   function pt(r,c){return{x:c*cs+cs/2,y:r*cs+cs/2};}
@@ -2130,43 +2141,62 @@ function drawConstraints(){
     return el;
   }
 
-  // ---- Killer cages (SudokuPad: BLACK dotted inset outlines) ----
+  // ---- Killer cages (continuous dashed outline, SudokuPad style) ----
   if(pz.cages&&pz.cages.length){
     activeTypes.add('killer');
-    const IN=4;
+    const IN=3.5;
     pz.cages.forEach(cage=>{
       const set=new Set(cage.c.map(([r,c])=>`${r},${c}`));
       const g=svgEl('g',{'data-constraint':'killer'});
-      const segs=[];
+
+      // Collect directed boundary edges (CW in SVG coords)
+      const edgeMap=new Map();
       for(const [r,c] of cage.c){
-        const x0=c*cs,y0=r*cs,x1=(c+1)*cs,y1=(r+1)*cs;
-        if(!set.has(`${r-1},${c}`)){
-          const lx=set.has(`${r},${c-1}`)&&!set.has(`${r-1},${c-1}`)?x0:x0+IN;
-          const rx=set.has(`${r},${c+1}`)&&!set.has(`${r-1},${c+1}`)?x1:x1-IN;
-          segs.push([lx,y0+IN,rx,y0+IN]);
-        }
-        if(!set.has(`${r+1},${c}`)){
-          const lx=set.has(`${r},${c-1}`)&&!set.has(`${r+1},${c-1}`)?x0:x0+IN;
-          const rx=set.has(`${r},${c+1}`)&&!set.has(`${r+1},${c+1}`)?x1:x1-IN;
-          segs.push([lx,y1-IN,rx,y1-IN]);
-        }
-        if(!set.has(`${r},${c-1}`)){
-          const ty=set.has(`${r-1},${c}`)&&!set.has(`${r-1},${c-1}`)?y0:y0+IN;
-          const by=set.has(`${r+1},${c}`)&&!set.has(`${r+1},${c-1}`)?y1:y1-IN;
-          segs.push([x0+IN,ty,x0+IN,by]);
-        }
-        if(!set.has(`${r},${c+1}`)){
-          const ty=set.has(`${r-1},${c}`)&&!set.has(`${r-1},${c+1}`)?y0:y0+IN;
-          const by=set.has(`${r+1},${c}`)&&!set.has(`${r+1},${c+1}`)?y1:y1-IN;
-          segs.push([x1-IN,ty,x1-IN,by]);
-        }
+        if(!set.has(`${r-1},${c}`)) edgeMap.set(`${r},${c}`,`${r},${c+1}`);
+        if(!set.has(`${r},${c+1}`)) edgeMap.set(`${r},${c+1}`,`${r+1},${c+1}`);
+        if(!set.has(`${r+1},${c}`)) edgeMap.set(`${r+1},${c+1}`,`${r+1},${c}`);
+        if(!set.has(`${r},${c-1}`)) edgeMap.set(`${r+1},${c}`,`${r},${c}`);
       }
-      if(segs.length){
-        const d=segs.map(([x1,y1,x2,y2])=>`M${x1},${y1}L${x2},${y2}`).join(' ');
-        g.appendChild(svgEl('path',{d,fill:'none',stroke:'#777','stroke-width':'1.6','stroke-dasharray':'5 3','stroke-linecap':'round'}));
+
+      // Trace boundary into continuous loops
+      const visited=new Set();
+      let pathD='';
+      for(const [start] of edgeMap){
+        if(visited.has(start))continue;
+        const verts=[];
+        let cur=start;
+        while(cur&&!visited.has(cur)){visited.add(cur);verts.push(cur);cur=edgeMap.get(cur);}
+        if(verts.length<3)continue;
+
+        // Convert to SVG pixel coords
+        const pts=verts.map(v=>{const[r,c]=v.split(',').map(Number);return{x:c*cs,y:r*cs};});
+        const n=pts.length;
+
+        // Compute inset at each vertex using left-hand normals (interior side in SVG CW)
+        const ip=[];
+        for(let i=0;i<n;i++){
+          const prev=pts[(i-1+n)%n],curr=pts[i],next=pts[(i+1)%n];
+          const dix=curr.x-prev.x,diy=curr.y-prev.y;
+          const dox=next.x-curr.x,doy=next.y-curr.y;
+          let ox=curr.x,oy=curr.y;
+          // Horizontal edge → y offset; Vertical edge → x offset
+          if(dix!==0) oy=curr.y+(dix>0?IN:-IN); else if(dox!==0) oy=curr.y+(dox>0?IN:-IN);
+          if(diy!==0) ox=curr.x+(diy>0?-IN:IN); else if(doy!==0) ox=curr.x+(doy>0?-IN:IN);
+          ip.push({x:ox,y:oy});
+        }
+
+        pathD+=`M${ip[0].x.toFixed(1)},${ip[0].y.toFixed(1)}`;
+        for(let i=1;i<ip.length;i++) pathD+=`L${ip[i].x.toFixed(1)},${ip[i].y.toFixed(1)}`;
+        pathD+='Z ';
       }
+
+      if(pathD.trim()){
+        g.appendChild(svgEl('path',{d:pathD.trim(),fill:'none',stroke:'#888','stroke-width':'1','stroke-dasharray':'4 2.5','stroke-linejoin':'round'}));
+      }
+
+      // Cage sum label at top-left cell
       let tl=cage.c[0];cage.c.forEach(([r,c])=>{if(r<tl[0]||(r===tl[0]&&c<tl[1]))tl=[r,c];});
-      const label=svgEl('text',{x:tl[1]*cs+IN+1,y:tl[0]*cs+IN+9,fill:'#E65100','font-size':'10.5','font-weight':'800','font-family':"'Quicksand',sans-serif",'pointer-events':'none'});
+      const label=svgEl('text',{x:tl[1]*cs+IN+1.5,y:tl[0]*cs+IN+8.5,fill:'#E65100','font-size':'10','font-weight':'800','font-family':"'Quicksand',sans-serif",'pointer-events':'none'});
       label.textContent=cage.s;
       g.appendChild(label);
       svg.appendChild(g);
