@@ -213,7 +213,7 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 .cell.same-num.given{color:var(--b-given)}
 @keyframes sameFlash{from{background:rgba(233,30,99,.25)}to{background:var(--b-same)}}
 .cell.correct{color:var(--b-user)}
-.cell.error{color:var(--b-error) !important;font-weight:800;background:rgba(239,83,80,.06) !important}
+.cell.error{color:var(--b-error) !important;font-weight:800;background:rgba(239,83,80,.15) !important}
 .cell.shake-hard{animation:shakeHard .4s ease}
 @keyframes shakeHard{0%{transform:translate(0)}15%{transform:translate(-4px,0)}30%{transform:translate(4px,0)}45%{transform:translate(-3px,0)}60%{transform:translate(3px,0)}75%{transform:translate(-1px,0)}90%{transform:translate(1px,0)}100%{transform:translate(0)}}
 .cell.flash-error{animation:flashErr .6s ease}
@@ -540,7 +540,7 @@ body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);height:100%;
 @keyframes ringExpand{0%{transform:scale(1);opacity:1}100%{transform:scale(2.8);opacity:0;border-width:.5px}}
 
 /* =============== PENCIL MODE ENHANCED =============== */
-.board.pencil-mode{box-shadow:inset 0 0 0 2px rgba(156,39,176,.3);background:linear-gradient(135deg,rgba(156,39,176,.03),rgba(156,39,176,.01))}
+.board.pencil-mode{box-shadow:inset 0 0 0 2px rgba(156,39,176,.3),0 0 12px rgba(156,39,176,.15);background:linear-gradient(135deg,rgba(156,39,176,.03),rgba(156,39,176,.01))}
 .t-pencil.active{color:#ce93d8;background:rgba(156,39,176,.15);box-shadow:0 0 14px rgba(156,39,176,.12)}
 
 /* =============== STREAK ESCALATION =============== */

@@ -2141,7 +2141,10 @@ function drawConstraints(){
     return el;
   }
 
-  // ---- Killer cages (continuous dashed outline, SudokuPad style) ----
+  // Deferred cage labels – collected during cage drawing, rendered last
+  const deferredCageLabels=[];
+
+  // ---- 1. Killer cages (dashed outlines, behind everything) ----
   if(pz.cages&&pz.cages.length){
     activeTypes.add('killer');
     const IN=3.5;
@@ -2194,18 +2197,16 @@ function drawConstraints(){
         g.appendChild(svgEl('path',{d:pathD.trim(),fill:'none',stroke:'#888','stroke-width':'1','stroke-dasharray':'4 2.5','stroke-linejoin':'round'}));
       }
 
-      // Cage sum label at top-left cell
+      // Collect cage sum label data for deferred rendering
       let tl=cage.c[0];cage.c.forEach(([r,c])=>{if(r<tl[0]||(r===tl[0]&&c<tl[1]))tl=[r,c];});
-      const label=svgEl('text',{x:tl[1]*cs+IN+1.5,y:tl[0]*cs+IN+8.5,fill:'#E65100','font-size':'10','font-weight':'800','font-family':"'Quicksand',sans-serif",'pointer-events':'none'});
-      label.textContent=cage.s;
-      g.appendChild(label);
+      deferredCageLabels.push({x:tl[1]*cs+IN+1.5,y:tl[0]*cs+IN+8.5,s:cage.s});
       svg.appendChild(g);
       cage.c.forEach(([r,c])=>{const cell=getCell(r,c);if(cell)cell._cageClasses=[];});
       if(tl){const tlCell=getCell(tl[0],tl[1]);if(tlCell)tlCell._cageLabel=cage.s;}
     });
   }
 
-  // ---- Thermos (SudokuPad: medium gray, round bulb) ----
+  // ---- 2. Thermos (thick gray, background layer) ----
   if(pz.thermos&&pz.thermos.length){
     activeTypes.add('thermo');
     pz.thermos.forEach(th=>{
@@ -2218,7 +2219,55 @@ function drawConstraints(){
     });
   }
 
-  // ---- Arrows (SudokuPad: gray circle + gray line + arrowhead) ----
+  // ---- 3. Palindrome lines ----
+  if(pz.palindromes&&pz.palindromes.length){
+    activeTypes.add('palindrome');
+    pz.palindromes.forEach(pl=>{
+      if(pl.length<2)return;
+      const g=svgEl('g',{'data-constraint':'palindrome'});
+      const pts=pl.map(([r,c])=>pt(r,c));
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#D4A0D4','stroke-width':'5','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.5'}));
+      svg.appendChild(g);
+    });
+  }
+
+  // ---- 4. Renban lines (PURPLE) ----
+  if(pz.renbans&&pz.renbans.length){
+    activeTypes.add('renban');
+    pz.renbans.forEach(rb=>{
+      if(rb.length<2)return;
+      const g=svgEl('g',{'data-constraint':'renban'});
+      const pts=rb.map(([r,c])=>pt(r,c));
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#AB47BC','stroke-width':'5','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.55'}));
+      svg.appendChild(g);
+    });
+  }
+
+  // ---- 5. German Whisper lines (GREEN) ----
+  if(pz.whispers&&pz.whispers.length){
+    activeTypes.add('whisper');
+    pz.whispers.forEach(wh=>{
+      if(wh.length<2)return;
+      const g=svgEl('g',{'data-constraint':'whisper'});
+      const pts=wh.map(([r,c])=>pt(r,c));
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#66BB6A','stroke-width':'5','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.55'}));
+      svg.appendChild(g);
+    });
+  }
+
+  // ---- 6. Dutch Whisper lines (ORANGE) ----
+  if(pz.dutchWhispers&&pz.dutchWhispers.length){
+    activeTypes.add('dutch');
+    pz.dutchWhispers.forEach(dw=>{
+      if(dw.length<2)return;
+      const g=svgEl('g',{'data-constraint':'dutch'});
+      const pts=dw.map(([r,c])=>pt(r,c));
+      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#FFA726','stroke-width':'5','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.55'}));
+      svg.appendChild(g);
+    });
+  }
+
+  // ---- 7. Arrows (circle + line + arrowhead) ----
   if(pz.arrows&&pz.arrows.length){
     activeTypes.add('arrow');
     pz.arrows.forEach(ar=>{
@@ -2236,19 +2285,7 @@ function drawConstraints(){
     });
   }
 
-  // ---- German Whisper lines (SudokuPad: GREEN) ----
-  if(pz.whispers&&pz.whispers.length){
-    activeTypes.add('whisper');
-    pz.whispers.forEach(wh=>{
-      if(wh.length<2)return;
-      const g=svgEl('g',{'data-constraint':'whisper'});
-      const pts=wh.map(([r,c])=>pt(r,c));
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#66BB6A','stroke-width':'5','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.55'}));
-      svg.appendChild(g);
-    });
-  }
-
-  // ---- Kropki dots (SudokuPad: clean B/W dots on cell edge) ----
+  // ---- 8. Kropki dots (on top of lines) ----
   if(pz.kropki&&pz.kropki.length){
     activeTypes.add('kropki');
     pz.kropki.forEach(k=>{
@@ -2261,40 +2298,15 @@ function drawConstraints(){
     });
   }
 
-  // ---- Palindrome lines (SudokuPad: light SILVER/GRAY) ----
-  if(pz.palindromes&&pz.palindromes.length){
-    activeTypes.add('palindrome');
-    pz.palindromes.forEach(pl=>{
-      if(pl.length<2)return;
-      const g=svgEl('g',{'data-constraint':'palindrome'});
-      const pts=pl.map(([r,c])=>pt(r,c));
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#D4A0D4','stroke-width':'5','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.5'}));
-      svg.appendChild(g);
+  // ---- 9. Cage labels (text, always on top of everything) ----
+  if(deferredCageLabels.length){
+    const labelG=svgEl('g',{'data-constraint':'killer-labels','pointer-events':'none'});
+    deferredCageLabels.forEach(lb=>{
+      const label=svgEl('text',{x:lb.x,y:lb.y,fill:'#E65100','font-size':'10','font-weight':'800','font-family':"'Quicksand',sans-serif",'pointer-events':'none'});
+      label.textContent=lb.s;
+      labelG.appendChild(label);
     });
-  }
-
-  // ---- Renban lines (SudokuPad: PURPLE) ----
-  if(pz.renbans&&pz.renbans.length){
-    activeTypes.add('renban');
-    pz.renbans.forEach(rb=>{
-      if(rb.length<2)return;
-      const g=svgEl('g',{'data-constraint':'renban'});
-      const pts=rb.map(([r,c])=>pt(r,c));
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#AB47BC','stroke-width':'5','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.55'}));
-      svg.appendChild(g);
-    });
-  }
-
-  // ---- Dutch Whisper lines (SudokuPad: ORANGE) ----
-  if(pz.dutchWhispers&&pz.dutchWhispers.length){
-    activeTypes.add('dutch');
-    pz.dutchWhispers.forEach(dw=>{
-      if(dw.length<2)return;
-      const g=svgEl('g',{'data-constraint':'dutch'});
-      const pts=dw.map(([r,c])=>pt(r,c));
-      g.appendChild(svgEl('path',{d:smoothPath(pts),fill:'none',stroke:'#FFA726','stroke-width':'5','stroke-linecap':'round','stroke-linejoin':'round',opacity:'.55'}));
-      svg.appendChild(g);
-    });
+    svg.appendChild(labelG);
   }
 
   // Track anti-knight/king
@@ -3002,14 +3014,72 @@ function animateStatCounters(){
 function checkConstraintSatisfaction(){
   if(!curPuzzle)return;
   const pz=PUZZLES[curWeek];
-  const g=curPuzzle.user,sol=curPuzzle.sol;
+  const g=curPuzzle.user;
   const cs=50;
   let newlyCompleted=0;
 
-  // Helper: check if all cells in a list match solution
-  function allCorrect(cells){
-    for(const [r,c] of cells) if(g[r][c]!==sol[r][c])return false;
+  // Helper: check if all cells in a list are filled (non-zero)
+  function allFilled(cells){
+    for(const [r,c] of cells) if(!g[r][c])return false;
     return true;
+  }
+  // Helper: get values for a list of cells
+  function vals(cells){ return cells.map(([r,c])=>g[r][c]); }
+  // Killer cage: all filled AND sum matches AND no repeats
+  function cageOk(cage){
+    if(!allFilled(cage.c))return false;
+    const v=vals(cage.c);
+    if(v.reduce((a,b)=>a+b,0)!==cage.s)return false;
+    return new Set(v).size===v.length;
+  }
+  // Thermo: all filled AND strictly increasing from bulb
+  function thermoOk(cells){
+    if(!allFilled(cells))return false;
+    const v=vals(cells);
+    for(let i=1;i<v.length;i++) if(v[i]<=v[i-1])return false;
+    return true;
+  }
+  // Palindrome: all filled AND reads same both ways
+  function palindromeOk(cells){
+    if(!allFilled(cells))return false;
+    const v=vals(cells);
+    for(let i=0;i<Math.floor(v.length/2);i++) if(v[i]!==v[v.length-1-i])return false;
+    return true;
+  }
+  // Renban: all filled AND forms consecutive set with no repeats
+  function renbanOk(cells){
+    if(!allFilled(cells))return false;
+    const v=vals(cells);
+    if(new Set(v).size!==v.length)return false;
+    return Math.max(...v)-Math.min(...v)===v.length-1;
+  }
+  // German whisper: all filled AND adjacent cells differ by >=5
+  function whisperOk(cells){
+    if(!allFilled(cells))return false;
+    const v=vals(cells);
+    for(let i=1;i<v.length;i++) if(Math.abs(v[i]-v[i-1])<5)return false;
+    return true;
+  }
+  // Dutch whisper: all filled AND adjacent cells differ by >=4
+  function dutchWhisperOk(cells){
+    if(!allFilled(cells))return false;
+    const v=vals(cells);
+    for(let i=1;i<v.length;i++) if(Math.abs(v[i]-v[i-1])<4)return false;
+    return true;
+  }
+  // Arrow: all filled AND circle value = sum of arrow cells
+  function arrowOk(ar){
+    const cells=[ar.o,...ar.a];
+    if(!allFilled(cells))return false;
+    return g[ar.o[0]][ar.o[1]]===ar.a.reduce((s,[r,c])=>s+g[r][c],0);
+  }
+  // Kropki: both filled AND white=consecutive, black=double/half
+  function kropkiOk(k){
+    if(!allFilled(k.c))return false;
+    const a=g[k.c[0][0]][k.c[0][1]], b=g[k.c[1][0]][k.c[1][1]];
+    if(k.t==='w') return Math.abs(a-b)===1;
+    if(k.t==='b') return a===2*b||b===2*a;
+    return false;
   }
   // Helper: find SVG group for a constraint by first point
   function findGroup(type,cells){
@@ -3082,7 +3152,7 @@ function checkConstraintSatisfaction(){
 
   // Cages — cell-level glow + tracking
   if(pz.cages)pz.cages.forEach((cage,ci)=>{
-    const ok=allCorrect(cage.c);
+    const ok=cageOk(cage);
     const key='cage:'+ci;
     cage.c.forEach(([r,c])=>{
       const cell=getCell(r,c);
@@ -3102,37 +3172,36 @@ function checkConstraintSatisfaction(){
   // Thermos
   if(pz.thermos)pz.thermos.forEach(th=>{
     const key=constraintKey('thermo',th);
-    markGroup(findGroup('thermo',th),allCorrect(th),key);
+    markGroup(findGroup('thermo',th),thermoOk(th),key);
   });
   // Arrows
   if(pz.arrows)pz.arrows.forEach(ar=>{
-    const cells=[ar.o,...ar.a];
     const key=constraintKey('arrow',[ar.o]);
-    markGroup(findGroup('arrow',[ar.o]),allCorrect(cells),key);
+    markGroup(findGroup('arrow',[ar.o]),arrowOk(ar),key);
   });
   // Whispers
   if(pz.whispers)pz.whispers.forEach(wh=>{
     const key=constraintKey('whisper',wh);
-    markGroup(findGroup('whisper',wh),allCorrect(wh),key);
+    markGroup(findGroup('whisper',wh),whisperOk(wh),key);
   });
   // Palindromes
   if(pz.palindromes)pz.palindromes.forEach(pl=>{
     const key=constraintKey('palindrome',pl);
-    markGroup(findGroup('palindrome',pl),allCorrect(pl),key);
+    markGroup(findGroup('palindrome',pl),palindromeOk(pl),key);
   });
   // Renbans
   if(pz.renbans)pz.renbans.forEach(rb=>{
     const key=constraintKey('renban',rb);
-    markGroup(findGroup('renban',rb),allCorrect(rb),key);
+    markGroup(findGroup('renban',rb),renbanOk(rb),key);
   });
   // Dutch Whispers
   if(pz.dutchWhispers)pz.dutchWhispers.forEach(dw=>{
     const key=constraintKey('dutch',dw);
-    markGroup(findGroup('dutch',dw),allCorrect(dw),key);
+    markGroup(findGroup('dutch',dw),dutchWhisperOk(dw),key);
   });
   // Kropki
   if(pz.kropki)pz.kropki.forEach((k,ki)=>{
-    const ok=allCorrect(k.c);
+    const ok=kropkiOk(k);
     const key='kropki:'+ki;
     const fp=`${(k.c[0][1]+k.c[1][1])/2*cs+cs/2}`;
     const groups=document.querySelectorAll('#board-overlay g[data-constraint="kropki"]');
