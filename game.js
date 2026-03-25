@@ -3,24 +3,37 @@
    ===================================================== */
 
 // ============== PUSH NOTIFICATIONS (ntfy.sh) ==============
-// Free instant push notifications — no account or keys needed!
-// Just install the ntfy app on your phone and subscribe to the topic below.
-const NTFY_TOPIC = 'celinas-puzzle-maxime';
+// Two separate topics — Maxime gets gameplay updates, Celina gets new puzzle alerts
+const NTFY_MAXIME = 'celinas-puzzle-maxime';
+const NTFY_CELINA = 'celinas-puzzle-celina';
 
 function initEmail() { /* no setup needed for ntfy */ }
 
-function sendNotification(subject, message) {
+function sendToMaxime(subject, message) {
   try {
-    fetch(`https://ntfy.sh/${NTFY_TOPIC}`, {
+    fetch(`https://ntfy.sh/${NTFY_MAXIME}`, {
       method: 'POST',
       headers: { 'Title': subject, 'Priority': '4', 'Tags': 'heart,puzzle_piece' },
       body: message
     }).catch(() => {});
-  } catch (e) { /* silently fail — notifications are non-critical */ }
+  } catch (e) {}
 }
 
+function sendToCelina(subject, message) {
+  try {
+    fetch(`https://ntfy.sh/${NTFY_CELINA}`, {
+      method: 'POST',
+      headers: { 'Title': subject, 'Priority': '4', 'Tags': 'sparkling_heart,jigsaw' },
+      body: message
+    }).catch(() => {});
+  } catch (e) {}
+}
+
+// Keep old name as alias for backward compat
+function sendNotification(subject, message) { sendToMaxime(subject, message); }
+
 function notifyPuzzleComplete(weekNum, puzzleName, timeStr) {
-  sendNotification(
+  sendToMaxime(
     `Celina completed Week ${weekNum}: ${puzzleName}!`,
     `Hey Maxime!\n\nCelina just completed Week ${weekNum} (${puzzleName}) in ${timeStr}.\n\n` +
     `${state.puzzles.filter(p => p.done).length}/4 puzzles completed so far.\n\n` +
@@ -40,7 +53,7 @@ function notifyGiftsChosen() {
     const total=state.selectedGifts.reduce((s,i)=>s+GIFTS[i].p,0);
     msg=`\uD83C\uDF81 3 Little Treats\n\n${lines}\n\nTotal: $${total}`;
   }
-  sendNotification(
+  sendToMaxime(
     'Celina chose her reward!',
     `Hey Maxime!\n\nCelina finished all 4 puzzles and chose:\n\n${msg}\n\n\u2014 Ella the cat`
   );
@@ -1004,9 +1017,34 @@ function updateHub(){
     const daysSince=Math.floor((Date.now()-new Date(state.firstVisit).getTime())/864e5);
     if(daysSince>0) footerEl.textContent='Day '+daysSince+' of your puzzle journey';
   }
+  // Check if a new puzzle just unlocked → notify Celina + Maxime
+  checkNewPuzzleNotify();
 }
 
 function puzzleStatus(i){if(state.puzzles[i].done)return'completed';return new Date()>=unlockDate(i)?'available':'locked';}
+
+// Check for newly unlocked puzzles and notify Celina
+function checkNewPuzzleNotify(){
+  const notifiedKey='celina-notified-weeks';
+  const notified=JSON.parse(localStorage.getItem(notifiedKey)||'[]');
+  for(let i=0;i<PUZZLES.length;i++){
+    if(puzzleStatus(i)==='available'&&!state.puzzles[i].done&&!notified.includes(i)){
+      const pz=PUZZLES[i];
+      sendToCelina(
+        `New puzzle unlocked: ${pz.name}!`,
+        `Hey princess!\n\nA new puzzle just unlocked for you:\n\n` +
+        `Week ${pz.week}: ${pz.name}\n${pz.type}\n\n` +
+        `${pz.desc}\n\nGo play it! Ella is waiting for you~`
+      );
+      sendToMaxime(
+        `Puzzle ${pz.week} unlocked for Celina`,
+        `Week ${pz.week} (${pz.name}) is now available.\n${pz.type}\n\nShe hasn't started it yet.`
+      );
+      notified.push(i);
+      localStorage.setItem(notifiedKey,JSON.stringify(notified));
+    }
+  }
+}
 
 // ============== GIFT REWARD TRACKER ==============
 function buildGiftTierTracker(doneCount){
